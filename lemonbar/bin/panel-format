@@ -1,0 +1,155 @@
+#!/usr/bin/env bash
+
+source $(command -v colors)
+
+while read -r line; do
+    case $line in
+        W*)
+            ws=''
+            IFS=':'
+            set -- ${line#?}
+            while [ $# -gt 0 ]; do
+                item=$1
+                case $item in
+                    [mM]*) shift && continue ;;
+                    [fFoUuO]*)
+                        name=${item#?}
+
+                        case $name in
+                            1) icon=$(printf "\uf7db"); desc='Home' ;;
+                            2) icon=$(printf "\ufa9e"); desc='Web' ;;
+                            3) icon=$(printf "\uf135"); desc='Learn' ;;
+                            4) icon=$(printf "\uf074"); desc='Misc' ;;
+                            5) icon=$(printf "\uf108"); desc='VM' ;;
+                        esac
+
+                        BG=$BACKGROUND
+                        case $item in
+                            f*) FG=$GREY ;;
+                            [FO]*) FG=$BLUE; BG=$DARK_GREY ;;
+                            o*) FG=$WHITE ;;
+                            [uU]*) FG=$YELLOW ;;
+                        esac
+
+                        name_colored="%{F$FG}$name%{F-}"
+                        desc_colored="%{F$FG}$desc%{F-}"
+                        icon_colored="%{F$FG}$icon%{F-}"
+
+                        : "%{A:bspc desktop -f '^$name':} $name %{A}"
+                        : "%{U$FG}%{+u}$_%{U-}%{-u}"
+                        ws="$ws%{B$BG}$_%{B-}"
+                        ;;
+                    [LTG]*) shift && continue ;;
+                esac
+                shift
+            done
+            ;;
+        T*) 
+            title="${line#?}" 
+            [ -z "$title" ] && title='Desktop'
+            ;;
+        K*) 
+            caps=''
+            if [ "${line#?}" = 'CAPSLOCK' ]; then
+                icon=$(printf "\uf80d")
+                icon_colored="%{F$RED}$icon%{F-}"
+                caps="$icon ${line#?}"
+                caps="%{U$RED}%{+u} $caps %{U-}%{-u}"
+                caps="%{B$DARK_GREY}$caps%{B-}"
+            fi
+            ;;
+        B*) 
+            : "${line#?}"
+            status=${_:0:1}
+            capacity=${line#??}
+
+            case $((capacity/25)) in
+                0) icon=$(printf "\uf244") ;;
+                1) icon=$(printf "\uf243") ;;
+                2) icon=$(printf "\uf242") ;;
+                3) icon=$(printf "\uf241") ;;
+                4) icon=$(printf "\uf240") ;;
+            esac
+
+            case $((capacity/25)) in
+                [0-2]) icon_colored="%{F$RED}$icon%{F-}"; UDR=$RED ;;
+                [3-4]) icon_colored="%{F$YELLOW}$icon%{F-}"; UDR=$BLUE ;;
+            esac
+
+            capacity=$capacity%%
+            [ "$status" = "C" ] && capacity=$capacity+
+
+            battery="$icon $capacity"
+            battery="%{U$UDR}%{+u} $battery %{U-}%{-u}"
+            battery="%{B$DARK_GREY}$battery%{B-}"
+            ;;
+        N*) 
+            ssid="${line#?}"
+            if [ "$ssid" = 'Disconnected' ]; then
+                icon=$(printf "\ufaa9")
+                icon_colored="%{F$RED}$icon%{F-}"
+                UDR=$RED
+            else
+                icon=$(printf "\uf1eb")
+                icon_colored="%{F$GREEN}$icon%{F-}"
+                UDR=$BLUE
+            fi
+
+            net="$icon $ssid" 
+            net="%{U$UDR}%{+u} $net %{U-}%{-u}"
+            net="%{B$DARK_GREY}$net%{B-}"
+            ;;
+        V*) 
+            volume="${line#?}"
+
+            if [ "$volume" = 'off' ]; then
+                icon=$(printf "\ufa80")
+                icon_colored="%{F$RED}$icon%{F-}"
+                UDR=$RED
+            else
+                case $((volume/25)) in
+                    0) icon=$(printf "\uf026") ;;
+                    [12]) icon=$(printf "\uf027") ;;
+                    [3-6]) icon=$(printf "\uf028") ;;
+                esac
+                icon_colored="%{F$MAGENTA}$icon%{F-}"
+                UDR=$BLUE
+                volume=$volume%%
+            fi
+
+            volume="$icon ${volume}"
+            volume="%{U$UDR}%{+u} $volume %{U-}%{-u}"
+            volume="%{B$DARK_GREY}$volume%{B-}"
+            ;;
+        C*) 
+            time="${line#?}"
+            icon=$(printf "\uf073")
+            icon_colored="%{F$CYAN}$icon%{F-}"
+
+            clock="$icon $time" 
+            clock="%{U$BLUE}%{+u} $clock %{U-}%{-u}"
+            clock="%{B$DARK_GREY}$clock%{B-}"
+            ;;
+    esac
+
+    panel_padding=''
+    module_padding=' '
+
+    modules="$%{l}$panel_padding"
+    modules="$modules$ws"
+    modules="$modules$module_padding"
+    modules="$modules$title"
+    modules="$modules%{r}"
+    modules="$modules$caps"
+    modules="$modules$module_padding"
+    modules="$modules$battery"
+    modules="$modules$module_padding"
+    modules="$modules$net"
+    modules="$modules$module_padding"
+    modules="$modules$volume"
+    modules="$modules$module_padding"
+    modules="$modules$clock"
+    modules="$modules$panel_padding"
+
+    printf "%s\n" "$modules"
+done

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+getColor() {
+    xrdb -query | grep "$1" | cut -d ':' -f 2 | tr -d '[:space:]'
+}
+
+FOREGROUND=$(getColor 'foreground')
+BACKGROUND=$(getColor 'background')
+BLACK=$(getColor 'color0')
+DARK_GREY=$(getColor 'color8')
+DARK_RED=$(getColor 'color1')
+RED=$(getColor 'color9')
+DARK_GREEN=$(getColor 'color2')
+GREEN=$(getColor 'color10')
+DARK_YELLOW=$(getColor 'color3')
+YELLOW=$(getColor 'color11')
+DARK_BLUE=$(getColor 'color4')
+BLUE=$(getColor 'color12')
+DARK_MAGENTA=$(getColor 'color5')
+MAGENTA=$(getColor 'color13')
+DARK_CYAN=$(getColor 'color6')
+CYAN=$(getColor 'color14')
+GREY=$(getColor 'color7')
+WHITE=$(getColor 'color15')

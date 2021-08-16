@@ -1,0 +1,124 @@
+# --- Default keybinds
+
+# Reload sxhkdrc
+super + Escape
+    pkill -USR1 -x sxhkd
+
+# Restart bspwm
+super + alt + r
+    bspc wm -r
+
+# Close/kill window
+super + {_,shift + }w
+    bspc node -{c,k}
+
+# Toggle tiled and monocle layout
+super + m
+    bspc desktop -l next
+
+# Send focused window to the preselected node 
+super + y
+    bspc node -n newest.!automatic.local
+
+# Change window state
+super + {t,shift + t,s,f}
+    bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# Toggle node sticky flag
+super + ctrl + s
+    bspc node -g sticky
+
+# Change focused node to given direction
+super + {_,shift + }{h,j,k,l}
+    bspc node -{f,s} {west,south,north,east}
+
+# Focus the next/previous node in the current desktop
+super + {_,shift + }c
+    bspc node -f {next,prev}.local.!hidden.window
+
+# Focus or send to given desktop 
+super + {_,shift + }{1-9,0}
+    bspc {desktop -f,node -d} '^{1-9,10}'
+
+# Preselect the direction
+super + ctrl + {h,j,k,l}
+    bspc node -p {west,south,north,east}
+
+# Preselect the ratio
+super + ctrl + {1-9}
+    bspc node -o 0.{1-9}
+
+# Cancel preselection on focused node
+super + ctrl + space
+    bspc node -p cancel
+
+# Expand focused window
+super + alt + {h,j,k,l}
+    bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# Contract focused window
+super + alt + shift + {h,j,k,l}
+    bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# Move floating window
+super + {Left,Down,Up,Right}
+    bspc node -v {-10 0,0 10,0 -10,10 0}
+
+# --- Personal keybinds
+
+# Brightness
+XF86MonBrightness{Down,Up}
+    light {-U,-A} 5
+XF86ScreenSaver
+    xset dpms force off
+
+# Volume
+XF86AudioLowerVolume
+    pactl set-sink-volume @DEFAULT_SINK@ -5%
+    #amixer sset Master 5-
+XF86AudioRaiseVolume
+    pactl set-sink-volume @DEFAULT_SINK@ +5%
+    #amixer sset Master 5+
+XF86AudioMute
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+    #amixer sset Master toggle
+
+# Screenshot
+Print
+    shot
+@Print + shift
+    shot -s
+@Print + ctrl
+    shot -d
+
+# Terminal
+super + Return
+    alacritty
+
+# Rofis
+super + @space
+    rofi -show drun
+super + ctrl + @space
+    rofi-window
+ctrl + alt + Delete
+    rofi-power
+super + alt + p
+    rofi-pomo
+
+# Centerize floating window
+alt + c
+    centerize
+
+# Hide window
+alt + shift + h
+    bspc node --flag hidden=on
+
+# Caps lock indicator 
+@Caps_Lock
+    source $XDG_CONFIG_HOME/lemonbar/config; \
+    xdo id -a "$PANEL_WM_NAME" > /dev/null 2>&1 && \
+        caps-status > $PANEL_FIFO
+
+# Focus the next/previous floating node in current desktop
+super + {n,b}
+    bspc node {next,prev}.local.floating -f

@@ -1,0 +1,7 @@
+PANEL_FIFO=/tmp/panel.fifo
+PANEL_HEIGHT=25
+PANEL_WM_NAME='bspwm_panel'
+FONT_MEDIUM='Iosevka-9'
+FONT_BOLD='Iosevka-9:style=bold'
+
+# vim:ft=sh

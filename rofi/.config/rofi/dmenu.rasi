@@ -1,0 +1,63 @@
+/**
+ * ROFI Color theme
+ * User: Qball
+ * Copyright: Dave Davenport
+ * Edited by: behappier
+ */
+
+* {
+    --background: #1d1f21;
+    --foreground: #c5c8c6;
+    --cyan: #8abeb7;
+    --red: #cc6666;
+    --yellow: #f0c674;
+    background-color: var(--background);
+    text-color: var(--foreground);
+    font: "Iosevka 8";
+}
+
+#window {
+    anchor: south;
+    children: [ horibox ];
+    height: 25px;
+    location: south;
+    width: 100%;
+}
+
+#horibox {
+    children: [ prompt, entry, listview ];
+    orientation: horizontal;
+}
+
+#prompt {
+    background-color: var(--cyan);
+    text-color: var(--background);
+    padding: 5px;
+}
+
+#entry {
+    width: 100px;
+    padding: 5px;
+    expand: false;
+}
+
+#listview {
+    layout: horizontal;
+    lines: 100;
+    spacing: 5px;
+}
+
+#element {
+    padding: 5px 5px;
+}
+
+#element-icon {
+    size: 14px;
+}
+
+#element selected {
+    background-color:   var(--cyan);
+    text-color: var(--background);
+}
+
+/* vim:ft=css

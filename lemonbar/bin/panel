@@ -1,0 +1,131 @@
+#!/usr/bin/env bash
+
+source $XDG_CONFIG_HOME/lemonbar/config
+source $(command -v colors)
+
+# Exit when a panel already run
+if xdo id -a "$PANEL_WM_NAME" > /dev/null ; then
+    printf "%s\n" "The panel is already running." >&2
+    exit 1
+fi
+
+# Respect WM's padding and kill all processes on current process group 
+# when the script received a terminate signal
+stop() {
+    trap - TERM
+    bspc config bottom_padding $(($(bspc config bottom_padding) - $PANEL_HEIGHT))
+    kill 0
+}
+trap 'stop' INT TERM QUIT EXIT
+
+# Create a named FIFO
+[ -p $PANEL_FIFO ] && rm $PANEL_FIFO
+mkfifo $PANEL_FIFO -m 600
+
+# Workspaces module
+bspc subscribe report > $PANEL_FIFO &
+
+# Window title module
+xtitle -s -f 'T%s\n' -t 100 > $PANEL_FIFO &
+
+# Caps lock module
+caps-status > $PANEL_FIFO &
+
+# Battery module
+while true; do
+    read status < /sys/class/power_supply/BAT0/status
+    [ "$status" = "Charging" ] && status='C' || status='D'
+
+    read capacity < /sys/class/power_supply/BAT0/capacity
+    [ $capacity -gt 100 ] && capacity=100
+
+    printf "B$status$capacity\n"
+    sleep 5s
+done > $PANEL_FIFO &
+
+# WiFi module
+{ printf '%s\n' 'default via'; ip monitor route dev wlp1s0; } | while read -r event; do
+    case $event in
+        'default via'*)
+            info=$(iw dev wlp1s0 info)+'ssid '
+	        : "${info#*ssid }"
+	        : "${_%type*}"
+	        ssid="${_:-Disconnected}"
+	        ;;
+        'Deleted local'*) ssid='Disconnected' ;;
+        *) continue ;;
+    esac
+    printf "N$ssid\n"
+done > $PANEL_FIFO &
+
+# Pulseaudio module
+{ sink=$(pactl list short sinks);
+    sink=${sink%%$(printf '\t')*};
+    printf 'sink #%s\n' $sink; # Display this module on start
+    pactl subscribe; } | while read -r event; do
+    case $event in
+        *sink*)
+            sink=${event##* }
+            all_sinks_info=$(pactl list sinks)
+            sink_info="${all_sinks_info##*$sink}"
+            mute=${sink_info##*Mute: }
+            mute=${mute%%$(printf '\t')*}
+
+            case $mute in
+                yes*) printf "Voff\n" ;;
+                no*)
+                    volume=${sink_info#*Volume:}
+                    volume=${volume#*/ }
+                    volume=${volume%%%*}
+                    volume=${volume##* }
+                    printf "V$volume\n"
+                    ;;
+            esac
+            ;;
+    esac
+done > $PANEL_FIFO &
+
+# ALSA module
+: '{ printf '\n'; stdbuf -oL alsactl monitor; } | while read -r event; do
+    info=$(amixer get Master)
+    : ${info##*[}
+    status=${_%]}
+
+    if [ "$status" = "off" ]; then
+        icon='\ufa80'
+        printf "V$icon %s\n" $status
+    else
+        : "${info#*[}"
+        : ${_%%]*}
+        volume=${_%?}
+        case $((volume/25)) in
+            0) icon='\ufa7e' ;;
+            [123]) icon='\ufa7f' ;;
+            4) icon='\ufa7d' ;;
+        esac
+        printf "V$icon %s\n" "$volume%"
+    fi
+done > $PANEL_FIFO &'
+
+# Time module
+while true; do
+    printf "C%(%a, %d %b %I:%M)T\n" '-1';
+    sleep 5s;
+done > $PANEL_FIFO &
+
+# Format the modules and show it on the panel
+panel-format < $PANEL_FIFO | \
+    lemonbar \
+    -p -b -n $PANEL_WM_NAME \
+    -g 1366x$PANEL_HEIGHT+0+0 \
+    -u 2 -U $BACKGROUND \
+    -f "$FONT_MEDIUM" \
+    -f "$FONT_BOLD" \
+    -B $BACKGROUND \
+    -F $FOREGROUND | sh &
+
+# Put panel on below of all window
+xdo lower -ma "$PANEL_WM_NAME"
+
+# Wait for all background jobs to finish
+wait

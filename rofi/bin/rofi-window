@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# Normal and hidden window ids on current workspace
+normal_window_ids=$(bspc query --nodes --desktop focused --node .\!hidden.window)
+hidden_window_ids=$(bspc query --nodes --desktop focused --node .hidden.window)
+
+# If any window is opened or hidden
+if [ -n "$normal_window_ids" ] || [ -n "$hidden_window_ids" ]; then
+    # If wmctrl command exist
+    if type wmctrl > /dev/null 2>&1; then
+        # All window ids and titles
+        all_window_infos=$(wmctrl -l | tr -s ' ' | cut -d ' ' -f 1,4-) 
+
+        # Normal window ids and titles on current workspace
+        if [ -n "$normal_window_ids" ]; then
+            : $(tr '\n' '|' <<< "$normal_window_ids")
+            : ${_%|}
+            normal_window_infos=$(grep -Ei $_ <<< "$all_window_infos")
+        fi
+
+        # Hidden window ids and titles on current workspace
+        if [ -n "$hidden_window_ids" ]; then
+            : $(tr '\n' '|' <<< "$hidden_window_ids")
+            : ${_%|}
+            hidden_window_infos=$(grep -Ei $_ <<< "$all_window_infos" | sed -E 's/ (.*)/ [Hidden] \1/1')
+        fi
+
+        # Normal and/or hidden window ids and titles on current workspace
+        if [ -n "$hidden_window_infos" ]; then
+            all_window_infos=$(printf "%s\n" "$hidden_window_infos" "$normal_window_infos")
+        else
+            all_window_infos="$normal_window_infos"
+        fi
+
+        # Select a window
+        window_to_show=$(cut -d ' ' -f 2- <<< "$all_window_infos" | \
+            rofi -dmenu -p 'Change window' -format d:s -no-show-icons -width 40 -lines 8)
+
+        # Unhide and focus on selected window
+        if [ -n "$window_to_show" ]; then
+            selected_window_index=${window_to_show:0:1}
+            selected_window_id=$(sed -n "$selected_window_index p" <<< "$all_window_infos" | cut -d ' ' -f 1)
+            bspc node "$selected_window_id" --flag hidden=off --focus
+        fi
+    fi
+fi

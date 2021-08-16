@@ -1,0 +1,71 @@
+[global]
+    # Overall
+    monitor = 0
+    follow = mouse
+    geometry = "170x50-15+15"
+    separator_height = 0
+    padding = 10
+    horizontal_padding = 15
+    alignment = center
+    frame_width = 2
+    idle_threshold = 120
+    
+    # Text
+    font = Iosevka 8
+    line_height = 4
+    markup = full
+    format = "<b>%s</b>\n%b"
+    show_age_threshold = 60
+    ellipsize = end
+    word_wrap = true
+    ignore_newline = true
+    stack_duplicates = true
+    hide_duplicate_count = false
+
+    # Icon 
+    icon_position = left
+    max_icon_size = 50
+    icon_path = /home/behappier/.local/share/icons/Papirus-Dark/16x16/panel/:/home/behappier/.local/share/icons/Papirus-Dark/16x16/actions
+
+    # History
+    sticky_history = false
+    history_length = 10
+
+    # Misc/Advanced
+    dmenu = /bin/rofi -dmenu -p "Dunst"
+    browser = /opt/bin/chrome-wrapper --incognito
+    
+    # Mouse
+    mouse_left_click = do_action, close_current
+    # mouse_middle_click = do_action
+    mouse_right_click = close_all
+
+[shortcuts]
+    close = ctrl+space
+    close_all = ctrl+shift+space
+    history = ctrl+grave
+    context = ctrl+shift+period
+
+[urgency_low]
+    frame_color = "#81a2be"
+    background = "#1d1f21"
+    foreground = "#c5c8c6"
+    timeout = 10
+
+[urgency_normal]
+    frame_color = "#81a2be"
+    background = "#1d1f21"
+    foreground = "#c5c8c6"
+    timeout = 15
+
+[urgency_critical]
+    frame_color = "#81a2be"
+    background = "#1d1f21"
+    foreground = "#c5c8c6"
+    timeout = 0
+
+[play_sound]
+    sumarry = "*"
+    script = /home/behappier/bin/alert.sh
+
+# vim:ft=dosini
