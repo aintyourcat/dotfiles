@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Load xresources
+[ -f "$XRESOURCES" ] && xrdb -merge "$XRESOURCES"
+
+# Autostart programs
+light -S 20 &
+sct 3500 &
+xsetroot -cursor_name left_ptr &
+wmname LG3D &
+xss-lock -l -- physlock &
+pipewire &
+pipewire-pulse &
+eval $(ssh-agent)
+
+# Sessions
+export SESSION=${1:-bspwm}
+
+case $SESSION in
+    bspwm) exec bspwm;;
+    *) exec $1;;
+esac
