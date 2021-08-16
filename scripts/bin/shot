@@ -1,0 +1,15 @@
+#!/bin/sh
+
+file_name='scrot-%m%d%Y-%H%M%S'
+file_ext='png'
+dest_folder=$HOME/tmp/pics/shots/
+file_path="$dest_folder/$file_name.$file_ext"
+copy_command='xclip -selection clipboard -t image/png $f'
+quality=100
+delay_count=3
+
+case $1 in
+    -s) scrot $file_path -q $quality -b -s -f -e "$copy_command; notify-send 'Selection taken!'" ;;
+    -d) scrot $file_path -q $quality -d $delay_count -e "$copy_command; notify-send 'Delayed shot taken!'" ;;
+    *) scrot $file_path -q $quality -e "$copy_command; notify-send 'Captured!'" ;;
+esac

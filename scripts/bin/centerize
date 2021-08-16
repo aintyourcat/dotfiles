@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# Get the focused window id
+window_id=$(bspc query --nodes --desktop focused --node focused.window.floating)
+
+# If a floating window is focused
+if [ -n $window_id ]; then
+    if type wmctrl > /dev/null 2>&1; then
+        # Get window's position (x, y) and size (width, height)
+        window_info=$(wmctrl -l -G | tr -s ' ' | grep -i $window_id | cut -d ' ' -f 3,4,5,6)
+        read window_x window_y window_w window_h <<< "$window_info"
+        window_border=$(bspc config border_width)
+        window_x=$(( ($window_x + $window_border) / 2 ))
+        window_y=$(( ($window_y + $window_border) / 2 ))
+
+        # Screen resolution
+        screen_x=1366
+        screen_y=768
+
+        # Free spaces on screen
+        free_space_x=$(($screen_x - $window_w))
+        free_space_y=$(($screen_y - $window_h))
+
+        # Window position (x, y) when centered
+        window_new_x=$(($free_space_x / 2))
+        window_new_y=$(($free_space_y / 2))
+
+        # Amount of window movement horizontally
+        [ $window_x -gt $window_new_x ] && \
+            x_move=-$(($window_x - $window_new_x)) || \
+            x_move=$(($window_new_x - $window_x))
+
+        # Amount of window movement vertically
+        [ $window_y -gt $window_new_y ] && \
+            y_move=-$(($window_y - $window_new_y)) || \
+            y_move=$(($window_new_y - $window_y))
+
+        # Move the window
+        bspc node focused --move $x_move $y_move
+    fi
+fi
