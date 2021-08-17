@@ -1,36 +1,35 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Function to confirm selected mode
-confirm() {
-    answer=$(echo "󰅖 No|󰄬 Yes" | rofi -dmenu -p "$1?" -sep "|" -lines 2 -no-show-icons -width 20)
+# Options to show
+label=('Quit' 'Reboot' 'Shutdown')
+icon=('󰍃' '󰑐' '󰐥');
+
+for ((i=0; i<${#label[*]}; i++)); do
+    options="${options}|${icon[i]} ${label[i]}"
+done
+
+options=${options#|}
+
+# Choose an option
+chosen_option=$(printf "$options" | rofi -dmenu -p "Power" -sep "|" -lines 3 -no-show-icons -width 20)
+
+# Confirm chosen option
+if [ -n "$chosen_option" ]; then
+    chosen_option=${chosen_option#? }
+    answer=$(printf "󰅖 No|󰄬 Yes" | rofi -dmenu -p "$chosen_option?" -sep "|" -lines 2 -no-show-icons -width 20)
     answer=${answer#? }
+
     case $answer in
         Yes)
-            case $1 in
+            case "$chosen_option" in
                 Quit) 
-                    pkill -fo "$(which panel)" > /dev/null; bspc quit 
-		        ;;
-                Shutdown) 
-                    sudo poweroff 
+                    pkill -fo "$(command -v panel)" > /dev/null 2>&1
+                    sleep 1s
+                    bspc quit
                 ;;
-                Reboot) 
-                    sudo reboot 
-                ;;
+                Shutdown) sudo poweroff ;;
+                Reboot) sudo reboot ;;
             esac 
         ;;
     esac
-    exit
-}
-
-# Mode and it's relevant icon
-mode=('Quit' 'Reboot' 'Shutdown')
-icon=('󰍃' '󰑐' '󰐥');
-
-for ((i=0; i<${#mode[*]}; i++)); do
-    option="${option}|${icon[i]} ${mode[i]}"
-    option=${option#|}
-done
-
-# Choose a mode
-chosen=$(echo $option | rofi -dmenu -p "Power" -sep "|" -lines 3 -no-show-icons -width 20)
-[ -n "$chosen" ] && chosen=${chosen#? } && confirm $chosen
+fi
