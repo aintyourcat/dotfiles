@@ -9,6 +9,7 @@ export EDITOR=nvim
 export VISUAL=$EDITOR
 
 # Prevent messy $HOME
+export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
 export LESSHISTFILE=$XDG_DATA_HOME/less/history
 export XAUTHORITY=$XDG_RUNTIME_DIR/Xauthority
 export XINITRC=$XDG_CONFIG_HOME/X11/xinitrc
@@ -29,5 +30,5 @@ export NNN_FCOLORS='020b044c00600ef7c6d6ab01'
 export NVM_DIR=$XDG_CONFIG_HOME/nvm
 
 # Make QT apps follow GTK theme
-export GTK2_RC_FILES=$XDG_DATA_HOME/themes/Dracula/gtk-2.0/gtkrc
+export GTK2_RC_FILES=$GTK2_RC_FILES:$XDG_DATA_HOME/themes/Dracula/gtk-2.0/gtkrc
 export QT_QPA_PLATFORMTHEME=qt5ct
