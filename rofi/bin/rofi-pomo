@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Mode and it's relevant icon to show
 mode=('Start' 'Notify' 'Resume' 'Pause' 'Stop')
