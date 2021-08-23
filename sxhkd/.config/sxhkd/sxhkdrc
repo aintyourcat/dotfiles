@@ -34,7 +34,7 @@ super + {_,shift + }{h,j,k,l}
 
 # Focus the next/previous node in the current desktop
 super + {_,shift + }c
-    bspc node -f {next,prev}.local.!hidden.window
+    bspc node -f {next,prev}.local.!hidden.!floating.window
 
 # Focus or send to given desktop 
 super + {_,shift + }{1-9,0}
@@ -72,24 +72,23 @@ XF86MonBrightness{Down,Up}
 XF86ScreenSaver
     xset dpms force off
 
-# Volume
-XF86AudioLowerVolume
-    pactl set-sink-volume @DEFAULT_SINK@ -5%
-    #amixer sset Master 5-
-XF86AudioRaiseVolume
-    pactl set-sink-volume @DEFAULT_SINK@ +5%
-    #amixer sset Master 5+
+# Pulseaudio sink
+XF86Audio{Lower,Raise}Volume
+    pactl set-sink-volume @DEFAULT_SINK@ {-5%,+5%}
+    #amixer sset Master {5-,5+}
 XF86AudioMute
     pactl set-sink-mute @DEFAULT_SINK@ toggle
     #amixer sset Master toggle
 
+# Pulseaudio source
+shift + XF86Audio{Lower,Raise}Volume
+    pactl set-source-volume @DEFAULT_SOURCE@ {-5%,+5%}
+shift + XF86AudioMute
+    pactl set-source-mute @DEFAULT_SOURCE@ toggle
+
 # Screenshot
-Print
-    shot
-@Print + shift
-    shot -s
-@Print + ctrl
-    shot -d
+@Print + {_,shift,ctrl}
+    shot {--,-s,-d}
 
 # Terminal
 super + Return
@@ -120,5 +119,5 @@ alt + shift + h
         caps-status > $PANEL_FIFO
 
 # Focus the next/previous floating node in current desktop
-super + {n,b}
+super + {n,p}
     bspc node {next,prev}.local.floating -f
