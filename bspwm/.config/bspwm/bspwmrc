@@ -37,3 +37,4 @@ for i in "${office[@]}"; do bspc rule -a "$i" desktop=^3 follow=on focus=on; don
 for i in "${misc[@]}"; do bspc rule -a "$i" desktop=^4 follow=on focus=on; done
 bspc rule -a 'Virt-manager' desktop=^5 follow=on focus=on
 bspc rule -a 'SimpleScreenRecorder' state=floating follow=on focus=on
+bspc rule -a '*:*:Picture in picture' state=floating follow=on focus=off
