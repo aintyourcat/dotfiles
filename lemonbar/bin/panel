@@ -58,30 +58,65 @@ done > $PANEL_FIFO &
     printf "N$ssid\n"
 done > $PANEL_FIFO &
 
-# Pulseaudio module
-{ sink=$(pactl list short sinks);
-    sink=${sink%%$(printf '\t')*};
-    printf 'sink #%s\n' $sink; # Display this module on start
-    pactl subscribe; } | while read -r event; do
+# Pulseaudio modules
+{ 
+    # Speaker/Sink module
+    all_sinks_info=$(pactl list sinks short)
+    current_sink_info=$(grep 'RUNNING' <<< $all_sinks_info)
+    if [ -n "$current_sink_info" ]; then
+        current_sink_num=${current_sink_info%%$(printf '\t')*}
+    else
+        current_sink_num=${all_sinks_info%%$(printf '\t')*}
+    fi
+    printf 'sink #%s\n' "$current_sink_num"
+    # Microphone/Source module
+    all_sources_info=$(pactl list sources short)
+    current_source_info=$(grep 'RUNNING' <<< $all_sources_info)
+    if [ -n "$current_source_info" ]; then
+        current_source_num=${current_source_info%%$(printf '\t')*}
+    else
+        current_source_num=${all_sources_info%%$(printf '\t')*}
+    fi
+    printf 'source #%s\n' "$current_source_num"
+    pactl subscribe
+} | while read -r event; do
     case $event in
-        *sink*)
-            sink=${event##* }
+        *'sink #'*) # Speaker
+            sink_num=${event##* }
             all_sinks_info=$(pactl list sinks)
-            sink_info="${all_sinks_info##*$sink}"
-            mute=${sink_info##*Mute: }
-            mute=${mute%%$(printf '\t')*}
+            current_sink_info="${all_sinks_info##*$sink_num}"
+            muted=${current_sink_info#*Mute: }
+            muted=${muted%%$(printf '\t')*}
 
-            case $mute in
-                yes*) printf "Voff\n" ;;
+            case $muted in
+                yes*) printf "Soff\n" ;;
                 no*)
-                    volume=${sink_info#*Volume:}
+                    volume=${current_sink_info#*Volume:}
                     volume=${volume#*/ }
                     volume=${volume%%%*}
                     volume=${volume##* }
-                    printf "V$volume\n"
+                    printf "S$volume\n"
                     ;;
             esac
-            ;;
+        ;;
+        *'source #'*) # Microphone
+            source_num=${event##* }
+            all_sources_info=$(pactl list sources)
+            current_source_info=${all_sources_info##*$source_num}
+            muted=${current_source_info#*Mute: }
+            muted=${muted%%$(printf '\t')*}
+
+            case $muted in
+                yes*) printf "Moff\n" ;;
+                no*)
+                    volume=${current_source_info#*Volume:}
+                    volume=${volume#*/ }
+                    volume=${volume%%%*}
+                    volume=${volume##* }
+                    printf "M$volume\n"
+                    ;;
+            esac
+        ;;
     esac
 done > $PANEL_FIFO &
 
