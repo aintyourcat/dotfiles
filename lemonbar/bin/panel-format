@@ -25,18 +25,18 @@ while read -r line; do
 
                         BG=$BACKGROUND
                         case $item in
-                            f*) FG=$GREY ;;
-                            [FO]*) FG=$BLUE; BG=$DARK_GREY ;;
-                            o*) FG=$WHITE ;;
-                            [uU]*) FG=$YELLOW ;;
+                            f*) UDR=$GREY ;;
+                            [FO]*) UDR=$BLUE; BG=$DARK_GREY ;;
+                            o*) UDR=$BLUE ;;
+                            [uU]*) UDR=$YELLOW ;;
                         esac
 
-                        name_colored="%{F$FG}$name%{F-}"
-                        desc_colored="%{F$FG}$desc%{F-}"
-                        icon_colored="%{F$FG}$icon%{F-}"
+                        name_colored="%{F$UDR}$name%{F-}"
+                        desc_colored="%{F$UDR}$desc%{F-}"
+                        icon_colored="%{F$UDR}$icon%{F-}"
 
                         : "%{A:bspc desktop -f '^$name':} $name %{A}"
-                        : "%{U$FG}%{+u}$_%{U-}%{-u}"
+                        : "%{U$UDR}%{+u}$_%{U-}%{-u}"
                         ws="$ws%{B$BG}$_%{B-}"
                         ;;
                     [LTG]*) shift && continue ;;
@@ -99,27 +99,45 @@ while read -r line; do
             net="%{U$UDR}%{+u} $net %{U-}%{-u}"
             net="%{B$DARK_GREY}$net%{B-}"
             ;;
-        V*) 
-            volume="${line#?}"
+        S*) 
+            speaker="${line#?}"
 
-            if [ "$volume" = 'off' ]; then
+            if [ "$speaker" = 'off' ]; then
                 icon=$(printf "\ufa80")
                 icon_colored="%{F$RED}$icon%{F-}"
                 UDR=$RED
             else
-                case $((volume/25)) in
+                case $((speaker/25)) in
                     0) icon=$(printf "\uf026") ;;
                     [12]) icon=$(printf "\uf027") ;;
                     [3-6]) icon=$(printf "\uf028") ;;
                 esac
                 icon_colored="%{F$MAGENTA}$icon%{F-}"
                 UDR=$BLUE
-                volume=$volume%%
+                speaker=$speaker%%
             fi
 
-            volume="$icon ${volume}"
-            volume="%{U$UDR}%{+u} $volume %{U-}%{-u}"
-            volume="%{B$DARK_GREY}$volume%{B-}"
+            speaker="$icon ${speaker}"
+            speaker="%{U$UDR}%{+u} $speaker %{U-}%{-u}"
+            speaker="%{B$DARK_GREY}$speaker%{B-}"
+            ;;
+        M*)
+            microphone="${line#?}"
+
+            if [ "$microphone" = 'off' ]; then
+                icon=$(printf "\uf131")
+                icon_colored="%{F$RED}$icon%{F-}"
+                UDR=$RED
+            else
+                icon=$(printf "\uf130")
+                icon_colored="%{F$MAGENTA}$icon%{F-}"
+                UDR=$BLUE
+                microphone=$microphone%%
+            fi
+
+            microphone="$icon ${microphone}"
+            microphone="%{U$UDR}%{+u} $microphone %{U-}%{-u}"
+            microphone="%{B$DARK_GREY}$microphone%{B-}"
             ;;
         C*) 
             time="${line#?}"
@@ -146,7 +164,9 @@ while read -r line; do
     modules="$modules$module_padding"
     modules="$modules$net"
     modules="$modules$module_padding"
-    modules="$modules$volume"
+    modules="$modules$speaker"
+    modules="$modules$module_padding"
+    modules="$modules$microphone"
     modules="$modules$module_padding"
     modules="$modules$clock"
     modules="$modules$panel_padding"
