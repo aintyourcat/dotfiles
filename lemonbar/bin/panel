@@ -13,7 +13,11 @@ fi
 # when the script received a terminate signal
 stop() {
     trap - TERM
-    bspc config bottom_padding $(($(bspc config bottom_padding) - $PANEL_HEIGHT))
+    if [ $PANEL_BOTTOM -eq 1 ]; then
+        bspc config bottom_padding 0
+    else
+        bspc config top_padding 0
+    fi
     kill 0
 }
 trap 'stop' INT TERM QUIT EXIT
@@ -50,9 +54,9 @@ done > $PANEL_FIFO &
             info=$(iw dev wlp1s0 info)+'ssid '
 	        : "${info#*ssid }"
 	        : "${_%type*}"
-	        ssid="${_:-Disconnected}"
+	        ssid="${_:-Off}"
 	        ;;
-        'Deleted local'*) ssid='Disconnected' ;;
+        'Deleted local'*) ssid='Off' ;;
         *) continue ;;
     esac
     printf "N$ssid\n"
@@ -148,16 +152,26 @@ while true; do
     sleep 5s;
 done > $PANEL_FIFO &
 
+# Lemonbar command
+lemonbar_command='lemonbar'
+[ $PANEL_BOTTOM -eq 1 ] && lemonbar_command="$lemonbar_command -b"
+lemonbar_command="$lemonbar_command -p -n '$PANEL_WM_NAME'"
+lemonbar_command="$lemonbar_command -g x$PANEL_HEIGHT+0+0"
+lemonbar_command="$lemonbar_command -u 2 -U '$BACKGROUND'"
+lemonbar_command="$lemonbar_command -f '$FONT_MEDIUM'"
+lemonbar_command="$lemonbar_command -f '$FONT_BOLD'"
+lemonbar_command="$lemonbar_command -B '$BACKGROUND'"
+lemonbar_command="$lemonbar_command -F '$FOREGROUND'"
+
 # Format the modules and show it on the panel
-panel-format < $PANEL_FIFO | \
-    lemonbar \
-    -p -b -n $PANEL_WM_NAME \
-    -g 1366x$PANEL_HEIGHT+0+0 \
-    -u 2 -U $BACKGROUND \
-    -f "$FONT_MEDIUM" \
-    -f "$FONT_BOLD" \
-    -B $BACKGROUND \
-    -F $FOREGROUND | sh &
+panel-format < $PANEL_FIFO | eval $lemonbar_command | sh &
+
+# Reserve some space for the panel
+if [ $PANEL_BOTTOM -eq 1 ]; then
+    bspc config bottom_padding $PANEL_HEIGHT
+else
+    bspc config top_padding $PANEL_HEIGHT
+fi
 
 # Put panel on below of all window
 xdo lower -ma "$PANEL_WM_NAME"
