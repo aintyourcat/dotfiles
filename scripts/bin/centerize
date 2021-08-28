@@ -4,26 +4,52 @@
 window_id=$(bspc query --nodes --desktop focused --node focused.window.floating)
 
 # If a floating window is focused
-if [ -n $window_id ]; then
+if [ -n "$window_id" ]; then
+    # If wmctrl command exists
     if type wmctrl > /dev/null 2>&1; then
+        # Screen resolution
+        screen_w=1366
+        screen_h=768
+
+        # WM related configs
+        wm_window_border=$(bspc config border_width)
+        wm_left_padding=$(bspc config left_padding)
+        wm_right_padding=$(bspc config right_padding)
+        wm_top_padding=$(bspc config top_padding)
+        wm_bottom_padding=$(bspc config bottom_padding)
+        wm_window_gap=$(bspc config window_gap)
+
         # Get window's position (x, y) and size (width, height)
         window_info=$(wmctrl -l -G | tr -s ' ' | grep -i $window_id | cut -d ' ' -f 3,4,5,6)
         read window_x window_y window_w window_h <<< "$window_info"
-        window_border=$(bspc config border_width)
-        window_x=$(( ($window_x + $window_border) / 2 ))
-        window_y=$(( ($window_y + $window_border) / 2 ))
+        window_x=$(( ($window_x + $wm_window_border) / 2 ))
+        window_y=$(( ($window_y + $wm_window_border) / 2 ))
 
-        # Screen resolution
-        screen_x=1366
-        screen_y=768
+        # Resize window width if it overflows the screen's width
+        if [ $window_w -ge $(( $screen_w - $wm_left_padding - $wm_right_padding - ($wm_window_gap * 2) )) ]; then
+            overflow=$(($window_w - $screen_w))
+            left_resize_step=$(( ($overflow / 2) + ($wm_window_border + $wm_window_gap) + $wm_left_padding))
+            right_resize_step=$(( -($overflow / 2) - ($wm_window_border + $wm_window_gap) - $wm_right_padding))
+            bspc node focused --resize left $left_resize_step 0
+            bspc node focused --resize right $right_resize_step 0
+        fi
+
+        # Resize window height if it overflows the screen's height
+        if [ $window_h -ge $(( $screen_h - $wm_top_padding - $wm_bottom_padding - ($wm_window_gap * 2) )) ]; then
+            overflow=$(($window_h - $screen_h))
+            top_resize_step=$(( ($overflow / 2) + ($wm_window_border + $wm_window_gap) + $wm_top_padding))
+            bottom_resize_step=$(( -($overflow / 2) - ($wm_window_border + $wm_window_gap) - $wm_bottom_padding))
+            bspc node focused --resize top 0 $top_resize_step
+            bspc node focused --resize bottom 0 $bottom_resize_step
+        fi
 
         # Free spaces on screen
-        free_space_x=$(($screen_x - $window_w))
-        free_space_y=$(($screen_y - $window_h))
+        free_space_w=$(($screen_w - $window_w))
+        free_space_h=$(($screen_h - $window_h))
 
         # Window position (x, y) when centered
-        window_new_x=$(($free_space_x / 2))
-        window_new_y=$(($free_space_y / 2))
+        window_new_x=$(($free_space_w / 2))
+        window_new_y=$(($free_space_h / 2))
 
         # Amount of window movement horizontally
         [ $window_x -gt $window_new_x ] && \
