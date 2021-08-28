@@ -1,3 +1,4 @@
+PANEL_BOTTOM=1 # 0 to dock panel on top
 PANEL_FIFO=/tmp/panel.fifo
 PANEL_HEIGHT=25
 PANEL_WM_NAME='bspwm_panel'
