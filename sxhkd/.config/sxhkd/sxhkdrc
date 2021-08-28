@@ -32,7 +32,7 @@ super + ctrl + s
 super + {_,shift + }{h,j,k,l}
     bspc node -{f,s} {west,south,north,east}
 
-# Focus the next/previous node in the current desktop
+# Focus the next/previous non floating node in the current desktop
 super + {_,shift + }c
     bspc node -f {next,prev}.local.!hidden.!floating.window
 
@@ -54,15 +54,15 @@ super + ctrl + space
 
 # Expand focused window
 super + alt + {h,j,k,l}
-    bspc node -z {left -10 0,bottom 0 10,top 0 -10,right 10 0}
+    bspc node -z {left -50 0,bottom 0 50,top 0 -50,right 50 0}
 
 # Contract focused window
 super + alt + shift + {h,j,k,l}
-    bspc node -z {right -10 0,top 0 10,bottom 0 -10,left 10 0}
+    bspc node -z {right -50 0,top 0 50,bottom 0 -50,left 50 0}
 
 # Move floating window
 super + {Left,Down,Up,Right}
-    bspc node -v {-10 0,0 10,0 -10,10 0}
+    bspc node -v {-50 0,0 50,0 -50,50 0}
 
 # --- Personal keybinds
 
@@ -120,4 +120,4 @@ alt + shift + h
 
 # Focus the next/previous floating node in current desktop
 super + {n,p}
-    bspc node {next,prev}.local.floating -f
+    bspc node -f {next,prev}.local.!hidden.floating.window
