@@ -6,7 +6,7 @@ hidden_window_ids=$(bspc query --nodes --desktop focused --node .hidden.window)
 
 # If any window is opened or hidden
 if [ -n "$normal_window_ids" ] || [ -n "$hidden_window_ids" ]; then
-    # If wmctrl command exist
+    # If wmctrl command exists
     if type wmctrl > /dev/null 2>&1; then
         # All window ids and titles
         all_window_infos=$(wmctrl -l | tr -s ' ' | cut -d ' ' -f 1,4-) 
