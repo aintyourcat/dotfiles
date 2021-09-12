@@ -28,8 +28,8 @@ if [ -n "$window_id" ]; then
         # Resize window width if it overflows the screen's width
         if [ $window_w -ge $(( $screen_w - $wm_left_padding - $wm_right_padding - ($wm_window_gap * 2) )) ]; then
             overflow=$(($window_w - $screen_w))
-            left_resize_step=$(( ($overflow / 2) + ($wm_window_border + $wm_window_gap) + $wm_left_padding))
-            right_resize_step=$(( -($overflow / 2) - ($wm_window_border + $wm_window_gap) - $wm_right_padding))
+            left_resize_step=$(( ($overflow / 2) + ($wm_window_border + $wm_window_gap) + $wm_left_padding ))
+            right_resize_step=$(( -($overflow / 2) - ($wm_window_border + $wm_window_gap) - $wm_right_padding ))
             bspc node focused --resize left $left_resize_step 0
             bspc node focused --resize right $right_resize_step 0
         fi
@@ -37,8 +37,8 @@ if [ -n "$window_id" ]; then
         # Resize window height if it overflows the screen's height
         if [ $window_h -ge $(( $screen_h - $wm_top_padding - $wm_bottom_padding - ($wm_window_gap * 2) )) ]; then
             overflow=$(($window_h - $screen_h))
-            top_resize_step=$(( ($overflow / 2) + ($wm_window_border + $wm_window_gap) + $wm_top_padding))
-            bottom_resize_step=$(( -($overflow / 2) - ($wm_window_border + $wm_window_gap) - $wm_bottom_padding))
+            top_resize_step=$(( ($overflow / 2) + ($wm_window_border + $wm_window_gap) + $wm_top_padding ))
+            bottom_resize_step=$(( -($overflow / 2) - ($wm_window_border + $wm_window_gap) - $wm_bottom_padding ))
             bspc node focused --resize top 0 $top_resize_step
             bspc node focused --resize bottom 0 $bottom_resize_step
         fi
