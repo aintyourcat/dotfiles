@@ -11,12 +11,12 @@ done
 options=${options#|}
 
 # Choose an option
-chosen_option=$(printf "$options" | rofi -dmenu -p "Power" -sep "|" -lines 3 -no-show-icons -width 20)
+chosen_option=$(printf "$options" | rofi -dmenu -p "Power" -sep "|" -l 3 -no-show-icons -width 20)
 
 # Confirm chosen option
 if [ -n "$chosen_option" ]; then
     chosen_option=${chosen_option#? }
-    answer=$(printf "󰅖 No|󰄬 Yes" | rofi -dmenu -p "$chosen_option?" -sep "|" -lines 2 -no-show-icons -width 20)
+    answer=$(printf "󰅖 No|󰄬 Yes" | rofi -dmenu -p "$chosen_option?" -sep "|" -l 2 -no-show-icons -width 20)
     answer=${answer#? }
 
     case $answer in

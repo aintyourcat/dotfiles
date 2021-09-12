@@ -22,12 +22,12 @@ if pgrep spt &> /dev/null; then
             option=${option#|}
         done
     fi
-    prompt="$prompt -lines 3"
+    prompt="$prompt -l 3"
 # If pomodoro is not started yet...
 else
     # Display start mode only
     option="${icon[0]} ${mode[0]}"
-    prompt="$prompt -lines 1"
+    prompt="$prompt -l 1"
 fi
 
 # Choose a mode
@@ -56,7 +56,7 @@ case $chosen in
         ;;
     Stop)
         # Confirm to stop
-        prompt="rofi -dmenu -p $chosen? -sep | -no-show-icons -lines 2"
+        prompt="rofi -dmenu -p $chosen? -sep | -no-show-icons -l 2"
         answer=$(echo '󰅖 No|󰄬 Yes' | $prompt)
         # Stop pomodoro and clear the cache folder
         [ ${answer#? } = "Yes" ] && killall -q spt && notify-send 'spt' 'bye-bye' && rm $cache_folder/*

@@ -34,7 +34,7 @@ if [ -n "$normal_window_ids" ] || [ -n "$hidden_window_ids" ]; then
 
         # Select a window
         window_to_show=$(cut -d ' ' -f 2- <<< "$all_window_infos" | \
-            rofi -dmenu -p 'Change window' -format d:s -no-show-icons -width 40 -lines 8)
+            rofi -dmenu -p 'Change window' -format d:s -no-show-icons -width 40 -l 8 -theme-str '* {width: 50%;}')
 
         # Unhide and focus on selected window
         if [ -n "$window_to_show" ]; then
