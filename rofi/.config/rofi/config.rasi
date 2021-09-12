@@ -1,17 +1,13 @@
 configuration {
-    columns: 1;
     disable-history: true;
     display-drun: "Run";
     drun-display-format: "{name}";
-    hide-scrollbar: true;
     icon-theme: "Papirus-Dark";
-    lines: 5;
     location: 0;
     modi: "drun";
     show-icons: true;
     terminal: "alacritty";
     theme: "~/.config/rofi/square.rasi";
-    width: 25;
 }
 
 /* vim:ft=css
