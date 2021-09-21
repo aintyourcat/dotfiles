@@ -97,7 +97,7 @@ super + Return
 # Rofis
 super + @space
     rofi -show drun
-super + ctrl + @space
+super + Tab
     rofi-window
 ctrl + alt + Delete
     rofi-power
