@@ -22,15 +22,6 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
-# Aliases
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='rm -i'
-alias ip='ip -color=auto'
-alias ls='ls --color=auto'
-alias bc='bc -lq'
-alias makebatchfile="cat $NNN_SEL | xargs -0 -I fname printf 'put -R %s\n' fname > batchfile"
-
 # nnn cd on exit
 n() {
     if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
@@ -46,6 +37,17 @@ n() {
     fi
 }
 
+# Aliases
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+alias ip='ip -color=auto'
+alias ls='ls --color=auto'
+alias bc='bc -lq'
+alias q='exit'
+alias makebatchfile="cat $NNN_SEL | xargs -0 -I fname printf 'put -R %s\n' fname > batchfile"
+alias n='n -x'
+
 # Load nvm
 nvm() {
     unset -f nvm
@@ -55,3 +57,21 @@ nvm() {
 
 # Load nvm bash completion
 [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
+
+# Dynamic terminal title
+autoload -Uz add-zsh-hook
+
+function xterm_title_precmd () {
+	print -Pn -- '\e]2;%n@%m %~\a'
+	[[ "$TERM" == 'screen'* ]] && print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-}\e\\'
+}
+
+function xterm_title_preexec () {
+	print -Pn -- '\e]2;%n@%m %~ %# ' && print -n -- "${(q)1}\a"
+	[[ "$TERM" == 'screen'* ]] && { print -Pn -- '\e_\005{g}%n\005{-}@\005{m}%m\005{-} \005{B}%~\005{-} %# ' && print -n -- "${(q)1}\e\\"; }
+}
+
+if [[ "$TERM" == (Eterm*|alacritty*|aterm*|gnome*|konsole*|kterm*|putty*|rxvt*|screen*|tmux*|xterm*) ]]; then
+	add-zsh-hook -Uz precmd xterm_title_precmd
+	add-zsh-hook -Uz preexec xterm_title_preexec
+fi
