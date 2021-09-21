@@ -170,6 +170,7 @@ while read -r line; do
     modules="$modules$microphone"
     modules="$modules$module_padding"
     modules="$modules$clock"
+    modules="$modules$module_padding"
     modules="$modules$panel_padding"
 
     printf "%s\n" "$modules"

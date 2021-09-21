@@ -30,7 +30,7 @@ mkfifo $PANEL_FIFO -m 600
 bspc subscribe report > $PANEL_FIFO &
 
 # Window title module
-xtitle -s -f 'T%s\n' -t 100 > $PANEL_FIFO &
+xtitle -s -f 'T%s\n' -t 80 > $PANEL_FIFO &
 
 # Caps lock module
 caps-status > $PANEL_FIFO &
@@ -156,7 +156,7 @@ done > $PANEL_FIFO &
 lemonbar_command='lemonbar'
 [ $PANEL_BOTTOM -eq 1 ] && lemonbar_command="$lemonbar_command -b"
 lemonbar_command="$lemonbar_command -p -n '$PANEL_WM_NAME'"
-lemonbar_command="$lemonbar_command -g x$PANEL_HEIGHT+0+0"
+lemonbar_command="$lemonbar_command -g 1306x$PANEL_HEIGHT+0+0"
 lemonbar_command="$lemonbar_command -u 2 -U '$BACKGROUND'"
 lemonbar_command="$lemonbar_command -f '$FONT_MEDIUM'"
 lemonbar_command="$lemonbar_command -f '$FONT_BOLD'"
@@ -166,15 +166,26 @@ lemonbar_command="$lemonbar_command -F '$FOREGROUND'"
 # Format the modules and show it on the panel
 panel-format < $PANEL_FIFO | eval $lemonbar_command | sh &
 
-# Reserve some space for the panel
+# Stalonetray command
+stalonetray --background $DARK_GREY \
+    --geometry 2x1-0-0 \
+    --max-geometry 2x1 \
+    --icon-gravity SE \
+    --icon-size 25 \
+    --scrollbars horizontal \
+    --window-strut bottom \
+    --scrollbars-size 5 &
+
+# Reserve some spaces for the panel
 if [ $PANEL_BOTTOM -eq 1 ]; then
     bspc config bottom_padding $PANEL_HEIGHT
 else
     bspc config top_padding $PANEL_HEIGHT
 fi
 
-# Put panel on below of all window
+# Put panel & stalonetray on below of all window
 xdo lower -ma "$PANEL_WM_NAME"
+xdo lower -ma 'stalonetray'
 
 # Wait for all background jobs to finish
 wait
