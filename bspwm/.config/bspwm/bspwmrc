@@ -23,7 +23,7 @@ bspc config click_to_focus none
 
 # Rules
 web=('Chromium' 'Chromium-devel' 'Nextcloud' 'Tor Browser')
-office=('*:libreoffice' '*:soffice' 'Gimp' 'Inkscape' 'Java' 'jetbrains-idea-ce' 'MuPDF')
+office=('*:libreoffice' '*:soffice' 'Gimp' 'Inkscape' 'Java' 'jetbrains-idea-ce' 'MuPDF' 'jetbrains-studio')
 misc=('KeePassXC' 'qt5ct')
 
 for i in "${web[@]}"; do bspc rule -a "$i" desktop=^2 follow=on focus=on; done
