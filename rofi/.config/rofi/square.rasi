@@ -9,13 +9,13 @@
     font: "Iosevka 9";
     border-color: var(--blue);
     background-color: var(--background);
-    width: 25%;
     lines: 5;
 }
 
 window {
     border: 2px;
     padding: 5px;
+    width: 25%;
 }
 
 mainbox { 
