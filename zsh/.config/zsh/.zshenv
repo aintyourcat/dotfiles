@@ -32,3 +32,6 @@ export NVM_DIR=$XDG_CONFIG_HOME/nvm
 # Make QT apps follow GTK theme
 export GTK2_RC_FILES=$GTK2_RC_FILES:$XDG_DATA_HOME/themes/Nordic-darker/gtk-2.0/gtkrc
 export QT_QPA_PLATFORMTHEME=qt5ct
+
+# Fix Android Studio not showed properly
+export _JAVA_AWT_WM_NONREPARENTING=1
