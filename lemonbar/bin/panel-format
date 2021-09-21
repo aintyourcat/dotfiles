@@ -39,8 +39,8 @@ while read -r line; do
                         : "%{U$UDR}%{+u}$_%{U-}%{-u}"
                         wm="$wm%{B$BG}$_%{B-}"
                         ;;
-                    [LG]*) shift && continue ;;
-                    T*) wm="$wm [${item#?}]" ;;
+                    [LGT]*) shift && continue ;;
+                    #T*) wm="$wm [${item#?}]" ;;
                 esac
                 shift
             done
