@@ -1,8 +1,19 @@
 #!/bin/sh
 
+. "$XDG_CONFIG_HOME/user-dirs.dirs"
+
+dest_folder="$XDG_PICTURE_DIR/shots"
+
+if [ ! -d "$dest_folder" ]; then
+    mkdir -p "$dest_folder"
+    if [ $? -ne 0 ]; then
+        dest_folder="$HOME"
+        notify-send 'Using $HOME folder'
+    fi
+fi
+
 file_name='scrot-%m%d%Y-%H%M%S'
 file_ext='png'
-dest_folder=$HOME/tmp/pics/shots/
 file_path="$dest_folder/$file_name.$file_ext"
 copy_command='xclip -selection clipboard -t image/png $f'
 quality=100
