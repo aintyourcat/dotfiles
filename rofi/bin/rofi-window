@@ -32,9 +32,20 @@ if [ -n "$normal_window_ids" ] || [ -n "$hidden_window_ids" ]; then
             all_window_infos="$normal_window_infos"
         fi
 
+        # Get active window index
+        active_win_id=$(bspc query --nodes --node focused.window)
+        if [ -n "$active_win_id" ]; then
+            active_win_index=$(grep -in "$active_win_id" <<< "$all_window_infos" | cut -d ':' -f 1)
+            active_win_index=$(( $active_win_index - 1 )) # rofi row indices start at 0
+        else
+            active_win_index=''
+        fi
+
         # Select a window
         window_to_show=$(cut -d ' ' -f 2- <<< "$all_window_infos" | \
-            rofi -dmenu -p 'Change window' -format d:s -no-show-icons -width 40 -l 8 -theme-str 'window {width: 50%;}')
+            rofi -dmenu -p 'Change window' -format d:s -no-show-icons \
+                -p 'Change window' -format d:s -no-show-icons \
+                -width 40 -l 8 -theme-str 'window {width: 50%;}' -a "$active_win_index" -i -kb-accept-entry 'Super_L,Return')
 
         # Unhide and focus on selected window
         if [ -n "$window_to_show" ]; then
