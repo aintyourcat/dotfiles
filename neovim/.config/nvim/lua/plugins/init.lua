@@ -9,10 +9,12 @@ end
 return require('packer').startup(function()
     use 'wbthomason/packer.nvim'
     use 'tpope/vim-commentary'
+    use 'hrsh7th/cmp-nvim-lsp'
+    use 'hrsh7th/cmp-buffer'
     use {
-        'hrsh7th/nvim-compe',
+        'hrsh7th/nvim-cmp',
         config = function()
-            require('plugins.compe')
+            require('plugins.cmp')
         end
     }
     use {
