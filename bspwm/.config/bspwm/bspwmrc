@@ -3,8 +3,7 @@
 # Startup programs
 pkill -of "$(command -v panel)" > /dev/null; panel &
 pgrep -x sxhkd > /dev/null || sxhkd &
-xwallpaper --zoom $HOME/tmp/pics/wallpapers/alain-yAu52w1lo64-unsplash.jpg &
-battnotif &
+xwallpaper --zoom $HOME/pics/wallpapers/alain-yAu52w1lo64-unsplash.jpg &
 
 # Desktops
 bspc monitor -d 1 2 3 4 5
@@ -20,6 +19,7 @@ bspc config presel_feedback_color "$BLUE"
 bspc config border_width 3
 bspc config window_gap 10
 bspc config click_to_focus none
+bspc config borderless_monocle true
 
 # Rules
 web=('Chromium' 'Chromium-devel' 'Nextcloud' 'Tor Browser')
