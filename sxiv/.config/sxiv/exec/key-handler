@@ -1,5 +1,6 @@
 #!/bin/sh
 
 case $1 in
-    "C-d")  while read file; do mv -vf $file /tmp; done ;;
+    "C-d") while read file; do mv -vf $file /tmp; done ;;
+    "C-c") while read file; do xclip -selection clipboard -t image/png "$file"; done ;;
 esac
