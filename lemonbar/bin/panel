@@ -30,7 +30,7 @@ mkfifo $PANEL_FIFO -m 600
 bspc subscribe report > $PANEL_FIFO &
 
 # Window title module
-xtitle -s -f 'T%s\n' -t 80 > $PANEL_FIFO &
+xtitle -s -f 'T%s\n' -t 70 > $PANEL_FIFO &
 
 # Caps lock module
 caps-status > $PANEL_FIFO &
@@ -148,8 +148,8 @@ done > $PANEL_FIFO &'
 
 # Time module
 while true; do
-    printf "C%(%a, %d %b %I:%M)T\n" '-1';
-    sleep 5s;
+    printf "C%(%a, %d %b %I:%M)T\n" '-1'
+    sleep 5s
 done > $PANEL_FIFO &
 
 # Lemonbar command
