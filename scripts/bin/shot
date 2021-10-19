@@ -2,7 +2,7 @@
 
 . "$XDG_CONFIG_HOME/user-dirs.dirs"
 
-dest_folder="$XDG_PICTURE_DIR/shots"
+dest_folder="$XDG_PICTURES_DIR/shots"
 
 if [ ! -d "$dest_folder" ]; then
     mkdir -p "$dest_folder"
