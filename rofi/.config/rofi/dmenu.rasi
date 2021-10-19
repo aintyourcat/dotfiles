@@ -6,13 +6,13 @@
  */
 
 * {
-    --background: #1d1f21;
-    --foreground: #c5c8c6;
-    --cyan: #8abeb7;
-    --red: #cc6666;
-    --yellow: #f0c674;
-    background-color: var(--background);
-    text-color: var(--foreground);
+    background: #1d1f21;
+    foreground: #c5c8c6;
+    cyan: #8abeb7;
+    red: #cc6666;
+    yellow: #f0c674;
+    background-color: @background;
+    text-color: @foreground;
     font: "Iosevka 8";
 }
 
@@ -30,8 +30,8 @@
 }
 
 #prompt {
-    background-color: var(--cyan);
-    text-color: var(--background);
+    background-color: @cyan;
+    text-color: @background;
     padding: 5px;
 }
 
@@ -64,8 +64,8 @@ element-text {
 }
 
 #element selected {
-    background-color: var(--cyan);
-    text-color: var(--background);
+    background-color: @cyan;
+    text-color: @background;
 }
 
 /* vim:ft=css

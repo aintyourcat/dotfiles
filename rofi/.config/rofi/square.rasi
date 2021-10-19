@@ -1,14 +1,14 @@
 * {
-    --background: #1d1f21;
-    --black: #373b41;
-    --foreground: #c5c8c6;
-    --blue: #81a2be;
-    --blue: #8abeb7;
-    --red: #cc6666;
-    --yellow: #f0c674;
+    background: #1d1f21;
+    black: #373b41;
+    foreground: #c5c8c6;
+    blue: #81a2be;
+    blue: #8abeb7;
+    red: #cc6666;
+    yellow: #f0c674;
     font: "Iosevka 9";
-    border-color: var(--blue);
-    background-color: var(--background);
+    border-color: @blue;
+    background-color: @background;
     lines: 5;
 }
 
@@ -28,19 +28,19 @@ inputbar {
 
 prompt {
     padding: 5px 0px 5px 5px;
-    text-color: var(--foreground);
+    text-color: @foreground;
 }
 
 textbox-prompt-colon {
     padding: 5px 0;
-    text-color: var(--foreground);
+    text-color: @foreground;
     str: ":";
     expand: false;
 }
 
 entry { 
     padding: 5px 5px 5px 0; 
-    text-color: var(--foreground);
+    text-color: @foreground;
 }
 
 listview {
@@ -50,7 +50,7 @@ listview {
 
 element { 
     padding: 8px; 
-    text-color: var(--foreground);
+    text-color: @foreground;
 }
 
 element-text {
@@ -66,15 +66,15 @@ element-icon {
 }
 
 element selected {
-    background-color: var(--black);
+    background-color: @black;
 }
 
 element urgent {
-    text-color: var(--red);
+    text-color: @red;
 }
 
 element active {
-    text-color: var(--yellow);
+    text-color: @yellow;
 }
 
 /* vim:ft=css
