@@ -152,11 +152,34 @@ while true; do
     sleep 5s
 done > $PANEL_FIFO &
 
+# Stalonetray command
+TRAY_SLOT_SIZE=25
+TRAY_SCROLLBAR_SIZE=5
+TRAY_HORIZONTAL_SLOT_COUNT=2
+if [ $PANEL_BOTTOM -eq 1 ]; then
+    TRAY_POSITION='-0-0'
+    TRAY_WINDOW_STRUT='bottom'
+else
+    TRAY_POSITION='-0+0'
+    TRAY_WINDOW_STRUT='top'
+fi
+tray_command="stalonetray --background '$DARK_GREY'"
+tray_command="$tray_command --geometry $TRAY_HORIZONTAL_SLOT_COUNT\x1$TRAY_POSITION"
+tray_command="$tray_command --icon-gravity SW"
+tray_command="$tray_command --slot-size $TRAY_SLOT_SIZE"
+tray_command="$tray_command --icon-size 18"
+tray_command="$tray_command --scrollbars horizontal"
+tray_command="$tray_command --window-strut $TRAY_WINDOW_STRUT"
+tray_command="$tray_command --scrollbars-size $TRAY_SCROLLBAR_SIZE"
+eval $tray_command | sh &
+
 # Lemonbar command
+SCREEN_WIDTH=$(xrandr | grep -F '*' | tr -s ' ' | cut -d ' ' -f 2 | cut -d 'x' -f 1)
+PANEL_WIDTH=$(( $SCREEN_WIDTH - (($TRAY_SLOT_SIZE * $TRAY_HORIZONTAL_SLOT_COUNT) + ($TRAY_SCROLLBAR_SIZE * 2)) ))
 lemonbar_command='lemonbar'
 [ $PANEL_BOTTOM -eq 1 ] && lemonbar_command="$lemonbar_command -b"
 lemonbar_command="$lemonbar_command -p -n '$PANEL_WM_NAME'"
-lemonbar_command="$lemonbar_command -g 1306x$PANEL_HEIGHT+0+0"
+lemonbar_command="$lemonbar_command -g $PANEL_WIDTH\x$PANEL_HEIGHT+0+0"
 lemonbar_command="$lemonbar_command -u 2 -U '$BACKGROUND'"
 lemonbar_command="$lemonbar_command -f '$FONT_MEDIUM'"
 lemonbar_command="$lemonbar_command -f '$FONT_BOLD'"
@@ -165,16 +188,6 @@ lemonbar_command="$lemonbar_command -F '$FOREGROUND'"
 
 # Format the modules and show it on the panel
 panel-format < $PANEL_FIFO | eval $lemonbar_command | sh &
-
-# Stalonetray command
-stalonetray --background $DARK_GREY \
-    --geometry 2x1-0-0 \
-    --max-geometry 2x1 \
-    --icon-gravity SE \
-    --icon-size 25 \
-    --scrollbars horizontal \
-    --window-strut bottom \
-    --scrollbars-size 5 &
 
 # Reserve some spaces for the panel
 if [ $PANEL_BOTTOM -eq 1 ]; then
