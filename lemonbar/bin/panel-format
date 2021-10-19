@@ -44,6 +44,13 @@ while read -r line; do
                 esac
                 shift
             done
+
+            normal_wins_count=$(bspc query --nodes --desktop focused --node .\!hidden.window | wc -l)
+            hidden_wins_count=$(bspc query --nodes --desktop focused --node .hidden.window | wc -l)
+            normal_wins_icon=$(printf "\uf707")
+            hidden_wins_icon=$(printf "\uf708")
+            [ $normal_wins_count -gt 0 ] && wm="$wm $normal_wins_icon $normal_wins_count |"
+            [ $hidden_wins_count -gt 0 ] && wm="$wm $hidden_wins_icon $hidden_wins_count |"
             ;;
         T*) 
             title="${line#?}" 
