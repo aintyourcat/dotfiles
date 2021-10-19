@@ -7,7 +7,7 @@
 light -S 20 &
 sct 3500 &
 xsetroot -cursor_name left_ptr &
-xss-lock -l -- physlock &
+xss-lock -- xtrlock -b bg &
 pipewire &
 pipewire-pulse &
 pkill ssh-agent; eval $(ssh-agent)
