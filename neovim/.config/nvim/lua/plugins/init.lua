@@ -9,6 +9,7 @@ end
 return require('packer').startup(function()
     use 'wbthomason/packer.nvim'
     use 'tpope/vim-commentary'
+    use 'chriskempson/base16-vim'
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'
     use {
