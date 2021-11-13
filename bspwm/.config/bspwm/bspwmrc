@@ -3,7 +3,7 @@
 # Startup programs
 pkill -of "$(command -v panel)" > /dev/null; panel &
 pgrep -x sxhkd > /dev/null || sxhkd &
-xwallpaper --zoom $HOME/pics/wallpapers/alain-yAu52w1lo64-unsplash.jpg &
+xwallpaper --zoom /home/behappier/pics/wallpapers/thor-alvis-sgrCLKYdw5g-unsplash.jpg &
 
 # Desktops
 bspc monitor -d 1 2 3 4 5
@@ -23,12 +23,13 @@ bspc config borderless_monocle true
 
 # Rules
 web=('Chromium' 'Chromium-devel' 'Nextcloud' 'Tor Browser')
-office=('*:libreoffice' '*:soffice' 'Gimp' 'Inkscape' 'Java' 'jetbrains-idea-ce' 'MuPDF' 'jetbrains-studio')
+office=('*:libreoffice' '*:soffice' 'Gimp' 'Inkscape' 'Java' 'jetbrains-idea-ce' 'MuPDF' 'jetbrains-studio' 'Zathura')
 misc=('KeePassXC' 'qt5ct')
 
 for i in "${web[@]}"; do bspc rule -a "$i" desktop=^2 follow=on focus=on; done
 for i in "${office[@]}"; do bspc rule -a "$i" desktop=^3 follow=on focus=on; done
 for i in "${misc[@]}"; do bspc rule -a "$i" desktop=^4 follow=on focus=on; done
+bspc rule -a 'Zathura' state=tiled
 bspc rule -a 'Virt-manager' desktop=^5 follow=on focus=on
 bspc rule -a 'SimpleScreenRecorder' state=floating follow=on focus=on
 bspc rule -a '*:*:Picture in picture' state=floating follow=on focus=off
