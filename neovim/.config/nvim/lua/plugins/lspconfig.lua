@@ -2,7 +2,7 @@ local nvim_lsp = require('lspconfig')
 
 -- Enable completion and map several keys
 -- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -31,14 +31,60 @@ end
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-local servers = { 'bashls', 'cssls', 'html', 'tsserver' }
+require('plugins.null-ls')
+
+local servers = {
+    'bashls',
+    'cssls',
+    'html',
+    'intelephense',
+    'null-ls',
+    'tsserver',
+}
+
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {
         on_attach = on_attach,
         capabilities = capabilities,
-        root_dir = vim.loop.cwd,
-        flags = {
-            debounce_text_changes = 150,
-        }
+        flags = { debounce_text_changes = 150 }
     }
 end
+
+local sumneko_root_path = os.getenv('HOME') .. '/src/lua-language-server'
+
+nvim_lsp['sumneko_lua'].setup {
+    cmd = {
+        sumneko_root_path .. '/bin/Linux/lua-language-server',
+        '-E',
+        sumneko_root_path .. '/main.lua'
+    },
+    settings = {
+        Lua = {
+            completion = {
+                enable = true,
+            },
+            runtime = {
+                version = 'LuaJIT',
+                path = (function()
+                    local runtime_path = vim.split(package.path, ';')
+                    table.insert(runtime_path, 'lua/?.lua')
+                    table.insert(runtime_path, 'lua/?/init.lua')
+                    return runtime_path
+                end)()
+            },
+            diagnostics = {
+                enable = true,
+                globals = {
+                    'vim'
+                }
+            },
+            workspace = {
+                library = vim.api.nvim_get_runtime_file('', true)
+            },
+            telemetry = {
+                enable = false,
+            }
+        }
+    },
+    on_attach = on_attach,
+}
