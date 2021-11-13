@@ -20,4 +20,4 @@ set_keymap('n', '<M-t>x', ':new term://zsh<CR>', opts)
 set_keymap('n', '<M-t>v', ':vnew term://zsh<CR>', opts)
 set_keymap('t', '<M-`>', '<C-\\><C-n>', { noremap = true })
 -- Miscellaneous
-set_keymap('n', 'C-Space', 'nohlsearch<CR>', opts)
+set_keymap('n', '<C-Space>', ':nohlsearch<CR>', opts)
