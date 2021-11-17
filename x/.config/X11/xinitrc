@@ -16,6 +16,6 @@ pkill ssh-agent; eval $(ssh-agent)
 export SESSION=${1:-bspwm}
 
 case $SESSION in
-    bspwm) exec bspwm;;
-    *) exec $1;;
+    bspwm) exec bspwm ;;
+    *) exec $1 ;;
 esac
