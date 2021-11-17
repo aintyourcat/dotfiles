@@ -72,19 +72,11 @@ XF86MonBrightness{Down,Up}
 XF86ScreenSaver
     xset dpms force off
 
-# Pulseaudio sink
-XF86Audio{Lower,Raise}Volume
-    pactl set-sink-volume @DEFAULT_SINK@ {-5%,+5%}
-    #amixer sset Master {5-,5+}
-XF86AudioMute
-    pactl set-sink-mute @DEFAULT_SINK@ toggle
-    #amixer sset Master toggle
-
-# Pulseaudio source
-shift + XF86Audio{Lower,Raise}Volume
-    pactl set-source-volume @DEFAULT_SOURCE@ {-5%,+5%}
-shift + XF86AudioMute
-    pactl set-source-mute @DEFAULT_SOURCE@ toggle
+# Pulseaudio
+{_,shift} + XF86Audio{Lower,Raise}Volume
+    pactl {set-sink-volume @DEFAULT_SINK@, set-source-volume @DEFAULT_SOURCE@} {-5%,+5%}
+{_,shift} + XF86AudioMute
+    pactl {set-sink-mute @DEFAULT_SINK@, set-source-mute @DEFAULT_SOURCE@} toggle
 
 # Screenshot
 @Print + {_,shift,ctrl}
@@ -95,14 +87,10 @@ super + Return
     alacritty
 
 # Rofis
-super + @space
-    rofi -show drun
-super + Tab
-    rofi-window
+super + {@space, Tab, alt + p}
+    rofi{ -show drun,-window,-pomo}
 ctrl + alt + Delete
     rofi-power
-super + alt + p
-    rofi-pomo
 
 # Centerize floating window
 alt + c
@@ -123,14 +111,5 @@ super + {n,p}
     bspc node -f {next,prev}.local.!hidden.floating.window
 
 # Dunst
-ctrl + space
-    dunstctl close
-
-ctrl + shift + space
-    dunstctl close-all
-
-ctrl + grave
-    dunstctl history-pop
-
-ctrl + shift + period
-    dunstctl context
+super + d; {d, a, h, c}
+    dunstctl {close, close-all, history-pop, context}
