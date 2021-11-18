@@ -8,10 +8,10 @@ end
 M.nnn = function()
     vim.g['nnn#layout'] = 'vnew'
     vim.g['nnn#set_default_mappings'] = 0
-    vim.g['nnn#action'] = { 
-        ['<c-t>'] = 'tab split', 
-        ['<c-x>'] = 'split', 
-        ['<c-v>'] = 'vsplit' 
+    vim.g['nnn#action'] = {
+        ['<c-t>'] = 'tab split',
+        ['<c-x>'] = 'split',
+        ['<c-v>'] = 'vsplit'
     }
 end
 
