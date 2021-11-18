@@ -1,15 +1,58 @@
 local cmp = require('cmp')
 
+vim.opt.completeopt = 'menu,menuone,noselect'
+
 cmp.setup {
-        mapping = {
-            ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-            ['<C-f>'] = cmp.mapping.scroll_docs(4),
-            ['<C-Space>'] = cmp.mapping.complete(),
-            ['<C-e>'] = cmp.mapping.close(),
-            ['<CR>'] = cmp.mapping.confirm({ select = true }),
-        },
-        sources = {
-              { name = 'nvim_lsp' },
-              { name = 'buffer' },
-        }
+    snippet = {
+        expand = function(args)
+            vim.fn['vsnip#anonymous'](args.body)
+        end
+    },
+    mapping = {
+        ['<Tab>'] = cmp.mapping(
+            cmp.mapping.select_next_item(), { 'i', 'c' }
+        ),
+        ['<S-Tab>'] = cmp.mapping(
+            cmp.mapping.select_prev_item(), { 'i', 'c' }
+        ),
+        ['<C-d>'] = cmp.mapping(
+            cmp.mapping.scroll_docs(4), { 'i', 'c' }
+        ),
+        ['<C-u>'] = cmp.mapping(
+            cmp.mapping.scroll_docs(-4), { 'i', 'c' }
+        ),
+        ['<C-Space>'] = cmp.mapping(
+            cmp.mapping.complete(), { 'i', 'c' }
+        ),
+        ['<C-e>'] = cmp.mapping(
+            cmp.mapping.close(), { 'i', 'c' }
+        ),
+        ['<CR>'] = cmp.mapping(
+            cmp.mapping.confirm {
+                select = true,
+                behavior = cmp.ConfirmBehavior.Replace
+            },
+            { 'i', 'c' }
+        )
+    },
+    sources = {
+        { name = 'nvim_lsp' },
+        { name = 'vsnip' },
+        { name = 'buffer' },
+        { name = 'path' }
+    }
 }
+
+cmp.setup.cmdline('/', {
+    sources = {
+        { name = 'buffer' }
+    }
+})
+
+cmp.setup.cmdline(':', {
+    completion = { autocomplete = false },
+    sources = {
+        { name = 'path' },
+        { name = 'cmdline' }
+    }
+})
