@@ -3,7 +3,7 @@
 # Startup programs
 pkill -of "$(command -v panel)" > /dev/null; panel &
 pgrep -x sxhkd > /dev/null || sxhkd &
-xwallpaper --zoom /home/behappier/pics/wallpapers/thor-alvis-sgrCLKYdw5g-unsplash.jpg &
+xwallpaper --zoom $HOME/pics/wallpapers/pulsarmap.png &
 
 # Desktops
 bspc monitor -d 1 2 3 4 5

@@ -81,6 +81,8 @@ XF86ScreenSaver
 # Screenshot
 @Print + {_,shift,ctrl}
     shot {--,-s,-d}
+@Print + alt
+    flameshot gui
 
 # Terminal
 super + Return
