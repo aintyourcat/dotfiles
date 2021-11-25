@@ -4,4 +4,3 @@ XDG_PICTURES_DIR="$HOME/pics"
 XDG_VIDEOS_DIR="$HOME/vids"
 
 # vim:ft=sh
-
