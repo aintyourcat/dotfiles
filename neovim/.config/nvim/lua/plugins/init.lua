@@ -51,6 +51,13 @@ return packer.startup(function(use)
             'nvim-lua/plenary.nvim'
         }
     }
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = ':TSUpdate',
+        config = function()
+            require('plugins.treesitter')
+        end
+    }
     if PACKER_BOOTSTRAP then
         packer.sync()
     end
