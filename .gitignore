@@ -3,3 +3,7 @@ zsh/.config/zsh/.zcompdump
 zsh/.config/zsh/.zcompcache/
 rofi/.config/rofi/themes/square-*.rasi
 *.bak
+root/sv/etc/sv/runsvdir-behappier/supervise/
+sv/.config/sv/mopidy/supervise/
+ncmpcpp/.config/ncmpcpp/error.log
+ncmpcpp/.config/ncmpcpp/lyrics/
