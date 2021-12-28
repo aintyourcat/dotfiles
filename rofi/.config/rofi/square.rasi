@@ -20,26 +20,25 @@ window {
 
 mainbox { 
     padding: 5px; 
+    children: [inputbar, listview];
 }
 
 inputbar {
     children: [prompt,textbox-prompt-colon,entry];
+    padding: 5px;
 }
 
 prompt {
-    padding: 5px 0px 5px 5px;
     text-color: @foreground;
 }
 
 textbox-prompt-colon {
-    padding: 5px 0;
     text-color: @foreground;
     str: ":";
     expand: false;
 }
 
 entry { 
-    padding: 5px 5px 5px 0; 
     text-color: @foreground;
 }
 
