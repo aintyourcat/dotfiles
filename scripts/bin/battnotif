@@ -12,7 +12,7 @@ read capacity < /sys/class/power_supply/BAT0/capacity
 if [ "$status" != "Charging" ]; then
     if [ $capacity -le 50 ]; then
         # If capacity is lower than or equals to 50, show notification
-	    notify-send "$capacity%" 'Battery low!' -i battery-empty
+	    notify-send "$capacity%" 'Battery is low!' -i battery-empty
         # If capacity is lower or equals to 45, sleep the computer
 	    [ $capacity -le 45 ] && xset dpms force off && sudo zzz
     fi
