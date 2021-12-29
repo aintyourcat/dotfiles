@@ -89,8 +89,8 @@ super + Return
     alacritty
 
 # Rofis
-super + {@space, Tab, alt + p}
-    rofi{ -show drun,-window,-pomo}
+super + {@space, Tab, alt + p, q}
+    rofi{ -show drun,-window,-pomo,-qr}
 ctrl + alt + Delete
     rofi-power
 
