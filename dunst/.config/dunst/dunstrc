@@ -30,7 +30,7 @@
 
     # Icon 
     icon_position = left
-    max_icon_size = 50
+    max_icon_size = 70
     icon_path = /home/behappier/.local/share/icons/Papirus-Dark/16x16/panel/:/home/behappier/.local/share/icons/Papirus-Dark/16x16/actions
 
     # History
