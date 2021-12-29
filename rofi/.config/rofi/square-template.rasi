@@ -1,0 +1,92 @@
+* {
+    background: BACKGROUND;
+    foreground: FOREGROUND;
+    black: BLACK;
+    dark-grey: DARK_GREY;
+    dark-red: DARK_RED;
+    red: RED;
+    dark-green: DARK_GREEN;
+    green: GREEN;
+    dark-yellow: DARK_YELLOW;
+    yellow: YELLOW;
+    dark-blue: DARK_BLUE;
+    blue: BLUE;
+    dark-magenta: DARK_MAGENTA;
+    magenta: MAGENTA;
+    dark-cyan: DARK_CYAN;
+    cyan: CYAN;
+    grey: GREY;
+    white: WHITE;
+
+    font: "Iosevka 9";
+    border-color: @white;
+    background-color: @background;
+    text-color: @foreground;
+}
+
+window {
+    border: 2px;
+    width: 25%;
+}
+
+mainbox { 
+    children: [inputbar, listview];
+    spacing: 0;
+}
+
+inputbar {
+    children: [prompt, entry, icon-inputbar];
+    padding: 10px;
+    spacing: 5px;
+}
+
+icon-inputbar {
+    filename: "view-list-symbolic";
+    expand: false;
+}
+
+prompt {
+    enabled: false;
+}
+
+entry {
+    placeholder: "Run...";
+}
+
+listview {
+    padding: 10px;
+    spacing: 3px;
+    border: 2px 0 0;
+    lines: 5;
+}
+
+element { 
+    padding: 7px 10px;
+    spacing: 7px;
+}
+
+element-icon {
+    background-color: inherit;
+    size: 16px;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    vertical-align: 0.5;
+}
+
+element selected {
+    background-color: @black;
+    text-color: @white;
+}
+
+element urgent {
+    text-color: @red;
+}
+
+element active {
+    text-color: @yellow;
+}
+
+/* vim:ft=css

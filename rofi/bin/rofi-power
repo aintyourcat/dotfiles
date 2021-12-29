@@ -1,35 +1,40 @@
-#!/usr/bin/env bash
-
-# Options to show
-label=('Quit' 'Reboot' 'Shutdown')
-icon=('󰍃' '󰑐' '󰐥');
-
-for ((i=0; i<${#label[*]}; i++)); do
-    options="${options}|${icon[i]} ${label[i]}"
-done
-
-options=${options#|}
+#!/bin/sh
 
 # Choose an option
-chosen_option=$(printf "$options" | rofi -dmenu -p "Power" -sep "|" -l 3 -no-show-icons -width 20)
+chosen_option=$( \
+    printf "%b\n" \
+        'Quit\0icon\037system-log-out-symbolic' \
+        'Reboot\0icon\037system-reboot-symbolic' \
+        'Shutdown\0icon\037system-shutdown-symbolic' | \
+    rofi -dmenu \
+        -theme-str 'inputbar {enabled: false;}' \
+        -theme-str 'listview {border: 0; lines: 3;}' \
+)
 
 # Confirm chosen option
 if [ -n "$chosen_option" ]; then
-    chosen_option=${chosen_option#? }
-    answer=$(printf "󰅖 No|󰄬 Yes" | rofi -dmenu -p "$chosen_option?" -sep "|" -l 2 -no-show-icons -width 20)
-    answer=${answer#? }
+    answer=$( \
+        printf "%b\n" \
+            'Yes\0icon\037object-select-symbolic' \
+            'No\0icon\037window-close-symbolic' | \
+        rofi -dmenu \
+            -theme-str 'inputbar {enabled: false;}' \
+            -theme-str 'listview {border: 0; lines: 2;}' \
+    )
 
-    case $answer in
-        Yes)
-            case "$chosen_option" in
-                Quit) 
-                    pkill -fo "$(command -v panel)" > /dev/null 2>&1
-                    sleep 1s
-                    bspc quit
-                ;;
-                Shutdown) sudo poweroff ;;
-                Reboot) sudo reboot ;;
-            esac 
-        ;;
-    esac
+    if [ $answer = "Yes" ]; then
+        case "$chosen_option" in
+            Shutdown)
+                sudo poweroff
+            ;;
+            Reboot)
+                sudo reboot
+            ;;
+            Quit)
+                pkill -fo "$(command -v panel)" > /dev/null 2>&1
+                sleep 1s
+                bspc quit
+            ;;
+        esac
+    fi
 fi

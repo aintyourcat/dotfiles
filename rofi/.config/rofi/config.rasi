@@ -1,6 +1,6 @@
 configuration {
     disable-history: true;
-    display-drun: "Run";
+    display-drun: "Run:";
     drun-display-format: "{name}";
     icon-theme: "Papirus-Dark";
     location: 0;
