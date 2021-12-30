@@ -4,7 +4,7 @@ HISTSIZE=10000
 SAVEHIST=10000
 setopt HIST_IGNORE_ALL_DUPS
 
-PROMPT='%F{blue}%B%~%b%f %F{green}%#%f '
+#PROMPT='%F{blue}%B%~%b%f %F{green}%#%f '
 
 # Keybind
 autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
@@ -23,7 +23,7 @@ compinit
 # End of lines added by compinstall
 
 # nnn cd on exit
-n() {
+function n() {
     if [ -n $NNNLVL ] && [ "${NNNLVL:-0}" -ge 1 ]; then
         echo "nnn is already running"
         return
@@ -76,3 +76,5 @@ if [[ "$TERM" == (Eterm*|alacritty*|aterm*|gnome*|konsole*|kterm*|putty*|rxvt*|s
 	add-zsh-hook -Uz precmd xterm_title_precmd
 	add-zsh-hook -Uz preexec xterm_title_preexec
 fi
+
+eval "$(starship init zsh)"
