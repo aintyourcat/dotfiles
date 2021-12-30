@@ -38,7 +38,6 @@
     history_length = 10
 
     # Misc/Advanced
-    dmenu = /bin/rofi -dmenu -p "Dunst" -no-show-icons
     browser = /opt/bin/chrome-wrapper --incognito
     
     # Mouse
@@ -46,21 +45,21 @@
     mouse_right_click = close_all
 
 [urgency_low]
-    frame_color = "#81a2be"
-    background = "#1d1f21"
-    foreground = "#c5c8c6"
+    frame_color = "WHITE"
+    background = "BACKGROUND"
+    foreground = "FOREGROUND"
     timeout = 10
 
 [urgency_normal]
-    frame_color = "#81a2be"
-    background = "#1d1f21"
-    foreground = "#c5c8c6"
+    frame_color = "YELLOW"
+    background = "BACKGROUND"
+    foreground = "FOREGROUND"
     timeout = 15
 
 [urgency_critical]
-    frame_color = "#81a2be"
-    background = "#1d1f21"
-    foreground = "#c5c8c6"
+    frame_color = "RED"
+    background = "BACKGROUND"
+    foreground = "FOREGROUND"
     timeout = 0
 
 [play_sound]
