@@ -17,7 +17,7 @@ export XRESOURCES=$XDG_CONFIG_HOME/X11/xresources
 
 # nnn configs
 export NNN_ARCHIVE="\\.(7z|a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|rar|rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)$"
-export NNN_BMS="c:$XDG_CONFIG_HOME;d:$XDG_DATA_HOME;t:$XDG_DATA_HOME/Trash/files/;m:/media/"
+export NNN_BMS="b:$XDG_CONFIG_HOME/nnn/bookmarks/;c:$XDG_CONFIG_HOME;d:$XDG_DATA_HOME;t:$XDG_DATA_HOME/Trash/files/;m:/media/"
 export NNN_FIFO=/tmp/nnn.fifo
 export NNN_OPENER=$XDG_CONFIG_HOME/nnn/plugins/nuke
 export NNN_PLUG='l:-_|libreoffice $nnn'
