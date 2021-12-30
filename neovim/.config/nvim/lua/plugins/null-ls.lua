@@ -1,15 +1,19 @@
 local null_ls = require('null-ls')
 local builtins = null_ls.builtins
 
-null_ls.config {
-    sources = {
-        builtins.formatting.prettierd.with {
-            filetypes = {
-                'javascript',
-                'json',
-                'html',
-                'css'
-            }
+local sources = {
+    builtins.formatting.prettier.with {
+        filetypes = {
+            'javascript',
+            'json',
+            'html',
+            'css',
+            'php'
         }
-    }
+    },
+    builtins.diagnostics.php
+}
+
+null_ls.setup {
+    sources = sources
 }

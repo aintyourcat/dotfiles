@@ -30,16 +30,15 @@ end
 -- Enable (broadcasting) snippet capability for completion
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-require('plugins.null-ls')
+capabilities.textDocument.prepareRename = true
 
 local servers = {
     'bashls',
     'cssls',
     'html',
-    'intelephense',
-    'null-ls',
+    'phpactor',
     'tsserver',
+    -- 'tailwindcss'
 }
 
 for _, lsp in ipairs(servers) do

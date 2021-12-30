@@ -12,7 +12,9 @@ local packer = require('packer')
 return packer.startup(function(use)
     use 'wbthomason/packer.nvim'
     use 'tpope/vim-commentary'
-    use 'chriskempson/base16-vim'
+    -- use 'chriskempson/base16-vim'
+    use 'bluz71/vim-nightfly-guicolors'
+    use 'bluz71/vim-moonfly-statusline'
     use {
         'hrsh7th/nvim-cmp',
         config = function()
@@ -47,6 +49,9 @@ return packer.startup(function(use)
     }
     use {
         'jose-elias-alvarez/null-ls.nvim',
+        config = function ()
+            require('plugins.null-ls')
+        end,
         requires = {
             'nvim-lua/plenary.nvim'
         }

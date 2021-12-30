@@ -19,5 +19,6 @@ opt.cursorline = true
 opt.cursorcolumn = true
 opt.ignorecase = true
 opt.smartcase = true
+opt.scrolloff = 5
 
-cmd 'colorscheme base16-tomorrow-night'
+cmd 'colorscheme nightfly'
