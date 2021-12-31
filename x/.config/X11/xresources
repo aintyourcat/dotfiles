@@ -1,4 +1,6 @@
 ! Nightfly
+*.background: #011627
+*.foreground: #acb4c2
 *.color0: #1d3b53
 *.color1: #fc514e
 *.color2: #a1cd5e
