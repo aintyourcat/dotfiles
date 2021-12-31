@@ -6,6 +6,8 @@ parse () {
     test ! -f "$1" && return
     test -z "$2" && return
 
+    mkdir -p "${2%/*}"
+
     test -f "$2" && read -p "File '$2' exists, overwrite it? " answer
     case "$answer" in [!yY]*) return ;; esac
 
