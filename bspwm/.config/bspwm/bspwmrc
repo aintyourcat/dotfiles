@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Startup programs
-pkill -of "$(command -v panel)" > /dev/null; panel &
+pgrep -x panel > /dev/null || panel 2> ~/.cache/panel.errors &
 pgrep -x sxhkd > /dev/null || sxhkd &
 xwallpaper --zoom $HOME/pics/wallpapers/pulsarmap.png &
 

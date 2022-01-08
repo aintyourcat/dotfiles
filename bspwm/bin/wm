@@ -1,0 +1,17 @@
+#!/bin/sh
+
+kill_panel () pkill -x panel
+
+case "$1" in
+    quit)
+        kill_panel
+        bspc quit
+        ;;
+    restart)
+        kill_panel
+        bspc wm -r
+        ;;
+    *)
+        exit 1
+        ;;
+esac
