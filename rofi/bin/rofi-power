@@ -1,40 +1,43 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Choose an option
-chosen_option=$( \
-    printf "%b\n" \
-        'Quit\0icon\037system-log-out-symbolic' \
-        'Reboot\0icon\037system-reboot-symbolic' \
-        'Shutdown\0icon\037system-shutdown-symbolic' | \
-    rofi -dmenu \
-        -theme-str 'inputbar {enabled: false;}' \
-        -theme-str 'listview {border: 0; lines: 3;}' \
+options=(
+    'Quit\0icon\x1fsystem-log-out-symbolic'
+    'Refresh\0icon\x1fview-refresh-symbolic'
+    'Reboot\0icon\x1fsystem-reboot-symbolic'
+    'Shutdown\0icon\x1fsystem-shutdown-symbolic'
 )
 
-# Confirm chosen option
-if [ -n "$chosen_option" ]; then
-    answer=$( \
-        printf "%b\n" \
-            'Yes\0icon\037object-select-symbolic' \
-            'No\0icon\037window-close-symbolic' | \
+function choose () {
+    test "$#" -eq 0 && return 1
+
+    chosen=$(
+        printf "%b\n" "$@" | \
         rofi -dmenu \
             -theme-str 'inputbar {enabled: false;}' \
-            -theme-str 'listview {border: 0; lines: 2;}' \
+            -theme-str "listview {border: 0; lines: "$#";}" \
     )
 
-    if [ $answer = "Yes" ]; then
-        case "$chosen_option" in
-            Shutdown)
-                sudo poweroff
-            ;;
-            Reboot)
-                sudo reboot
-            ;;
-            Quit)
-                pkill -fo "$(command -v panel)" > /dev/null 2>&1
-                sleep 1s
-                bspc quit
-            ;;
+    echo "$chosen"
+}
+
+chosen=$(choose "${options[@]}")
+
+# Confirm chosen option
+if [ -n "$chosen" ]; then
+    options=(
+        'No\0icon\x1fwindow-close-symbolic'
+        'Yes\0icon\x1fobject-select-symbolic'
+    )
+
+    answer="$(choose "${options[@]}")"
+
+    if [ -n "$answer" ] && [ "$answer" = "Yes" ]; then
+        case "$chosen" in
+            Shutdown) sudo poweroff ;;
+            Reboot) sudo reboot ;;
+            Refresh) wm restart ;;
+            Quit) wm quit ;;
         esac
     fi
 fi
