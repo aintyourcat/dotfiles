@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+: "$(xset -q | tr -s ' ')"
+: "${_#*Caps Lock: }"
+: "${_%% *}"
+
+case "$_" in
+    on) label='CAPSLOCK' ;;
+    off) label='' ;;
+esac
+
+printf 'cpslk %s\n' "$label"

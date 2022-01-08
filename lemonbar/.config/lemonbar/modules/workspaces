@@ -1,0 +1,57 @@
+#!/bin/sh
+
+. $(command -v colors)
+
+bspc subscribe report |
+    while read -r event; do
+        wks=''
+        IFS=':'
+        set -- ${event#?}
+
+        while [ $# -gt 0 ]; do
+            item=$1
+
+            case $item in
+                [mM]*) shift && continue ;;
+                [fFoOuU]*)
+                    desktop=${item#?}
+
+                    case $item in
+                        # Unactive empty desktop
+                        f*) shift && continue ;;
+                        # Active empty desktop
+                        F*) desktop="(${desktop})" ;;
+                        # Unactive occupied desktop
+                        o*) desktop="%{F$BLUE}$desktop%{F-}" ;;
+                        # Active occupied desktop
+                        O*) desktop="%{F$BLUE}(${desktop})%{F-}" ;;
+                        # Urgent desktop
+                        [uU]*) shift && continue ;;
+                    esac
+
+                    test -z "$wks" && wks="$wks$desktop" || wks="$wks $desktop"
+                    ;;
+                [LGT]*) shift && continue ;;
+            esac
+
+            shift
+        done
+
+        all_wins_count=$(bspc query --nodes --desktop focused --node .window | wc -l)
+        hidden_wins_count=$(bspc query --nodes --desktop focused --node .hidden.window | wc -l)
+
+        wins_info=''
+        if [ $hidden_wins_count -gt 0 ]; then
+            wins_info="$hidden_wins_count wins hidden"
+        else
+            if [ $all_wins_count -gt 1 ]; then
+               wins_info="$all_wins_count wins opened"
+            fi
+        fi
+
+        test -n "$wins_info" && {
+            wks="$wks %{F$YELLOW}[$wins_info]%{F-}"
+        }
+
+        printf 'wks %s\n' "$wks"
+    done

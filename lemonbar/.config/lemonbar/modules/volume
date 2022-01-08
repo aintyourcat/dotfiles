@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+{
+    all_sinks=$(pactl list short sinks)
+    default_sink=$(pactl get-default-sink)
+    default_sink_num=$(grep "$default_sink" <<< "$all_sinks" | tr '\t' ' ' | cut -d ' ' -f 1)
+    test -n "$default_sink_num" && printf '%s\n' "on sink #$default_sink_num"
+    
+    pactl subscribe
+} | while read -r event; do
+    case $event in
+        *'on sink #'*)
+            sink_num="${event##*#}"
+            muted=$(pactl get-sink-mute $sink_num | cut -d ' ' -f 2)
+
+            out=$(pactl get-sink-volume $sink_num | tr -s '[:space:]')
+            channels=$(grep 'Volume' <<< "$out")
+            balance=$(grep 'balance' <<< "$out" | cut -d ' ' -f 3)
+
+            IFS=,
+            set -- $channels
+            volumes=()
+            while [ $# -gt 0 ]; do
+                volume=$(cut -d '/' -f 2 <<< $1 | cut -d ' ' -f 2)
+
+                counts=${#volumes[@]}
+                volumes[$counts]=$volume
+
+                shift
+            done
+
+            if [ "$balance" != '0.00' ]; then
+                sum=''
+                for volume in "${volumes[@]}"; do
+                    sum=$(( sum + ${volume%?} ))
+                done
+                avg=$(( sum / ${#volumes[@]} ))
+            else
+                avg="${volumes[0]%?}"
+            fi
+
+            case $((avg / 25)) in
+                0) icon='奄' ;;
+                [12]) icon='奔' ;;
+                [34]) icon='墳' ;;
+                *) icon='婢' ;;
+            esac
+            label="$avg%%"
+
+            test "$muted" = 'yes' && {
+                icon='ﱝ'
+                label='Muted'
+            }
+
+            printf 'vol %s\n' "$icon $label"
+            ;;
+    esac
+done

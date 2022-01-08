@@ -1,0 +1,26 @@
+#!/bin/sh
+
+readonly BAT_DIR='/sys/class/power_supply/BAT0/'
+readonly DELAY='5s'
+
+while true; do
+    read status < "$BAT_DIR/status"
+    read capacity < "$BAT_DIR/capacity"
+
+    test $capacity -gt 100 && capacity=100
+
+    case $((capacity / 25)) in
+        0) icon='' ;;
+        1) icon='' ;;
+        2) icon='' ;;
+        3) icon='' ;;
+        4) icon='' ;;
+    esac
+
+    capacity="$capacity%%"
+    test "$status" = "Charging" && capacity="$capacity+"
+
+    printf 'bat %s\n' "$icon $capacity"
+
+    sleep "$DELAY"
+done

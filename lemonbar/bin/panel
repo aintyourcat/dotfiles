@@ -1,204 +1,28 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-source $XDG_CONFIG_HOME/lemonbar/config
-source $(command -v colors)
+. $XDG_CONFIG_HOME/lemonbar/config
+. $(command -v colors)
 
-# Exit when a panel already run
-if xdo id -a "$PANEL_WM_NAME" > /dev/null ; then
-    printf "%s\n" "The panel is already running." >&2
-    exit 1
-fi
+test ! -p $PANEL_FIFO && mkfifo $PANEL_FIFO -m 600
 
-# Respect WM's padding and kill all processes on current process group 
-# when the script received a terminate signal
-stop() {
-    trap - TERM
-    if [ $PANEL_BOTTOM -eq 1 ]; then
-        bspc config bottom_padding 0
-    else
-        bspc config top_padding 0
-    fi
-    kill 0
-}
-trap 'stop' INT TERM QUIT EXIT
+trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
 
-# Create a named FIFO
-[ -p $PANEL_FIFO ] && rm $PANEL_FIFO
-mkfifo $PANEL_FIFO -m 600
+for module in $XDG_CONFIG_HOME/lemonbar/modules/*; do
+    "$module" > $PANEL_FIFO &
+done
 
-# Workspaces module
-bspc subscribe report > $PANEL_FIFO &
+while IFS= read -r event; do
+    eval "${event%% *}='${event#* }'"
+    eval "printf '%s\n' \"$PANEL_FORMAT\"" | tee ~/.cache/panel.modules
+done < $PANEL_FIFO |
+    lemonbar -p \
+    -B $BACKGROUND \
+    -F $FOREGROUND \
+    -g x$PANEL_HEIGHT \
+    -f $FONT_MEDIUM \
+    -f $FONT_BOLD \
+    -n $PANEL_WM_NAME &
 
-# Window title module
-xtitle -s -f 'T%s\n' -t 70 > $PANEL_FIFO &
-
-# Caps lock module
-caps-status > $PANEL_FIFO &
-
-# Battery module
-while true; do
-    read status < /sys/class/power_supply/BAT0/status
-    [ "$status" = "Charging" ] && status='C' || status='D'
-
-    read capacity < /sys/class/power_supply/BAT0/capacity
-    [ $capacity -gt 100 ] && capacity=100
-
-    printf "B$status$capacity\n"
-    sleep 5s
-done > $PANEL_FIFO &
-
-# WiFi module
-{ printf '%s\n' 'default via'; ip monitor route dev wlp1s0; } | while read -r event; do
-    case $event in
-        'default via'*)
-            info=$(iw dev wlp1s0 info)+'ssid '
-	        : "${info#*ssid }"
-	        : "${_%type*}"
-	        ssid="${_:-Off}"
-	        ;;
-        'Deleted local'*) ssid='Off' ;;
-        *) continue ;;
-    esac
-    printf "N$ssid\n"
-done > $PANEL_FIFO &
-
-# Pulseaudio modules
-{ 
-    # Speaker/Sink module
-    all_sinks_info=$(pactl list sinks short)
-    current_sink_info=$(grep 'RUNNING' <<< $all_sinks_info)
-    if [ -n "$current_sink_info" ]; then
-        current_sink_num=${current_sink_info%%$(printf '\t')*}
-    else
-        current_sink_num=${all_sinks_info%%$(printf '\t')*}
-    fi
-    printf 'sink #%s\n' "$current_sink_num"
-    # Microphone/Source module
-    all_sources_info=$(pactl list sources short)
-    current_source_info=$(grep 'RUNNING' <<< $all_sources_info)
-    if [ -n "$current_source_info" ]; then
-        current_source_num=${current_source_info%%$(printf '\t')*}
-    else
-        current_source_num=${all_sources_info%%$(printf '\t')*}
-    fi
-    printf 'source #%s\n' "$current_source_num"
-    pactl subscribe
-} | while read -r event; do
-    case $event in
-        *'sink #'*) # Speaker
-            sink_num=${event##* }
-            all_sinks_info=$(pactl list sinks)
-            current_sink_info="${all_sinks_info##*$sink_num}"
-            muted=${current_sink_info#*Mute: }
-            muted=${muted%%$(printf '\t')*}
-
-            case $muted in
-                yes*) printf "Soff\n" ;;
-                no*)
-                    volume=${current_sink_info#*Volume:}
-                    volume=${volume#*/ }
-                    volume=${volume%%%*}
-                    volume=${volume##* }
-                    printf "S$volume\n"
-                    ;;
-            esac
-        ;;
-        *'source #'*) # Microphone
-            source_num=${event##* }
-            all_sources_info=$(pactl list sources)
-            current_source_info=${all_sources_info##*$source_num}
-            muted=${current_source_info#*Mute: }
-            muted=${muted%%$(printf '\t')*}
-
-            case $muted in
-                yes*) printf "Moff\n" ;;
-                no*)
-                    volume=${current_source_info#*Volume:}
-                    volume=${volume#*/ }
-                    volume=${volume%%%*}
-                    volume=${volume##* }
-                    printf "M$volume\n"
-                    ;;
-            esac
-        ;;
-    esac
-done > $PANEL_FIFO &
-
-# ALSA module
-: '{ printf '\n'; stdbuf -oL alsactl monitor; } | while read -r event; do
-    info=$(amixer get Master)
-    : ${info##*[}
-    status=${_%]}
-
-    if [ "$status" = "off" ]; then
-        icon='\ufa80'
-        printf "V$icon %s\n" $status
-    else
-        : "${info#*[}"
-        : ${_%%]*}
-        volume=${_%?}
-        case $((volume/25)) in
-            0) icon='\ufa7e' ;;
-            [123]) icon='\ufa7f' ;;
-            4) icon='\ufa7d' ;;
-        esac
-        printf "V$icon %s\n" "$volume%"
-    fi
-done > $PANEL_FIFO &'
-
-# Time module
-while true; do
-    printf "C%(%a, %d %b %I:%M)T\n" '-1'
-    sleep 5s
-done > $PANEL_FIFO &
-
-# Stalonetray command
-TRAY_SLOT_SIZE=25
-TRAY_SCROLLBAR_SIZE=5
-TRAY_HORIZONTAL_SLOT_COUNT=2
-if [ $PANEL_BOTTOM -eq 1 ]; then
-    TRAY_POSITION='-0-0'
-    TRAY_WINDOW_STRUT='bottom'
-else
-    TRAY_POSITION='-0+0'
-    TRAY_WINDOW_STRUT='top'
-fi
-tray_command="stalonetray --background '$DARK_GREY'"
-tray_command="$tray_command --geometry $TRAY_HORIZONTAL_SLOT_COUNT\x1$TRAY_POSITION"
-tray_command="$tray_command --icon-gravity SW"
-tray_command="$tray_command --slot-size $TRAY_SLOT_SIZE"
-tray_command="$tray_command --icon-size 18"
-tray_command="$tray_command --scrollbars horizontal"
-tray_command="$tray_command --window-strut $TRAY_WINDOW_STRUT"
-tray_command="$tray_command --scrollbars-size $TRAY_SCROLLBAR_SIZE"
-eval $tray_command | sh &
-
-# Lemonbar command
-SCREEN_WIDTH=$(xrandr | grep -F '*' | tr -s ' ' | cut -d ' ' -f 2 | cut -d 'x' -f 1)
-PANEL_WIDTH=$(( $SCREEN_WIDTH - (($TRAY_SLOT_SIZE * $TRAY_HORIZONTAL_SLOT_COUNT) + ($TRAY_SCROLLBAR_SIZE * 2)) ))
-lemonbar_command='lemonbar'
-[ $PANEL_BOTTOM -eq 1 ] && lemonbar_command="$lemonbar_command -b"
-lemonbar_command="$lemonbar_command -p -n '$PANEL_WM_NAME'"
-lemonbar_command="$lemonbar_command -g $PANEL_WIDTH\x$PANEL_HEIGHT+0+0"
-lemonbar_command="$lemonbar_command -u 2 -U '$BACKGROUND'"
-lemonbar_command="$lemonbar_command -f '$FONT_MEDIUM'"
-lemonbar_command="$lemonbar_command -f '$FONT_BOLD'"
-lemonbar_command="$lemonbar_command -B '$BACKGROUND'"
-lemonbar_command="$lemonbar_command -F '$FOREGROUND'"
-
-# Format the modules and show it on the panel
-panel-format < $PANEL_FIFO | eval $lemonbar_command | sh &
-
-# Reserve some spaces for the panel
-if [ $PANEL_BOTTOM -eq 1 ]; then
-    bspc config bottom_padding $PANEL_HEIGHT
-else
-    bspc config top_padding $PANEL_HEIGHT
-fi
-
-# Put panel & stalonetray on below of all window
 xdo lower -ma "$PANEL_WM_NAME"
-xdo lower -ma 'stalonetray'
 
-# Wait for all background jobs to finish
 wait

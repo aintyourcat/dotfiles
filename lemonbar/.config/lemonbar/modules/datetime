@@ -1,0 +1,9 @@
+#!/bin/sh
+
+readonly FORMAT='%a, %d %b %H:%M'
+readonly DELAY='5s'
+
+while true; do
+    printf 'dtime %s\n' "$(date +"$FORMAT")"
+    sleep "$DELAY"
+done
