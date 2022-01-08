@@ -105,8 +105,7 @@ alt + shift + h
 # Caps lock indicator 
 @Caps_Lock
     source $XDG_CONFIG_HOME/lemonbar/config; \
-    xdo id -a "$PANEL_WM_NAME" > /dev/null 2>&1 && \
-        caps-status > $PANEL_FIFO
+    pgrep -x panel && $XDG_CONFIG_HOME/lemonbar/modules/capslock > $PANEL_FIFO
 
 # Focus the next/previous floating node in current desktop
 super + {n,p}
