@@ -1,5 +1,4 @@
 local opt = vim.opt
-local cmd = vim.cmd
 
 opt.encoding = 'utf-8'
 opt.clipboard = 'unnamedplus'
@@ -20,5 +19,3 @@ opt.cursorcolumn = true
 opt.ignorecase = true
 opt.smartcase = true
 opt.scrolloff = 5
-
-cmd 'colorscheme nightfly'

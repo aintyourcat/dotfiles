@@ -13,7 +13,12 @@ return packer.startup(function(use)
     use 'wbthomason/packer.nvim'
     use 'tpope/vim-commentary'
     -- use 'chriskempson/base16-vim'
-    use 'bluz71/vim-nightfly-guicolors'
+    use {
+        'bluz71/vim-nightfly-guicolors',
+        config = function ()
+            vim.cmd [[ colorscheme nightfly ]]
+        end
+    }
     use 'bluz71/vim-moonfly-statusline'
     use {
         'hrsh7th/nvim-cmp',
@@ -29,6 +34,7 @@ return packer.startup(function(use)
             'hrsh7th/vim-vsnip',
         }
     }
+    use 'rafamadriz/friendly-snippets'
     use {
         'mcchrish/nnn.vim',
         config = function()
