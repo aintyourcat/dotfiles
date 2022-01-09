@@ -1,70 +1,62 @@
-# --- Default keybinds
+## Desktop
+
+# Toggle layout
+super + m
+    bspc desktop -l next
+
+# Focus
+super + {1-5}
+    bspc desktop -f '^{1-5}'
+
+## Window
+
+# Close, Kill
+super + {_, shift} + q
+    bspc node -{c,k}
+
+# Send to desktop
+super + shift + {1-5}
+    bspc node -d '^{1-5}'
+
+# State
+super + {t,s,f}
+    bspc node -t {tiled,floating,fullscreen}
+
+# Center
+super + c
+    centerize
+
+# Hide
+super + x
+    bspc node -g hidden=on
+
+# Focus, Move
+super + {_,shift} + {h,j,k,l}
+    {bspc node -f,move} {west,south,north,east}
+super + n
+    bspc node -f next.local.floating
+
+# Preselect
+super + ctrl + {h,j,k,l,space}
+    bspc node -p {west,south,north,east,cancel}
+
+# Expand
+super + alt + {h,j,k,l}
+    bspc node -z {left -50 0,bottom 0 50,top 0 -50,right 50 0}
+
+# Contract
+super + alt + shift + {h,j,k,l}
+    bspc node -z {right -50 0,top 0 50,bottom 0 -50,left 50 0}
+
+## Misc
+
+# Terminal
+super + Return
+    alacritty
 
 # Reload sxhkdrc
 super + Escape
     pkill -USR1 -x sxhkd
-
-# Restart bspwm
-super + alt + r
-    bspc wm -r
-
-# Close/kill window
-super + {_,shift + }w
-    bspc node -{c,k}
-
-# Toggle tiled and monocle layout
-super + m
-    bspc desktop -l next
-
-# Send focused window to the preselected node 
-super + y
-    bspc node -n newest.!automatic.local
-
-# Change window state
-super + {t,shift + t,s,f}
-    bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
-
-# Toggle node sticky flag
-super + ctrl + s
-    bspc node -g sticky
-
-# Change focused node to given direction
-super + {_,shift + }{h,j,k,l}
-    bspc node -{f,s} {west,south,north,east}
-
-# Focus the next/previous non floating node in the current desktop
-super + {_,shift + }c
-    bspc node -f {next,prev}.local.!hidden.!floating.window
-
-# Focus or send to given desktop 
-super + {_,shift + }{1-9,0}
-    bspc {desktop -f,node -d} '^{1-9,10}'
-
-# Preselect the direction
-super + ctrl + {h,j,k,l}
-    bspc node -p {west,south,north,east}
-
-# Preselect the ratio
-super + ctrl + {1-9}
-    bspc node -o 0.{1-9}
-
-# Cancel preselection on focused node
-super + ctrl + space
-    bspc node -p cancel
-
-# Expand focused window
-super + alt + {h,j,k,l}
-    bspc node -z {left -50 0,bottom 0 50,top 0 -50,right 50 0}
-
-# Contract focused window
-super + alt + shift + {h,j,k,l}
-    bspc node -z {right -50 0,top 0 50,bottom 0 -50,left 50 0}
-
-# Move floating window
-super + {Left,Down,Up,Right}
-    bspc node -v {-50 0,0 50,0 -50,50 0}
-
-# --- Personal keybinds
 
 # Brightness
 XF86MonBrightness{Down,Up}
@@ -84,33 +76,15 @@ XF86ScreenSaver
 @Print + alt
     flameshot gui
 
-# Terminal
-super + Return
-    alacritty
-
-# Rofis
-super + {@space, Tab, alt + p, q}
-    rofi{ -show drun,-window,-pomo,-qr}
-ctrl + alt + Delete
-    rofi-power
-
-# Centerize floating window
-alt + c
-    centerize
-
-# Hide window
-alt + shift + h
-    bspc node --flag hidden=on
+# Rofi
+super + {@space,Tab,alt + p,alt + q,Delete}
+    rofi{ -show drun,-window,-pomo,-qr,-power}
 
 # Caps lock indicator 
 @Caps_Lock
     source $XDG_CONFIG_HOME/lemonbar/config; \
     pgrep -x panel && $XDG_CONFIG_HOME/lemonbar/modules/capslock > $PANEL_FIFO
 
-# Focus the next/previous floating node in current desktop
-super + {n,p}
-    bspc node -f {next,prev}.local.!hidden.floating.window
-
 # Dunst
-super + d; {d, a, h, c}
-    dunstctl {close, close-all, history-pop, context}
+super + d; {d,a,h,c}
+    dunstctl {close,close-all,history-pop,context}
