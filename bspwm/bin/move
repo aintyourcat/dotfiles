@@ -1,0 +1,24 @@
+#!/bin/sh
+    
+case "$1" in
+    north) dim=height; sign=- ;;
+    east) dim=width; sign=+ ;;
+    south) dim=height; sign=+ ;;
+    west) dim=width; sign=- ;;
+    *) exit 1 ;;
+esac
+
+if [ -n "$(bspc query --nodes --node focused.tiled)" ]; then
+    bspc node --to-node "$1".!automatic || bspc node --swap "$1".tiled
+elif [ -n "$(bspc query --nodes --node focused.floating)" ]; then
+    percent=20
+
+    case "$dim" in
+        height) y="$sign$percent"; x=0 ;;
+        width) x="$sign$percent"; y=0 ;;
+    esac
+
+    bspc node --move "$x" "$y"
+else
+    exit 1
+fi
