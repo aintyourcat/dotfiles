@@ -46,7 +46,7 @@ alias ls='ls --color=auto'
 alias bc='bc -lq'
 alias q='exit'
 alias makebatchfile="cat $NNN_SEL | xargs -0 -I fname printf 'put -R %s\n' fname > batchfile"
-alias n='n -x'
+alias n='n -xH'
 alias startx="startx $XINITRC"
 
 # Load nvm
@@ -60,6 +60,7 @@ nvm() {
 [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
 
 # Dynamic terminal title
+# https://wiki.archlinux.org/title/Zsh#xterm_title
 autoload -Uz add-zsh-hook
 
 function xterm_title_precmd () {
