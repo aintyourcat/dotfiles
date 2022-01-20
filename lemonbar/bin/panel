@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 . $XDG_CONFIG_HOME/lemonbar/config
 . $(command -v colors)
@@ -15,7 +15,7 @@ for module in $XDG_CONFIG_HOME/lemonbar/modules/*; do
 done
 
 while IFS= read -r event; do
-    eval "${event%% *}='${event#* }'"
+    declare "${event%% *}=${event#* }"
     eval "printf '%s\n' \"$PANEL_FORMAT\""
 done < $PANEL_FIFO |
     lemonbar \
