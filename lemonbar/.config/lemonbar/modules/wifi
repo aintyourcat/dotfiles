@@ -2,9 +2,9 @@
 
 readonly DEV='wlp1s0'
 
-{ 
-    printf '%s\n' 'default via'; 
-    ip monitor route dev "$DEV"; 
+{
+    printf '%s\n' 'default via';
+    ip monitor route dev "$DEV";
 } | while read -r event; do
     case $event in
         'default via'*)
