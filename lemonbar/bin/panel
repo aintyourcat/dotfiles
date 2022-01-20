@@ -15,7 +15,19 @@ for module in $XDG_CONFIG_HOME/lemonbar/modules/*; do
 done
 
 while IFS= read -r event; do
-    eval "${event%% *}='${event#* }'"
+    key="${event%% *}"
+    value="${event#* }"
+
+    case $key in
+        wks) wks="$value" ;;
+        ttl) ttl="$value" ;;
+        cpslk) cpslk="$value" ;;
+        vol) vol="$value" ;;
+        wifi) wifi="$value" ;;
+        bat) bat="$value" ;;
+        dtime) dtime="$value" ;;
+    esac
+
     eval "printf '%s\n' \"$PANEL_FORMAT\""
 done < $PANEL_FIFO |
     lemonbar \
