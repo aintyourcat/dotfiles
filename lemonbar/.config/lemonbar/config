@@ -1,7 +1,7 @@
 PANEL_POSITION='' # -b for bottom, empty for top
 PANEL_FIFO=/tmp/panel.fifo
 PANEL_HEIGHT=25
-PANEL_FORMAT='%{O10}$wks $ttl%{r}${cpslk}%{O15}${vol}%{O15}${wifi}%{O15}${bat}%{O15}${dtime}%{O10}'
+PANEL_FORMAT='%{O10}${wks} ${ttl}%{r}${cpslk}%{O15}${vol}%{O15}${wifi}%{O15}${bat}%{O15}${dtime}%{O10}'
 PANEL_WM_NAME='bspwm_panel'
 FONT_MEDIUM='Iosevka-9'
 FONT_BOLD='Iosevka-9:style=bold'
