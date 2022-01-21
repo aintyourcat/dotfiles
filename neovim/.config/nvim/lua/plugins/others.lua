@@ -6,12 +6,17 @@ M.indent_blankline = function()
 end
 
 M.nnn = function()
-    vim.g['nnn#layout'] = 'vnew'
-    vim.g['nnn#set_default_mappings'] = 0
-    vim.g['nnn#action'] = {
-        ['<c-t>'] = 'tab split',
-        ['<c-x>'] = 'split',
-        ['<c-v>'] = 'vsplit'
+    local nnn = require('nnn')
+
+    nnn.setup {
+        command = 'nnn -xH',
+        layout = 'vnew',
+        set_default_mappings = 0,
+        action = {
+            ['<c-t>'] = 'tab split',
+            ['<M-x>'] = 'split',
+            ['<M-v>'] = 'vsplit'
+        }
     }
 end
 
