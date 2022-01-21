@@ -1,0 +1,71 @@
+#!/bin/sh
+
+get_color () {
+    test -n "$1" || return
+
+    xrdb -query | grep -m 1 "$1" | cut -d ':' -f 2 | tr -d '[:space:]'
+}
+
+get_colors () {
+    FOREGROUND=$(get_color 'foreground')
+    BACKGROUND=$(get_color 'background')
+    BLACK=$(get_color 'color0')
+    DARK_GREY=$(get_color 'color8')
+    DARK_RED=$(get_color 'color1')
+    RED=$(get_color 'color9')
+    DARK_GREEN=$(get_color 'color2')
+    GREEN=$(get_color 'color10')
+    DARK_YELLOW=$(get_color 'color3')
+    YELLOW=$(get_color 'color11')
+    DARK_BLUE=$(get_color 'color4')
+    BLUE=$(get_color 'color12')
+    DARK_MAGENTA=$(get_color 'color5')
+    MAGENTA=$(get_color 'color13')
+    DARK_CYAN=$(get_color 'color6')
+    CYAN=$(get_color 'color14')
+    GREY=$(get_color 'color7')
+    WHITE=$(get_color 'color15')
+}
+
+parse_colors () {
+    sed \
+        -e "s/FOREGROUND/$FOREGROUND/g" \
+        -e "s/BACKGROUND/$BACKGROUND/g" \
+        -e "s/BLACK/$BLACK/g" \
+        -e "s/DARK_GREY/$DARK_GREY/g" \
+        -e "s/DARK_RED/$DARK_RED/g" \
+        -e "s/RED/$RED/g" \
+        -e "s/DARK_GREEN/$DARK_GREEN/g" \
+        -e "s/GREEN/$GREEN/g" \
+        -e "s/DARK_YELLOW/$DARK_YELLOW/g" \
+        -e "s/YELLOW/$YELLOW/g" \
+        -e "s/DARK_BLUE/$DARK_BLUE/g" \
+        -e "s/BLUE/$BLUE/g" \
+        -e "s/DARK_MAGENTA/$DARK_MAGENTA/g" \
+        -e "s/MAGENTA/$MAGENTA/g" \
+        -e "s/DARK_CYAN/$DARK_CYAN/g" \
+        -e "s/CYAN/$CYAN/g" \
+        -e "s/GREY/$GREY/g" \
+        -e "s/WHITE/$WHITE/g"
+}
+
+# Main
+
+case "$1" in
+    parse)
+        test -n "$2" || return
+
+        get_colors
+
+        if [ -f "$2" ]; then
+            file="$2"
+
+            parse_colors < "$file"
+        else
+            text="$2"
+
+            printf '%s\n' "$text" | parse_colors
+        fi 
+    ;;
+    *) get_colors ;;
+esac

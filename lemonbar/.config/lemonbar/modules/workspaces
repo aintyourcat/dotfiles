@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. $(command -v colors)
+. $(command -v xresources-colors)
 
 bspc subscribe report |
     while read -r event; do
