@@ -12,14 +12,17 @@ local packer = require('packer')
 return packer.startup(function(use)
     use 'wbthomason/packer.nvim'
     use 'tpope/vim-commentary'
-    -- use 'chriskempson/base16-vim'
+    use 'bluz71/vim-nightfly-guicolors'
+    use 'bluz71/vim-moonfly-statusline'
+    use 'ishan9299/modus-theme-vim'
+    use 'rafamadriz/friendly-snippets'
+    use 'flniu/er.vim'
     use {
-        'bluz71/vim-nightfly-guicolors',
-        config = function ()
-            vim.cmd [[ colorscheme nightfly ]]
+        'ellisonleao/gruvbox.nvim',
+        config = function()
+            require('plugins.others').gruvbox()
         end
     }
-    use 'bluz71/vim-moonfly-statusline'
     use {
         'hrsh7th/nvim-cmp',
         config = function()
@@ -34,7 +37,6 @@ return packer.startup(function(use)
             'hrsh7th/vim-vsnip',
         }
     }
-    use 'rafamadriz/friendly-snippets'
     use {
         'mcchrish/nnn.vim',
         config = function()
