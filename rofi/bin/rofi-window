@@ -1,101 +1,11 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-# Normal and hidden window ids on current workspace
-normal_window_ids=$(bspc query --nodes --desktop focused --node .\!hidden.window)
-hidden_window_ids=$(bspc query --nodes --desktop focused --node .hidden.window)
-
-# If any window is opened or hidden
-if [ -n "$normal_window_ids" ] || [ -n "$hidden_window_ids" ]; then
-    # If wmctrl command exists
-    if type wmctrl > /dev/null 2>&1; then
-        # All window ids and titles
-        all_window_infos=$(wmctrl -l | tr -s ' ' | cut -d ' ' -f 1,4-)
-
-        # Normal window ids and titles on current workspace
-        if [ -n "$normal_window_ids" ]; then
-            : $(tr '\n' '|' <<< "$normal_window_ids")
-            : ${_%|}
-            normal_window_infos=$(grep -Ei $_ <<< "$all_window_infos")
-        fi
-
-        # Hidden window ids and titles on current workspace
-        if [ -n "$hidden_window_ids" ]; then
-            : $(tr '\n' '|' <<< "$hidden_window_ids")
-            : ${_%|}
-            hidden_window_infos=$(grep -Ei $_ <<< "$all_window_infos" | sed -E 's/ (.*)/ [Hidden] \1/1')
-        fi
-
-        # Normal and/or hidden window ids and titles on current workspace
-        if [ -n "$hidden_window_infos" ]; then
-            all_window_infos=$(printf "%s\n" "$hidden_window_infos" "$normal_window_infos")
-        else
-            all_window_infos="$normal_window_infos"
-        fi
-
-        # Add window icons
-        # https://gist.github.com/SparklePigBang/54bc739131cc98f8d226
-        DESKTOP_DIRS=(
-            "$HOME/.local/share/applications/"
-            "/usr/share/applications/"
-            "/usr/local/share/applications/"
-        )
-        temp=''
-        declare -A icon_cache
-
-        while read -r window; do
-            : "$(xprop -id $(cut -d ' ' -f 1 <<< $window) WM_CLASS)"
-            class=$(sed -E 's/^WM_CLASS\(STRING\) = "([a-zA-Z0-9._-]+)".*$/\1/' <<< "$_")
-
-            if [ -z "${icon_cache[$class]}" ]; then
-                desktop_file=$(find ${DESKTOP_DIRS[@]} -name "$class.desktop" -print0 | head -1 | xargs -0 -I fname printf "%s" fname)
-
-                if [ -f "$desktop_file" ]; then
-                    icon=$(grep '^Icon[[:space:]]*=.*$' "$desktop_file" | sed -E 's@^Icon *= *([a-zA-Z0-9./_ (),-]+)$@\1@')
-                else
-                    icon="$class"
-                fi
-
-                icon_cache[$class]="$icon"
-            else
-                icon=${icon_cache[$class]}
-            fi
-
-            if [ -z "$temp" ]; then
-                temp=$(printf "%s\n" "$window\0icon\x1f$icon")
-            else
-                temp=$(printf "%s\n" "$temp" "$window\0icon\x1f$icon")
-            fi
-        done <<< "$all_window_infos"
-
-        all_window_infos="$temp"
-
-        # Get active window index
-        active_win_id=$(bspc query --nodes --node focused.window)
-        if [ -n "$active_win_id" ]; then
-            active_win_index=$(grep -in "$active_win_id" <<< "$all_window_infos" | cut -d ':' -f 1)
-            active_win_index=$(( $active_win_index - 1 )) # rofi row indices start at 0
-        else
-            active_win_index=''
-        fi
-
-        # Select a window
-        window_to_show=$( \
-            # %b to interpret the escape sequences
-            printf "%b\n" "$(cut -d ' ' -f 2- <<< "$all_window_infos")" | \
-                rofi -dmenu -i -p 'Focus:' -format d:s \
-                    -theme-str 'window {width: 50%;}' \
-                    -theme-str 'listview {lines: 8;}' \
-                    -theme-str 'icon-inputbar {filename: "window";}' \
-                    -theme-str 'entry {placeholder: "Focus...";}' \
-                    -a "$active_win_index" \
-                    -kb-accept-entry 'Super_L,Return' \
-            )
-
-        # Unhide and focus on selected window
-        if [ -n "$window_to_show" ]; then
-            selected_window_index=${window_to_show:0:1}
-            selected_window_id=$(sed -n "$selected_window_index p" <<< "$all_window_infos" | cut -d ' ' -f 1)
-            bspc node "$selected_window_id" --flag hidden=off --focus
-        fi
-    fi
-fi
+rofi -show windowcd \
+    -kb-accept-entry '' \
+    -kb-accept-alt 'Return,Super_L' \
+    -window-command 'bspc node {window} --flag hidden=off --focus' \
+    -window-format '{t}' \
+    -theme-str 'window {width: 50%;}' \
+    -theme-str 'listview {lines: 7;}' \
+    -theme-str 'entry {placeholder: "Focus a window...";}' \
+    -modi windowcd
