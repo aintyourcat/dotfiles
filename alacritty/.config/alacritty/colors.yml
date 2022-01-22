@@ -1,0 +1,74 @@
+schemes:
+  nightfly: &nightfly
+    primary:
+       background: '#011627'
+       foreground: '#acb4c2'
+
+    cursor:
+      text: '#fafafa'
+      cursor: '#9ca1aa'
+
+    selection:
+      text: '#080808'
+      background: '#b2ceee'
+
+    normal:
+      black:   '#1d3b53'
+      red:     '#fc514e'
+      green:   '#a1cd5e'
+      yellow:  '#e3d18a'
+      blue:    '#82aaff'
+      magenta: '#c792ea'
+      cyan:    '#7fdbca'
+      white:   '#a1aab8'
+
+    bright:
+      black:   '#7c8f8f'
+      red:     '#ff5874'
+      green:   '#21c7a8'
+      yellow:  '#ecc48d'
+      blue:    '#82aaff'
+      magenta: '#ae81ff'
+      cyan:    '#7fdbca'
+      white:   '#d6deeb'
+
+  modus_operandi: &modus_operandi
+    primary:
+      background: '#ffffff'
+      foreground: '#000000'
+
+    cursor:
+      text: '#ffffff'
+      background: '#777777'
+
+    normal:
+      black:   '#000000'
+      red:     '#a60000'
+      green:   '#006800'
+      yellow:  '#813e00'
+      blue:    '#0030a6'
+      magenta: '#721045'
+      cyan:    '#00538b'
+      white:   '#eeeeee'
+
+    bright:
+      black:   '#555555'
+      red:     '#7f1010'
+      green:   '#104410'
+      yellow:  '#5f4400'
+      blue:    '#002f88'
+      magenta: '#752f50'
+      cyan:    '#12506f'
+      white:   '#ffffff'
+
+    dim:
+      black:   '#222222'
+      red:     '#b60000'
+      green:   '#006800'
+      yellow:  '#904200'
+      blue:    '#1111ee'
+      magenta: '#7000e0'
+      cyan:    '#205b93'
+      white:   '#dddddd'
+
+colors: *modus_operandi

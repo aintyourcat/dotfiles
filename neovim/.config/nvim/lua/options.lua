@@ -3,7 +3,6 @@ local opt = vim.opt
 opt.encoding = 'utf-8'
 opt.clipboard = 'unnamedplus'
 opt.termguicolors = true
-opt.background = 'light'
 opt.tabstop = 4
 opt.shiftwidth = 4
 opt.expandtab = true

@@ -31,7 +31,6 @@
     # Icon 
     icon_position = left
     max_icon_size = 70
-    icon_path = /home/behappier/.local/share/icons/Papirus-Dark/16x16/panel/:/home/behappier/.local/share/icons/Papirus-Dark/16x16/actions
 
     # History
     sticky_history = false
@@ -45,25 +44,27 @@
     mouse_right_click = close_all
 
 [urgency_low]
-    frame_color = "WHITE"
+    frame_color = "FOREGROUND"
     background = "BACKGROUND"
     foreground = "FOREGROUND"
     timeout = 10
 
 [urgency_normal]
-    frame_color = "YELLOW"
+    frame_color = "FOREGROUND"
     background = "BACKGROUND"
     foreground = "FOREGROUND"
     timeout = 15
 
 [urgency_critical]
-    frame_color = "RED"
+    frame_color = "FOREGROUND"
     background = "BACKGROUND"
     foreground = "FOREGROUND"
     timeout = 0
 
 [play_sound]
     summary = "*"
-    script = ~/bin/alert.sh
+    script = /home/behappier/bin/alert.sh
+
+[include]
 
 # vim:ft=dosini

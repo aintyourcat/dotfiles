@@ -2,12 +2,12 @@ configuration {
     disable-history: true;
     display-drun: "Run:";
     drun-display-format: "{name}";
-    icon-theme: "Papirus-Dark";
     location: 0;
     modi: "drun";
     show-icons: true;
     terminal: "alacritty";
-    theme: "~/.config/rofi/square.rasi";
 }
+
+@theme "/home/behappier/.config/rofi/themes/square-light.rasi"
 
 /* vim:ft=css

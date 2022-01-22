@@ -1,25 +1,6 @@
 * {
-    background: BACKGROUND;
-    foreground: FOREGROUND;
-    black: BLACK;
-    dark-grey: DARK_GREY;
-    dark-red: DARK_RED;
-    red: RED;
-    dark-green: DARK_GREEN;
-    green: GREEN;
-    dark-yellow: DARK_YELLOW;
-    yellow: YELLOW;
-    dark-blue: DARK_BLUE;
-    blue: BLUE;
-    dark-magenta: DARK_MAGENTA;
-    magenta: MAGENTA;
-    dark-cyan: DARK_CYAN;
-    cyan: CYAN;
-    grey: GREY;
-    white: WHITE;
-
     font: "Iosevka 9";
-    border-color: @white;
+    border-color: @foreground;
     background-color: @background;
     text-color: @foreground;
 }
@@ -77,16 +58,16 @@ element-text {
 }
 
 element selected {
-    background-color: @black;
-    text-color: @white;
+    background-color: @selected-element-background;
+    text-color: @foreground;
 }
 
 element urgent {
-    text-color: @red;
+    text-color: @urgent-element-foreground;
 }
 
 element active {
-    text-color: @yellow;
+    text-color: @active-element-foreground;
 }
 
 /* vim:ft=css

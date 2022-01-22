@@ -1,0 +1,351 @@
+#!/bin/sh
+
+# GTK
+readonly DARK_GTK_THEME_NAME='Nordic-darker'
+readonly DARK_GTK_ICON_THEME_NAME='Papirus-Dark'
+readonly LIGHT_GTK_THEME_NAME='Default'
+readonly LIGHT_GTK_ICON_THEME_NAME='Papirus'
+readonly GTK_2_CONFIG="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
+readonly GTK_3_CONFIG="$XDG_CONFIG_HOME/gtk-3.0/settings.ini"
+readonly XSETTINGSD_CONFIG="$XDG_CONFIG_HOME/X11/xsettingsd"
+# Alacritty
+readonly DARK_ALACRITTY_COLORSCHEME="nightfly"
+readonly LIGHT_ALACRITTY_COLORSCHEME="modus_operandi"
+readonly ALACRITTY_COLORSCHEME_CONFIG="$XDG_CONFIG_HOME/alacritty/colors.yml"
+# Xresources
+readonly DARK_XRESOURCES_COLORSCHEME="nightfly"
+readonly LIGHT_XRESOURCES_COLORSCHEME="modus-operandi"
+readonly XRESOURCES_DIR="$XDG_CONFIG_HOME/X11/xresources.d"
+readonly XRESOURCES_CONFIG="$XRESOURCES"
+# Rofi
+readonly DARK_ROFI_THEME_TEMPLATE="$XDG_CONFIG_HOME/template/square-dark.rasi"
+readonly LIGHT_ROFI_THEME_TEMPLATE="$XDG_CONFIG_HOME/template/square-light.rasi"
+readonly ROFI_CONFIG="$XDG_CONFIG_HOME/rofi/config.rasi"
+# Dunst
+readonly MAIN_DUNSTRC_TEMPLATE="$XDG_CONFIG_HOME/template/common.dunstrc"
+readonly DARK_DUNSTRC_TEMPLATE="$XDG_CONFIG_HOME/template/dark.dunstrc"
+readonly LIGHT_DUNSTRC_TEMPLATE="$XDG_CONFIG_HOME/template/light.dunstrc"
+readonly DUNSTRC_CONFIG="$XDG_CONFIG_HOME/dunst/dunstrc"
+# Neovim
+readonly DARK_NEOVIM_COLORSCHEME='nightfly'
+readonly LIGHT_NEOVIM_COLORSCHEME='modus-operandi'
+readonly DARK_NEOVIM_BACKGROUND='dark'
+readonly LIGHT_NEOVIM_BACKGROUND='light'
+readonly NEOVIM_COLORSCHEME_CONFIG="$XDG_CONFIG_HOME/nvim/lua/colorscheme.lua"
+
+create_file_if_not_exist () {
+    test -n "$1" || return
+
+    local file="$1"
+
+    if [ ! -f "$file" ]; then
+        { mkdir -p "${file%/*}" && touch "$file"; } || return
+    fi
+}
+
+set_gtk_2 () {
+    test -n "$*" -a "$#" -eq 3 || return
+
+    local key="$1"
+    local value="$2"
+    local config="$3"
+
+    create_file_if_not_exist "$config" || return
+
+    grep --quiet "^$key=.*\$" "$config" && {
+        sed --in-place=.bak -e "s#^$key=\".*\"\$#$key=\"$value\"#" "$config"
+    } || {
+        printf '%s\n' "$key=\"$value\"" >> "$config"
+    }
+}
+
+set_gtk_3 () {
+    test -n "$*" -a "$#" -eq 3 || return
+
+    local key="$1"
+    local value="$2"
+    local config="$3"
+
+    create_file_if_not_exist "$config" || return
+
+    grep --quiet "^$key=.*\$" "$config" && {
+        sed --in-place=.bak -e "s#^$key=.*\$#$key=$value#" "$config"
+    } || {
+        printf '%s\n' "$key=$value" >> "$config"
+    }
+}
+
+set_xsettingsd () {
+    test -n "$*" -a "$#" -eq 3 || return
+
+    local key="$1"
+    local value="$2"
+    local config="$3"
+
+    create_file_if_not_exist "$config" || return
+
+    grep --quiet "^$key .*\$" "$config" && {
+        sed --in-place=.bak -e "s#$key .*\$#$key \"$value\"#" "$config"
+    } || {
+        printf '%s\n' "$key \"$value\"" >> "$config"
+    }
+}
+
+reload_gtk () {
+    test -n "$1" || return
+
+    local config="$1"
+
+    test -f "$config" || return
+
+    pgrep xsettingsd > /dev/null && {
+        pkill -HUP xsettingsd
+    } || { 
+        xsettingsd -c "$config" >/dev/null 2>&1 &
+    }
+}
+
+set_alacritty () {
+    test -n "$*" -a "$#" -eq 2 || return
+
+    local colorscheme="$1"
+    local config="$2"
+
+    test -f "$config" || return
+
+    grep --quiet "^[[:space:]].*: &$colorscheme\$" "$config" || return
+
+    grep --quiet '^colors: \*.*$' "$config" && {
+        sed --in-place=.bak -e "s#^colors: \*.*\$#colors: \*$colorscheme#" "$config"
+    } || {
+        printf '%s\n' "colors: *$colorscheme" >> "$config"
+    }
+}
+
+set_xresources () {
+    test -n "$*" -a "$#" -eq 2 || return
+
+    local colorscheme="$1"
+    local config="$2"
+
+    test -f "$colorscheme" || return
+
+    grep --quiet '^#define colorscheme ".*"$' "$config" && {
+        sed --in-place=.bak -e "s:^#define colorscheme \".*\"\$:#define colorscheme \"$colorscheme\":" "$config"
+    } || {
+        sed --in-place=.bak -e "1 i #define colorscheme \"$colorscheme\"" "$config"
+    }
+    
+    grep --quiet '^#include colorscheme$' "$config" || printf '%s\n' '#include colorscheme' >> "$config"
+}
+
+reload_xresources () {
+    test -n "$1" || return
+
+    local config="$1"
+
+    test -f "$config" || return
+
+    xrdb -merge "$config"
+}
+
+set_rofi () {
+    test -n "$*" -a "$#" -eq 2 || return
+
+    local template="$1"
+    local config="$2"
+    local theme_dir="${config%/*}/themes"
+    local theme="$theme_dir/${template##*/}"
+
+    test -f "$template" || return
+
+    test ! -d "$theme_dir" && { mkdir -p "$theme_dir" || return; }
+
+    xresources-colors parse "$template" > "$theme"
+
+    grep --quiet '^@theme ".*"$' "$config" && {
+        sed --in-place=.bak -e "s:^@theme.*\$:@theme \"$theme\":" "$config"
+    } || {
+        printf '%s\n' "@theme \"$theme\"" >> "$config"
+    }
+}
+
+set_dunst () {
+    test -n "$*" -a "$#" -eq 3 || return
+
+    local main_template="$1"
+    local prefered_template="$2"
+    local config="$3"
+
+    test -f "$main_template" || return
+    test -f "$prefered_template" || return
+
+    xresources-colors parse "$(cat $main_template $prefered_template)" > "$config"
+}
+
+reload_dunst () {
+    local message="$1"
+
+    pkill -KILL dunst
+    test -n "$message" && notify-send "$message"
+}
+
+set_neovim () {
+    test -n "$*" -a "$#" -eq 3 || return
+
+    local colorscheme="$1"
+    local background="$2"
+    local config="$3"
+
+    test "$background" = 'light' -o "$background" = 'dark' || return
+
+    local is_colorscheme_exist=$(nvim --headless \
+        +"silent! colorscheme ${colorscheme}" \
+        +"echo v:errmsg == '' ? '1' : '0'" \
+        +'q!' 2>&1)
+
+    test "$is_colorscheme_exist" = '1' || return
+    create_file_if_not_exist "$config" || return
+
+    grep --quiet "^vim.opt.background = .*\$" "$config" && {
+        sed -E --in-place=.bak -e "s:^(vim.opt.background = ).*\$:\1'$background':" "$config"
+    } || {
+        printf '%s\n' "vim.opt.background = '$background'" >> "$config"
+    }
+
+    grep --quiet "^vim.cmd('colorscheme .*')\$" "$config" && {
+        sed --in-place=.bak -e "s#^vim.cmd('colorscheme .*')\$#vim.cmd('colorscheme $colorscheme')#" "$config"
+    } || {
+        printf '%s\n' "vim.cmd('colorscheme $colorscheme')" >> "$config"
+    }
+}
+
+reload_neovim () {
+    test -n "$1" || return
+
+    local config="$1"
+
+    test -f "$config" || return
+
+    for i in $(nvr --serverlist | grep 'nvim'); do
+        NVIM_LISTEN_ADDRESS=$i nvr --nostart -c "silent! highlight clear"
+        NVIM_LISTEN_ADDRESS=$i nvr --nostart -c "silent! luafile $config"
+    done
+}
+
+# Main
+
+test -n "$1" || exit
+
+case "$1" in
+    on)
+        PREFERED_MODE="dark"
+        PREFERED_GTK_THEME=$DARK_GTK_THEME_NAME
+        PREFERED_GTK_ICON_THEME=$DARK_GTK_ICON_THEME_NAME
+        PREFERED_ALACRITTY_COLORSCHEME=$DARK_ALACRITTY_COLORSCHEME
+        PREFERED_XRESOURCES_COLORSCHEME=$DARK_XRESOURCES_COLORSCHEME
+        PREFERED_ROFI_THEME_TEMPLATE=$DARK_ROFI_THEME_TEMPLATE
+        PREFERED_DUNSTRC_TEMPLATE="$DARK_DUNSTRC_TEMPLATE"
+        PREFERED_NEOVIM_COLORSCHEME=$DARK_NEOVIM_COLORSCHEME
+        PREFERED_NEOVIM_BACKGROUND=$DARK_NEOVIM_BACKGROUND
+        ;;
+    off)
+        PREFERED_MODE="light"
+        PREFERED_GTK_THEME=$LIGHT_GTK_THEME_NAME
+        PREFERED_GTK_ICON_THEME=$LIGHT_GTK_ICON_THEME_NAME
+        PREFERED_ALACRITTY_COLORSCHEME=$LIGHT_ALACRITTY_COLORSCHEME
+        PREFERED_XRESOURCES_COLORSCHEME=$LIGHT_XRESOURCES_COLORSCHEME
+        PREFERED_ROFI_THEME_TEMPLATE=$LIGHT_ROFI_THEME_TEMPLATE
+        PREFERED_DUNSTRC_TEMPLATE="$LIGHT_DUNSTRC_TEMPLATE"
+        PREFERED_NEOVIM_COLORSCHEME=$LIGHT_NEOVIM_COLORSCHEME
+        PREFERED_NEOVIM_BACKGROUND=$LIGHT_NEOVIM_BACKGROUND
+        ;;
+    *) exit 1 ;;
+esac
+
+if [ -z "$2" ]; then
+    status="$1"
+    eval "$0 $status gtk alacritty xresources rofi dunst neovim"
+    exit
+fi
+
+if [ "$#" -gt 2 ]; then
+    status="$1"
+
+    while [ $# -gt 1 ]; do
+        shift && eval "$0 $status $1"
+    done
+
+    exit
+fi
+
+# Primary call
+
+case "$2" in
+    gtk) 
+        set_gtk_2 \
+            'gtk-theme-name' \
+            "$PREFERED_GTK_THEME" \
+            "$GTK_2_CONFIG"
+        set_gtk_2 \
+            'gtk-icon-theme-name' \
+            "$PREFERED_GTK_ICON_THEME" \
+            "$GTK_2_CONFIG"
+        set_gtk_3 \
+            'gtk-theme-name' \
+            "$PREFERED_GTK_THEME" \
+            "$GTK_3_CONFIG"
+        set_gtk_3 \
+            'gtk-icon-theme-name' \
+            "$PREFERED_GTK_ICON_THEME" \
+            "$GTK_3_CONFIG"
+        set_xsettingsd \
+            'Net/ThemeName' \
+            "$PREFERED_GTK_THEME" \
+            "$XSETTINGSD_CONFIG"
+        set_xsettingsd \
+            'Net/IconThemeName' \
+            "$PREFERED_GTK_ICON_THEME" \
+            "$XSETTINGSD_CONFIG"
+
+        reload_gtk "$XSETTINGSD_CONFIG"
+        ;;
+    alacritty) 
+        set_alacritty \
+            "$PREFERED_ALACRITTY_COLORSCHEME" \
+            "$ALACRITTY_COLORSCHEME_CONFIG"
+        ;;
+    xresources) 
+        set_xresources \
+            "$XRESOURCES_DIR/$PREFERED_XRESOURCES_COLORSCHEME" \
+            "$XRESOURCES_CONFIG"
+
+        reload_xresources "$XRESOURCES_CONFIG"
+        ;;
+    rofi) 
+        set_rofi "$PREFERED_ROFI_THEME_TEMPLATE" "$ROFI_CONFIG"
+        ;;
+    dunst) 
+        set_dunst \
+            "$MAIN_DUNSTRC_TEMPLATE" \
+            "$PREFERED_DUNSTRC_TEMPLATE" \
+            "$DUNSTRC_CONFIG"
+
+        reload_dunst "Switched to $PREFERED_MODE theme"
+        ;;
+    neovim) 
+        set_neovim \
+            "$PREFERED_NEOVIM_COLORSCHEME" \
+            "$PREFERED_NEOVIM_BACKGROUND" \
+            "$NEOVIM_COLORSCHEME_CONFIG"
+
+        reload_neovim "$NEOVIM_COLORSCHEME_CONFIG"
+        ;;
+    *) exit 1 ;;
+esac
+
+# Additional call
+
+case "$2" in
+    xresources) wm restart ;;
+esac

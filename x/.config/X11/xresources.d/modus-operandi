@@ -1,0 +1,20 @@
+*.background: #ffffff
+*.foreground: #000000
+*.color0: #000000
+*.color1: #a60000
+*.color2: #006800
+*.color3: #813e00
+*.color4: #0030a6
+*.color5: #721045
+*.color6: #00538b
+*.color7: #eeeeee
+*.color8: #555555
+*.color9: #7f1010
+*.color10: #104410
+*.color11: #5f4400
+*.color12: #002f88
+*.color13: #752f50
+*.color14: #12506f
+*.color15: #ffffff
+
+! vim:ft=xdefaults
