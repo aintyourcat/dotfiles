@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# These envs needed by cron to show the notification
+export XAUTHORITY=$XAUTHORITY
+export DISPLAY=:0
+
+# Get battery's status and capacity
+read status < /sys/class/power_supply/BAT0/status
+read capacity < /sys/class/power_supply/BAT0/capacity
+
+if [ "$status" != "Charging" -a $capacity -le 50 ]; then
+	notify-send "$capacity%" 'Battery is low!' -i battery-empty
+	xset dpms force off
+    sudo zzz
+fi
