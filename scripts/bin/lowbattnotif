@@ -9,7 +9,7 @@ read status < /sys/class/power_supply/BAT0/status
 read capacity < /sys/class/power_supply/BAT0/capacity
 
 if [ "$status" != "Charging" -a $capacity -le 50 ]; then
-	notify-send "$capacity%" 'Battery is low!' -i battery-empty
-	xset dpms force off
+    notify-send "$capacity%" 'Battery is low!' -i battery-empty
+    xset dpms force off
     sudo zzz
 fi
