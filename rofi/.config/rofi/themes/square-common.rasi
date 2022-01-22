@@ -16,14 +16,9 @@ mainbox {
 }
 
 inputbar {
-    children: [prompt, entry, icon-inputbar];
+    children: [prompt, entry];
     padding: 10px;
     spacing: 5px;
-}
-
-icon-inputbar {
-    filename: "view-list-symbolic";
-    expand: false;
 }
 
 prompt {
@@ -31,7 +26,7 @@ prompt {
 }
 
 entry {
-    placeholder: "Run...";
+    placeholder: "Run a program...";
 }
 
 listview {

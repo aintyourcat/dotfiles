@@ -1,6 +1,5 @@
 configuration {
     disable-history: true;
-    display-drun: "Run:";
     drun-display-format: "{name}";
     location: 0;
     modi: "drun";
