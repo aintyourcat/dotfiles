@@ -10,8 +10,8 @@ readonly GTK_3_CONFIG="$XDG_CONFIG_HOME/gtk-3.0/settings.ini"
 readonly XSETTINGSD_CONFIG="$XDG_CONFIG_HOME/X11/xsettingsd"
 # Alacritty
 readonly DARK_ALACRITTY_COLORSCHEME="nightfly"
-readonly LIGHT_ALACRITTY_COLORSCHEME="modus_operandi"
-readonly ALACRITTY_COLORSCHEME_CONFIG="$XDG_CONFIG_HOME/alacritty/colors.yml"
+readonly LIGHT_ALACRITTY_COLORSCHEME="iceberg-light"
+readonly ALACRITTY_CONFIG="$XDG_CONFIG_HOME/alacritty/alacritty.yml"
 # Xresources
 readonly DARK_XRESOURCES_COLORSCHEME="nightfly"
 readonly LIGHT_XRESOURCES_COLORSCHEME="modus-operandi"
@@ -105,20 +105,33 @@ reload_gtk () {
     }
 }
 
+# $1: colorsheme name, $2: config file path
+# Insert the following lines in the config file:
+# import:
+#  - config-file-dir/colors/colorscheme-name.yml
+# Or replace colorscheme-name, if it's already exists
 set_alacritty () {
     test -n "$*" -a "$#" -eq 2 || return
 
-    local colorscheme="$1"
-    local config="$2"
+    local colorscheme_name="$1"
+    local config_file="$2"
+    local colors_dir="${config_file%/*}/colors"
 
-    test -f "$config" || return
+    test -f "$config_file" || return
+    test -f "$colors_dir/$colorscheme_name.yml" || return
 
-    grep --quiet "^[[:space:]].*: &$colorscheme\$" "$config" || return
+    import_line_number=$(grep -m 1 -n '^import:$' "$config_file" | cut -d ':' -f 1)
+    search_pattern="^ - $colors_dir/.*yml\$"
+    replacement=" - $colors_dir/$colorscheme_name.yml"
 
-    grep --quiet '^colors: \*.*$' "$config" && {
-        sed --in-place=.bak -e "s#^colors: \*.*\$#colors: \*$colorscheme#" "$config"
+    test -n "$import_line_number" && {
+        test -n "$(sed -n -e "\#$search_pattern#p" "$config_file")" && {
+            sed --in-place=.bak -e "s#$search_pattern#$replacement#" "$config_file"
+        } || {
+            sed --in-place=.bak -e "$import_line_number a\\$replacement" "$config_file"
+        }
     } || {
-        printf '%s\n' "colors: *$colorscheme" >> "$config"
+        printf '%s\n' 'import:' "$replacement" >> "$config_file"
     }
 }
 
@@ -313,7 +326,7 @@ case "$2" in
     alacritty) 
         set_alacritty \
             "$PREFERED_ALACRITTY_COLORSCHEME" \
-            "$ALACRITTY_COLORSCHEME_CONFIG"
+            "$ALACRITTY_CONFIG"
         ;;
     xresources) 
         set_xresources \
