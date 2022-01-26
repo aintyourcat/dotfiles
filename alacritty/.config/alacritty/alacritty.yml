@@ -1,5 +1,5 @@
 import:
-  - ~/.config/alacritty/colors.yml
+ - /home/behappier/.config/alacritty/colors/nightfly.yml
 
 live_config_reload: true
 
