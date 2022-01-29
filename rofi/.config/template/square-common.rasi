@@ -1,8 +1,8 @@
-* {
-    font: "Iosevka 9";
-    border-color: @foreground;
-    background-color: @background;
-    text-color: @foreground;
+* { 
+    font: "Iosevka 9"; 
+    background-color: BACKGROUND;
+    text-color: FOREGROUND;
+    border-color: FOREGROUND;
 }
 
 window {
@@ -53,16 +53,16 @@ element-text {
 }
 
 element selected {
-    background-color: @selected-element-background;
-    text-color: @foreground;
+    background-color: BLACK;
+    text-color: FOREGROUND;
+}
+
+element active,
+element selected.active {
+    text-color: YELLOW;
 }
 
 element urgent {
-    text-color: @urgent-element-foreground;
+    text-color: RED;
 }
 
-element active {
-    text-color: @active-element-foreground;
-}
-
-/* vim:ft=css

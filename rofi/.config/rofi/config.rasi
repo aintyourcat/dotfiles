@@ -7,6 +7,4 @@ configuration {
     terminal: "alacritty";
 }
 
-@theme "/home/behappier/.config/rofi/themes/square-light.rasi"
-
-/* vim:ft=css
+@theme "square-light"

@@ -1,15 +1,3 @@
-@import "square-common.rasi"
-
 configuration {
     icon-theme: "Papirus";
 }
-
-* {
-    background: BACKGROUND;
-    foreground: FOREGROUND;
-    selected-element-background: GREY;
-    urgent-element-foreground: RED;
-    active-element-foreground: YELLOW;
-}
-
-/* vim:ft=css
