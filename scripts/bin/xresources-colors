@@ -3,7 +3,7 @@
 get_color () {
     test -n "$1" || return
 
-    xrdb -query | grep -m 1 "$1" | cut -d ':' -f 2 | tr -d '[:space:]'
+    xrdb -query | grep -m 1 -F "*.$1" | cut -d ':' -f 2 | tr -d '[:space:]'
 }
 
 get_colors () {
