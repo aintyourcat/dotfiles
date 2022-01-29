@@ -1,4 +1,0 @@
-#define colorscheme "/home/behappier/.config/X11/xresources.d/modus-operandi"
-#include colorscheme
-
-! vim:ft=xdefaults
