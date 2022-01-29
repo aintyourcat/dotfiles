@@ -73,12 +73,10 @@ XF86ScreenSaver
 # Screenshot
 @Print + {_,shift,ctrl}
     shot {--,-s,-d}
-@Print + alt
-    flameshot gui
 
 # Rofi
-super + {@space,Tab,alt + p,alt + q,Delete}
-    rofi{ -show drun,-window,-pomo,-qr,-power}
+super + {@space,Tab}
+    rofi{ -show drun,-window}
 
 # Caps lock indicator 
 @Caps_Lock
