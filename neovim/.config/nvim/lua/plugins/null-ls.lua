@@ -11,7 +11,9 @@ local sources = {
             'php'
         }
     },
-    builtins.diagnostics.php
+    builtins.diagnostics.php,
+    builtins.formatting.shfmt,
+    builtins.diagnostics.shellcheck,
 }
 
 null_ls.setup {

@@ -20,9 +20,4 @@ M.nnn = function()
     }
 end
 
-M.gruvbox = function ()
-    vim.g.gruvbox_contrast_light = 'hard'
-    vim.g.gruvbox_contrast_dark = 'hard'
-end
-
 return M

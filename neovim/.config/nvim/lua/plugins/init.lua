@@ -14,15 +14,11 @@ return packer.startup(function(use)
     use 'tpope/vim-commentary'
     use 'bluz71/vim-nightfly-guicolors'
     use 'bluz71/vim-moonfly-statusline'
-    use 'ishan9299/modus-theme-vim'
     use 'rafamadriz/friendly-snippets'
     use 'flniu/er.vim'
-    use {
-        'ellisonleao/gruvbox.nvim',
-        config = function()
-            require('plugins.others').gruvbox()
-        end
-    }
+    use 'cocopon/iceberg.vim'
+    use 'jwalton512/vim-blade'
+    use 'norcalli/nvim-colorizer.lua'
     use {
         'hrsh7th/nvim-cmp',
         config = function()
