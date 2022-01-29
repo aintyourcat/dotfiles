@@ -65,6 +65,3 @@
     summary = "*"
     script = /home/behappier/bin/alert.sh
 
-[include]
-
-# vim:ft=dosini
