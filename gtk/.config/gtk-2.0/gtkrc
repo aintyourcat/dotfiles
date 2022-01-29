@@ -1,3 +1,4 @@
-gtk-theme-name="Nordic-darker"
-gtk-icon-theme-name="Papirus-Dark"
+gtk-cursor-theme-name="Breeze_Snow"
 gtk-font-name="Iosevka 9"
+gtk-icon-theme-name="Papirus-Dark"
+gtk-theme-name="Nordic-darker"
