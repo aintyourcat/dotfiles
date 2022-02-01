@@ -2,7 +2,7 @@
 
 # GTK
 readonly DARK_GTK_THEME_NAME='Nordic-darker'
-readonly LIGHT_GTK_THEME_NAME='Default'
+readonly LIGHT_GTK_THEME_NAME='Adwaita'
 readonly DARK_GTK_ICON_THEME_NAME='Papirus-Dark'
 readonly LIGHT_GTK_ICON_THEME_NAME='Papirus'
 readonly GTK_2_CONFIG="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
@@ -17,6 +17,7 @@ readonly DARK_XRESOURCES_COLORSCHEME_NAME="nightfly"
 readonly LIGHT_XRESOURCES_COLORSCHEME_NAME="iceberg-light"
 readonly XRESOURCES_CONFIG="$XDG_CONFIG_HOME/X11/xresources.Xresources"
 # Rofi
+readonly MAIN_ROFI_THEME_TEMPLATE="$XDG_CONFIG_HOME/template/square-common.rasi"
 readonly DARK_ROFI_THEME_TEMPLATE="$XDG_CONFIG_HOME/template/square-dark.rasi"
 readonly LIGHT_ROFI_THEME_TEMPLATE="$XDG_CONFIG_HOME/template/square-light.rasi"
 readonly ROFI_CONFIG="$XDG_CONFIG_HOME/rofi/config.rasi"
@@ -31,6 +32,10 @@ readonly LIGHT_NEOVIM_COLORSCHEME_NAME='iceberg'
 readonly DARK_NEOVIM_BACKGROUND_TYPE='dark'
 readonly LIGHT_NEOVIM_BACKGROUND_TYPE='light'
 readonly NEOVIM_COLORSCHEME_CONFIG="$XDG_CONFIG_HOME/nvim/lua/colorscheme.lua"
+# qt5ct
+readonly QT5CT_CONFIG="$XDG_CONFIG_HOME/qt5ct/qt5ct.conf"
+# Papirus Icon Theme
+readonly PAPIRUS_PANEL_ICONS_DIR="$XDG_DATA_HOME/icons/Papirus/22x22/panel"
 
 create_file_if_not_exist () {
     test -n "$1" || return
@@ -58,15 +63,16 @@ set_gtk_2 () {
     local search_pattern="^$key=\".*\"\$"
     local replacement="$key=\"$value\""
 
-    grep --quiet "$search_pattern" "$config_file" && {
+    if grep --quiet "$search_pattern" "$config_file"; then
         sed --in-place=.bak -e "s#$search_pattern#$replacement#" "$config_file"
-    } || {
+    else
         printf '%s\n' "$replacement" >> "$config_file"
-    }
+    fi
 }
 
 # $1: key, $2: value, $3: config file path
-# Insert the following line in the config file:
+# Insert the following lines in the config file:
+# [Settings]
 # key=value
 # Or replace 'value' if it already exists
 set_gtk_3 () {
@@ -78,14 +84,19 @@ set_gtk_3 () {
 
     create_file_if_not_exist "$config_file" || return
 
+    local settings_line_number="$(grep -m 1 -n '\[Settings\]' "$config_file" | cut -d ':' -f 1)"
     local search_pattern="^$key=.*\$"
     local replacement="$key=$value"
 
-    grep --quiet "$search_pattern" "$config_file" && {
-        sed --in-place=.bak -e "s#$search_pattern#$replacement#" "$config_file"
-    } || {
-        printf '%s\n' "$replacement" >> "$config_file"
-    }
+    if test -n "$settings_line_number"; then
+        if sed --silent -e "$settings_line_number,\$ p" "$config_file" | grep --quiet "$search_pattern"; then
+            sed --in-place=.bak -e "$settings_line_number,\$ s#$search_pattern#$replacement#" "$config_file"
+        else
+            sed --in-place=.bak -e "$settings_line_number a\\$replacement" "$config_file"
+        fi
+    else
+        printf '%s\n' '[Settings]' "$replacement" >> "$config_file"
+    fi
 }
 
 # $1: key, $2: value, $3: config file path
@@ -104,16 +115,16 @@ set_xsettingsd () {
     local search_pattern="^$key \".*\"\$"
     local replacement="$key \"$value\""
 
-    grep --quiet "$search_pattern" "$config_file" && {
+    if grep --quiet "$search_pattern" "$config_file"; then
         sed --in-place=.bak -e "s#$search_pattern#$replacement#" "$config_file"
-    } || {
+    else
         printf '%s\n' "$replacement" >> "$config_file"
-    }
+    fi
 }
 
 # $1: config file path
 # Reload GTK+ by starting,
-# or sending signal to xsettingsd 
+# or sending signal to xsettingsd
 reload_gtk () {
     test -n "$1" || return
 
@@ -121,11 +132,11 @@ reload_gtk () {
 
     test -f "$config_file" || return
 
-    pgrep xsettingsd > /dev/null && {
+    if pgrep xsettingsd > /dev/null; then
         pkill -HUP xsettingsd
-    } || { 
+    else
         xsettingsd -c "$config_file" >/dev/null 2>&1 &
-    }
+    fi
 }
 
 # $1: colorsheme name, $2: config file path
@@ -144,19 +155,19 @@ set_alacritty () {
     test -f "$config_file" || return
     test -f "$colorscheme_file" || return
 
-    local import_line_number=$(grep -m 1 -n '^import:$' "$config_file" | cut -d ':' -f 1)
+    local import_line_number="$(grep -m 1 -n '^import:$' "$config_file" | cut -d ':' -f 1)"
     local search_pattern="^ - $colors_dir/.*yml\$"
     local replacement=" - $colorscheme_file"
 
-    test -n "$import_line_number" && {
-        test -n "$(sed -n -e "\#$search_pattern#p" "$config_file")" && {
-            sed --in-place=.bak -e "s#$search_pattern#$replacement#" "$config_file"
-        } || {
+    if test -n "$import_line_number"; then
+        if sed --silent -e "$import_line_number,\$ p" "$config_file" | grep --quiet "$search_pattern"; then
+            sed --in-place=.bak -e "$import_line_number,\$ s#$search_pattern#$replacement#" "$config_file"
+        else
             sed --in-place=.bak -e "$import_line_number a\\$replacement" "$config_file"
-        }
-    } || {
+        fi
+    else
         printf '%s\n' 'import:' "$replacement" >> "$config_file"
-    }
+    fi
 }
 
 # $1: colorscheme name, $2: config file path
@@ -177,11 +188,11 @@ set_xresources () {
     local search_pattern='^#include "xresources.d/.*"$'
     local replacement="#include \"xresources.d/$colorscheme_name.Xresources\""
 
-    grep --quiet "$search_pattern" "$config_file" && {
+    if grep --quiet "$search_pattern" "$config_file"; then
         sed --in-place=.bak -e "s:$search_pattern:$replacement:" "$config_file"
-    } || {
+    else
         printf '%s\n' "$replacement" >> "$config_file"
-    }
+    fi
 }
 
 # $1: config file path
@@ -197,35 +208,39 @@ reload_xresources () {
     xrdb -I"${config_file%/*}" -merge "$config_file"
 }
 
-# $1: template file path, $2: config file path
+# $1: main template file path (for common configs)
+# $2: template file path, $3: config file path
 # Parse the template file into a theme file
 # Then insert the following line in the config file
 # @theme "theme-name"
 # Or replace 'theme-name', if it already exists
 set_rofi () {
-    test -n "$*" -a "$#" -eq 2 || return
+    test -n "$*" -a "$#" -eq 3 || return
 
-    local template_file="$1"
-    local config_file="$2"
+    local main_template_file="$1"
+    local prefered_template_file="$2"
+    local config_file="$3"
     local theme_dir="${config_file%/*}/themes"
-    local theme_file="$theme_dir/${template_file##*/}"
+    local theme_file="$theme_dir/${prefered_template_file##*/}"
 
-    test -f "$template_file" || return
+    test -f "$main_template_file" || return
+    test -f "$prefered_template_file" || return
 
     test ! -d "$theme_dir" && { mkdir -p "$theme_dir" || return; }
 
-    xresources-colors parse "$template_file" > "$theme_file"
+    xresources-colors parse \
+        "$(cat $main_template_file $prefered_template_file)" > "$theme_file"
 
     local theme_name="${theme_file##*/}"
     local theme_name="${theme_name%.rasi}"
     local search_pattern='^@theme ".*"$'
     local replacement="@theme \"$theme_name\""
 
-    grep --quiet "$search_pattern" "$config_file" && {
+    if grep --quiet "$search_pattern" "$config_file"; then
         sed --in-place=.bak -e "s:$search_pattern:$replacement:" "$config_file"
-    } || {
+    else
         printf '%s\n' "$replacement" >> "$config_file"
-    }
+    fi
 }
 
 # $1: main template file path (for common configs),
@@ -282,24 +297,24 @@ set_neovim () {
     local search_pattern='^vim.opt.background = '.*'$'
     local replacement="vim.opt.background = '$background_type'"
 
-    grep --quiet "$search_pattern" "$config_file" && {
+    if grep --quiet "$search_pattern" "$config_file"; then
         sed -E --in-place=.bak -e "s#$search_pattern#$replacement#" "$config_file"
-    } || {
+    else
         printf '%s\n' "$replacement" >> "$config_file"
-    }
+    fi
 
     local search_pattern="^vim.cmd('colorscheme .*')$"
     local replacement="vim.cmd('colorscheme $colorscheme_name')"
 
-    grep --quiet "$search_pattern" "$config_file" && {
+    if grep --quiet "$search_pattern" "$config_file"; then
         sed --in-place=.bak -e "s#$search_pattern#$replacement#" "$config_file"
-    } || {
+    else
         printf '%s\n' "$replacement" >> "$config_file"
-    }
+    fi
 }
 
 # $1: config file path
-# Source the config file in each neovim instance remotely
+# Source the config file in each neovim instance, remotely
 reload_neovim () {
     test -n "$1" || return
 
@@ -313,8 +328,51 @@ reload_neovim () {
     done
 }
 
-# Main
+# $1: panel icons dir (for tray)
+# For each svg in the dir, on this specific class:
+# ColorScheme-Text { color:#hex-color; }
+# Replace 'hex-color' with current foreground color
+#https://github.com/PapirusDevelopmentTeam/papirus-icon-theme/issues/219#issuecomment-266988236
+set_papirus () {
+    test -n "$*" -a "$#" -eq 1 || return
 
+    local panel_icons_dir="$1"
+
+    test -d "$panel_icons_dir" || return
+
+    . "$(command -v xresources-colors)"
+
+    sed --in-place -e "s/ColorScheme-Text { .* }/ColorScheme-Text { color:$FOREGROUND; }/" \
+        "$panel_icons_dir"/*.svg
+}
+
+# $1: icon theme name, $2: config file
+# Insert the following lines in the config:
+# [Appearance]
+# icon_theme = icon-theme-name
+# Or replace icon-theme-name if it already exists
+set_qt5ct () {
+    test -n "$*" -a "$#" -eq 2 || return
+
+    local icon_theme_name="$1"
+    local config_file="$2"
+
+    local appearance_line_number="$(grep -m 1 -n '^\[Appearance\]$' "$config_file" | cut -d ':' -f 1)"
+    local search_pattern="^icon_theme=.*\$"
+    local replacement="icon_theme=$icon_theme_name"
+
+    if test -n "$appearance_line_number"; then
+        if sed --silent -e "$appearance_line_number,\$ p" "$config_file" | grep --quiet "$search_pattern"; then
+            sed --in-place=.bak -e "$appearance_line_number,\$ s#$search_pattern#$replacement#" "$config_file"
+        else
+            sed --in-place=.bak -e "$appearance_line_number a\\$replacement" "$config_file"
+        fi
+    else
+        printf '%s\n' '[Appearance]' "$replacement" >> "$config_file"
+    fi
+}
+
+# Main
 test -n "$1" || exit
 
 case "$1" in
@@ -360,9 +418,8 @@ if [ "$#" -gt 2 ]; then
 fi
 
 # Primary call
-
 case "$2" in
-    gtk) 
+    gtk)
         set_gtk_2 \
             'gtk-theme-name' \
             "$PREFERED_GTK_THEME_NAME" \
@@ -390,22 +447,25 @@ case "$2" in
 
         reload_gtk "$XSETTINGSD_CONFIG"
         ;;
-    alacritty) 
+    alacritty)
         set_alacritty \
             "$PREFERED_ALACRITTY_COLORSCHEME_NAME" \
             "$ALACRITTY_CONFIG"
         ;;
-    xresources) 
+    xresources)
         set_xresources \
             "$PREFERED_XRESOURCES_COLORSCHEME_NAME" \
             "$XRESOURCES_CONFIG"
 
         reload_xresources "$XRESOURCES_CONFIG"
         ;;
-    rofi) 
-        set_rofi "$PREFERED_ROFI_THEME_TEMPLATE" "$ROFI_CONFIG"
+    rofi)
+        set_rofi \
+            "$MAIN_ROFI_THEME_TEMPLATE" \
+            "$PREFERED_ROFI_THEME_TEMPLATE" \
+            "$ROFI_CONFIG"
         ;;
-    dunst) 
+    dunst)
         set_dunst \
             "$MAIN_DUNSTRC_TEMPLATE" \
             "$PREFERED_DUNSTRC_TEMPLATE" \
@@ -413,7 +473,7 @@ case "$2" in
 
         reload_dunst "Switched to $PREFERED_MODE theme"
         ;;
-    neovim) 
+    neovim)
         set_neovim \
             "$PREFERED_NEOVIM_COLORSCHEME_NAME" \
             "$PREFERED_NEOVIM_BACKGROUND_TYPE" \
@@ -424,8 +484,15 @@ case "$2" in
     *) exit 1 ;;
 esac
 
-# Additional call
-
+# Post call
 case "$2" in
-    xresources) wm restart ;;
+    gtk)
+        set_qt5ct \
+            "$PREFERED_GTK_ICON_THEME_NAME" \
+            "$QT5CT_CONFIG"
+        ;;
+    xresources)
+        set_papirus "$PAPIRUS_PANEL_ICONS_DIR"
+        wm restart
+        ;;
 esac
