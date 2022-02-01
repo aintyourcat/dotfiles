@@ -1,17 +1,17 @@
 #!/bin/sh
 
-. $XDG_CONFIG_HOME/lemonbar/config
-. $(command -v xresources-colors)
+. "$XDG_CONFIG_HOME/lemonbar/config"
+. "$(command -v xresources-colors)"
 
 SCREEN_WIDTH=$(xrandr | grep -F '*' | tr -s ' ' | cut -d ' ' -f 2 | cut -d 'x' -f 1)
-PANEL_WIDTH=$(( $SCREEN_WIDTH - (($TRAY_SLOT_SIZE * $TRAY_HORIZONTAL_SLOT_COUNT) + ($TRAY_SCROLLBAR_SIZE * 2)) ))
+PANEL_WIDTH=$(( SCREEN_WIDTH - ((TRAY_SLOT_SIZE * TRAY_HORIZONTAL_SLOT_COUNT) + (TRAY_SCROLLBAR_SIZE * 2)) ))
 
-test ! -p $PANEL_FIFO && mkfifo $PANEL_FIFO -m 600
+test ! -p "$PANEL_FIFO" && mkfifo "$PANEL_FIFO" -m 600
 
 trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
 
-for module in $XDG_CONFIG_HOME/lemonbar/modules/*; do
-    "$module" > $PANEL_FIFO &
+for module in "$XDG_CONFIG_HOME"/lemonbar/modules/*; do
+    "$module" > "$PANEL_FIFO" &
 done
 
 while IFS= read -r event; do
@@ -29,24 +29,26 @@ while IFS= read -r event; do
     esac
 
     eval "printf '%s\n' \"$PANEL_FORMAT\""
-done < $PANEL_FIFO |
+done < "$PANEL_FIFO" |
     lemonbar \
-    -p $PANEL_POSITION \
-    -B $BACKGROUND \
-    -F $FOREGROUND \
-    -g $PANEL_WIDTH\x$PANEL_HEIGHT \
-    -f $FONT_MEDIUM \
-    -f $FONT_BOLD \
-    -n $PANEL_WM_NAME &
+    -p "$PANEL_POSITION" \
+    -B "$BACKGROUND" \
+    -F "$FOREGROUND" \
+    -g "${PANEL_WIDTH}x$PANEL_HEIGHT" \
+    -f "$FONT_MEDIUM" \
+    -f "$FONT_BOLD" \
+    -n "$PANEL_WM_NAME" &
 
-stalonetray --background $BACKGROUND \
-    --geometry $TRAY_HORIZONTAL_SLOT_COUNT\x1$TRAY_POSITION \
+stalonetray --background "$BACKGROUND" \
+    --geometry "${TRAY_HORIZONTAL_SLOT_COUNT}x1$TRAY_POSITION" \
+    --max-geometry "${TRAY_HORIZONTAL_SLOT_COUNT}x1" \
+    --scrollbars-highlight "$BLACK" \
     --icon-gravity SW \
-    --slot-size $TRAY_SLOT_SIZE \
-    --icon-size 18 \
+    --slot-size "$TRAY_SLOT_SIZE" \
+    --icon-size 22 \
     --scrollbars horizontal \
-    --window-strut $TRAY_WINDOW_STRUT \
-    --scrollbars-size $TRAY_SCROLLBAR_SIZE &
+    --window-strut "$TRAY_WINDOW_STRUT" \
+    --scrollbars-size "$TRAY_SCROLLBAR_SIZE" &
 
 xdo lower -ma "$PANEL_WM_NAME"
 xdo lower -ma stalonetray

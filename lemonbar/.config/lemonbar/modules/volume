@@ -11,9 +11,9 @@
     case $event in
         *'on sink #'*)
             sink_num="${event##*#}"
-            muted=$(pactl get-sink-mute $sink_num | cut -d ' ' -f 2)
+            muted=$(pactl get-sink-mute "$sink_num" | cut -d ' ' -f 2)
 
-            out=$(pactl get-sink-volume $sink_num | tr -s '[:space:]')
+            out=$(pactl get-sink-volume "$sink_num" | tr -s '[:space:]')
             channels=$(grep 'Volume' <<< "$out")
             balance=$(grep 'balance' <<< "$out" | cut -d ' ' -f 3)
 
@@ -21,7 +21,7 @@
             set -- $channels
             volumes=()
             while [ $# -gt 0 ]; do
-                volume=$(cut -d '/' -f 2 <<< $1 | cut -d ' ' -f 2)
+                volume=$(cut -d '/' -f 2 <<< "$1" | cut -d ' ' -f 2)
 
                 counts=${#volumes[@]}
                 volumes[$counts]=$volume

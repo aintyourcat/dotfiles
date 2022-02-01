@@ -4,10 +4,10 @@ readonly BAT_DIR='/sys/class/power_supply/BAT0/'
 readonly DELAY='5s'
 
 while true; do
-    read status < "$BAT_DIR/status"
-    read capacity < "$BAT_DIR/capacity"
+    read -r status < "$BAT_DIR/status"
+    read -r capacity < "$BAT_DIR/capacity"
 
-    test $capacity -gt 100 && capacity=100
+    test "$capacity" -gt 100 && capacity=100
 
     case $((capacity / 25)) in
         0) icon='' ;;

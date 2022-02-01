@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. $(command -v xresources-colors)
+. "$(command -v xresources-colors)"
 
 bspc subscribe report |
     while read -r event; do
@@ -14,7 +14,7 @@ bspc subscribe report |
             case $item in
                 [mM]*) shift && continue ;;
                 [fFoOuU]*)
-                    desktop=${item#?}
+                    desktop="${item#?}"
 
                     case $item in
                         # Unactive empty desktop
