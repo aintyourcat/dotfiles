@@ -2,25 +2,21 @@
 
 . "$XDG_CONFIG_HOME/user-dirs.dirs"
 
-dest_folder="$XDG_PICTURES_DIR/shots"
+readonly DEST_FOLDER="$XDG_PICTURES_DIR/shots"
+readonly FILE_NAME="scrot-%m%d%Y-%H%M%S.png"
+readonly FILE_PATH="$DEST_FOLDER/$FILE_NAME"
+readonly QUALITY=100
+readonly DELAY_COUNT=3
+readonly COPY_COMMAND='xclip -selection clipboard -t image/png $f'
+readonly NOTIFY_COMMAND='notify-send "Screenshot taken!" -i $f'
+readonly SCROT_COMMAND="scrot '$FILE_PATH' -q '$QUALITY' -e '$COPY_COMMAND; $NOTIFY_COMMAND'"
 
-if [ ! -d "$dest_folder" ]; then
-    mkdir -p "$dest_folder"
-    if [ $? -ne 0 ]; then
-        dest_folder="$HOME"
-        notify-send 'Using $HOME folder'
-    fi
-fi
-
-file_name='scrot-%m%d%Y-%H%M%S'
-file_ext='png'
-file_path="$dest_folder/$file_name.$file_ext"
-copy_command='xclip -selection clipboard -t image/png $f'
-quality=100
-delay_count=3
+mkdir -p "$DEST_FOLDER" || exit
 
 case $1 in
-    -s) scrot $file_path -q $quality -b -s -f -e "$copy_command; notify-send 'Selection taken!'" ;;
-    -d) scrot $file_path -q $quality -d $delay_count -e "$copy_command; notify-send 'Delayed shot taken!'" ;;
-    *) scrot $file_path -q $quality -e "$copy_command; notify-send 'Captured!'" ;;
+    -s) args='-b -s -f' ;;
+    -d) args="-d $DELAY_COUNT" ;;
+    *) args= ;;
 esac
+
+eval "$SCROT_COMMAND $args"
