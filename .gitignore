@@ -1,4 +1,4 @@
-scripts/bin/blue-helper
+scripts/.local/bin/blue-helper
 zsh/.config/zsh/.zcompdump
 zsh/.config/zsh/.zcompcache/
 rofi/.config/rofi/themes/square-*.rasi
