@@ -1,7 +1,17 @@
 #!/bin/sh
 
 case $1 in
-    "C-d") while read file; do mv -vf $file /tmp; done ;;
-    "C-c") while read file; do xclip -selection clipboard -t image/png "$file"; done ;;
-    "C-x") xclip -in -filter | tr '\n' ' ' | xclip -in -selection clipboard ;;
+    'd')
+        while read -r file; do
+            gio trash "$file"
+        done
+        ;;
+    'c')
+        while read -r file; do
+            xclip -selection clipboard -t image/png "$file";
+        done
+        ;;
+    'M-c')
+        xclip -in -filter | tr '\n' ' ' | xclip -in -selection clipboard
+        ;;
 esac
