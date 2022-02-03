@@ -2,18 +2,20 @@ export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 
 typeset -U PATH path
-path=("$HOME/bin" "$HOME/.local/bin" '/opt/bin' $path)
+path=("$HOME/.local/bin" "$HOME/.cabal/bin" '/opt/bin' $path)
 export PATH
 
 export EDITOR=nvim
 export VISUAL=$EDITOR
 
 # Prevent messy $HOME
-export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc
+export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc # However, ~/.themes must be present
 export LESSHISTFILE=$XDG_DATA_HOME/less/history
 export XAUTHORITY=$XDG_RUNTIME_DIR/Xauthority
 export XINITRC=$XDG_CONFIG_HOME/X11/xinitrc
-export XRESOURCES=$XDG_CONFIG_HOME/X11/xresources
+export XRESOURCES=$XDG_CONFIG_HOME/X11/xresources.Xresources
+export MYSQL_HISTFILE=$XDG_DATA_HOME/mysql_history
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 
 # nnn configs
 export NNN_ARCHIVE="\\.(7z|a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|rar|rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)$"
@@ -30,8 +32,9 @@ export NNN_FCOLORS='020b044c00600ef7c6d6ab01'
 export NVM_DIR=$XDG_CONFIG_HOME/nvm
 
 # Make QT apps follow GTK theme
-export GTK2_RC_FILES=$GTK2_RC_FILES:$XDG_DATA_HOME/themes/Nordic-darker/gtk-2.0/gtkrc
 export QT_QPA_PLATFORMTHEME=qt5ct
 
 # Fix Android Studio not showed properly
 export _JAVA_AWT_WM_NONREPARENTING=1
+
+export SVDIR=$HOME/.local/var/service/
