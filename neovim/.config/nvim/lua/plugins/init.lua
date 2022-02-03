@@ -20,6 +20,12 @@ return packer.startup(function(use)
     use 'jwalton512/vim-blade'
     use 'norcalli/nvim-colorizer.lua'
     use {
+        'uga-rosa/cmp-dictionary',
+        config = function ()
+            require('plugins.others').cmp_dictionary()
+        end
+    }
+    use {
         'hrsh7th/nvim-cmp',
         config = function()
             require('plugins.cmp')

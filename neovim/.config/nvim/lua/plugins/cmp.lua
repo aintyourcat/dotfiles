@@ -39,7 +39,11 @@ cmp.setup {
         { name = 'nvim_lsp' },
         { name = 'vsnip' },
         { name = 'buffer' },
-        { name = 'path' }
+        { name = 'path' },
+        {
+            name = "dictionary",
+            keyword_length = 2
+        }
     }
 }
 

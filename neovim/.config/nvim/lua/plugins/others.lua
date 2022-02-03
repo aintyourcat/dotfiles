@@ -20,4 +20,16 @@ M.nnn = function()
     }
 end
 
+M.cmp_dictionary = function ()
+    local cmp_dict = require('cmp_dictionary')
+
+    cmp_dict.setup {
+        dic = {
+            ['*'] = {
+                vim.fn.expand('$XDG_DATA_HOME') .. '/dict/indonesian'
+            }
+        }
+    }
+end
+
 return M
