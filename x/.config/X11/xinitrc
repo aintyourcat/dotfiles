@@ -7,13 +7,12 @@
 light -S 20 &
 sct 3500 &
 xsetroot -cursor_name left_ptr &
-xfce4-screensaver &
 pipewire &
 pipewire-pulse &
-pkill ssh-agent; eval $(ssh-agent)
+pkill ssh-agent; eval "$(ssh-agent)"
 
 # Sessions
-export SESSION=${1:-bspwm}
+export SESSION="${1:-bspwm}"
 
 case $SESSION in
     bspwm) exec bspwm ;;
