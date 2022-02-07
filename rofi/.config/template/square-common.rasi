@@ -6,7 +6,7 @@
 }
 
 window {
-    border: 2px;
+    border: 1px;
     width: 25%;
 }
 
@@ -16,13 +16,14 @@ mainbox {
 }
 
 inputbar {
-    children: [prompt, entry];
-    padding: 10px;
-    spacing: 5px;
+    children: [icon-inputbar, entry];
+    padding: 10px 14px;
+    spacing: 14px;
 }
 
-prompt {
-    enabled: false;
+icon-inputbar {
+    filename: "edit-find-symbolic";
+    expand: false;
 }
 
 entry {
@@ -30,15 +31,12 @@ entry {
 }
 
 listview {
-    padding: 10px;
-    spacing: 3px;
-    border: 2px 0 0;
     lines: 5;
 }
 
 element { 
-    padding: 7px 10px;
-    spacing: 7px;
+    padding: 10px 14px;
+    spacing: 14px;
 }
 
 element-icon {
