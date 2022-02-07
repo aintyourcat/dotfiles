@@ -36,6 +36,12 @@ readonly NEOVIM_COLORSCHEME_CONFIG="$XDG_CONFIG_HOME/nvim/lua/colorscheme.lua"
 readonly QT5CT_CONFIG="$XDG_CONFIG_HOME/qt5ct/qt5ct.conf"
 # Papirus Icon Theme
 readonly PAPIRUS_PANEL_ICONS_DIR="$XDG_DATA_HOME/icons/Papirus/22x22/panel"
+# Wallpaper
+readonly DARK_WALLPAPER_PATH="$HOME/pic/wallpapers/thor-alvis-sgrCLKYdw5g-unsplash.jpg"
+readonly LIGHT_WALLPAPER_PATH="$HOME/pic/wallpapers/baptiste-crrDEsNtl-Q-unsplash.jpg"
+readonly DARK_WALLPAPER_COMMAND="xwallpaper --zoom $DARK_WALLPAPER_PATH"
+readonly LIGHT_WALLPAPER_COMMAND="xwallpaper --zoom $LIGHT_WALLPAPER_PATH"
+readonly WALLPAPER_CACHE_FILE="$HOME/.cache/dark_theme.wallpaper"
 
 create_file_if_not_exist () {
     test -n "$1" || return
@@ -372,6 +378,13 @@ set_qt5ct () {
     fi
 }
 
+# $1: command to run, $2: file to cache the command
+set_wallpaper () {
+    test -n "$*" -a "$#" -eq 2 || return
+
+    eval "$1" && printf '%s\n' "$1" > "$2"
+}
+
 # Main
 test -n "$1" || exit
 
@@ -386,6 +399,7 @@ case "$1" in
         PREFERED_DUNSTRC_TEMPLATE="$DARK_DUNSTRC_TEMPLATE"
         PREFERED_NEOVIM_COLORSCHEME_NAME=$DARK_NEOVIM_COLORSCHEME_NAME
         PREFERED_NEOVIM_BACKGROUND_TYPE=$DARK_NEOVIM_BACKGROUND_TYPE
+        PREFERED_WALLPAPER_COMMAND=$DARK_WALLPAPER_COMMAND
         ;;
     off)
         PREFERED_MODE='light'
@@ -397,6 +411,7 @@ case "$1" in
         PREFERED_DUNSTRC_TEMPLATE="$LIGHT_DUNSTRC_TEMPLATE"
         PREFERED_NEOVIM_COLORSCHEME_NAME=$LIGHT_NEOVIM_COLORSCHEME_NAME
         PREFERED_NEOVIM_BACKGROUND_TYPE=$LIGHT_NEOVIM_BACKGROUND_TYPE
+        PREFERED_WALLPAPER_COMMAND=$LIGHT_WALLPAPER_COMMAND
         ;;
     *) exit 1 ;;
 esac
@@ -493,6 +508,7 @@ case "$2" in
         ;;
     xresources)
         set_papirus "$PAPIRUS_PANEL_ICONS_DIR"
+        set_wallpaper "$PREFERED_WALLPAPER_COMMAND" "$WALLPAPER_CACHE_FILE"
         wm restart
         ;;
 esac
