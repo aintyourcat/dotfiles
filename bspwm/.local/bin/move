@@ -11,7 +11,7 @@ esac
 if [ -n "$(bspc query --nodes --node focused.tiled)" ]; then
     bspc node --to-node "$1".!automatic || bspc node --swap "$1".tiled
 elif [ -n "$(bspc query --nodes --node focused.floating)" ]; then
-    percent=20
+    percent=50
 
     case "$dim" in
         height) y="$sign$percent"; x=0 ;;
