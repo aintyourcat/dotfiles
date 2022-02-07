@@ -6,10 +6,10 @@
     width = 200
     height = 100
     origin = bottom-right
-    offset = 20x20
-    padding = 10
-    horizontal_padding = 10
-    frame_width = 2
+    offset = 10x10
+    padding = 15
+    horizontal_padding = 15
+    frame_width = 1
     
     # Text
     font = Iosevka 8
