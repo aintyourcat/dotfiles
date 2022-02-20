@@ -3,7 +3,7 @@
 . "$XDG_CONFIG_HOME/lemonbar/config"
 . "$(command -v xresources-colors)"
 
-SCREEN_WIDTH=$(xrandr | grep -F '*' | tr -s ' ' | cut -d ' ' -f 2 | cut -d 'x' -f 1)
+SCREEN_WIDTH=$(wattr w "$(lsw -r)")
 PANEL_WIDTH=$(( SCREEN_WIDTH - ((TRAY_SLOT_SIZE * TRAY_HORIZONTAL_SLOT_COUNT) + (TRAY_SCROLLBAR_SIZE * 2)) ))
 
 test ! -p "$PANEL_FIFO" && mkfifo "$PANEL_FIFO" -m 600
