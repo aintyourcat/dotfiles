@@ -3,14 +3,17 @@ A backup for dotfiles on my current Void Linux setup.
 
 ## Installation
 1. Clone this repo:
+
     ```sh
     git clone https://github.com/aintyourcat/dotfiles.git`
     ```
 2. Change the directory into the clonned repo:
+
     ```sh
     cd dotfiles
     ```
 3. Use a dotfile using `stow`
+
     If the dotfile is under the root directory:
     ```sh
     cd root
