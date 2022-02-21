@@ -16,7 +16,7 @@ super + {_, shift} + q
 
 # Send to desktop
 super + shift + {1-5}
-    bspc node -d '^{1-5}'
+    bspc node -d '^{1-5}' --follow
 
 # State
 super + {t,s,f}
