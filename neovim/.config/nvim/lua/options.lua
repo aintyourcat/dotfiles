@@ -14,8 +14,13 @@ opt.title = true
 opt.splitright = true
 opt.splitbelow = true
 opt.wrap = false
+opt.breakindent = true
 opt.cursorline = true
 opt.cursorcolumn = true
 opt.ignorecase = true
 opt.smartcase = true
 opt.scrolloff = 5
+opt.undofile = true
+opt.list = true
+opt.listchars:append('space:⋅')
+opt.listchars:append('eol:↴')

@@ -1,8 +1,20 @@
 local set_keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 
+function nnn_picker()
+    local ok, root_dir = pcall(vim.api.nvim_buf_get_var, 0, 'root_dir')
+    local command = 'NnnPicker'
+
+    if ok then
+        vim.cmd(command .. root_dir)
+    else
+        vim.cmd(command .. '%:p:h')
+    end
+end
+
 -- nnn
-set_keymap('n', '<M-n>', ':NnnPicker %:p:h<CR>', opts)
+set_keymap('n', '<M-n>', ':lua nnn_picker()<CR>', opts)
+set_keymap('n', '<M-N>', ':NnnPicker %:p:h<CR>', opts)
 -- Tabs
 set_keymap('n', '<C-t>', ':tabnew<CR>', opts)
 set_keymap('n', '<C-q>', ':tabclose', { noremap = true })
@@ -30,6 +42,9 @@ set_keymap('t', '<M-q>', '<C-\\><C-n>:quit<CR>', opts)
 -- Terminal
 set_keymap('n', 'tx', ':new term://zsh<CR>', opts)
 set_keymap('n', 'tv', ':vnew term://zsh<CR>', opts)
-set_keymap('t', '<Esc><Esc>', '<C-\\><C-n>', opts)
+set_keymap('t', '<M-Esc>', '<C-\\><C-n>', opts)
 -- Miscellaneous
-set_keymap('n', '<C-Space>', ':nohlsearch<CR>', opts)
+set_keymap('x', '<Tab>', '>gv', opts)
+set_keymap('x', '<S-Tab>', '<gv', opts)
+set_keymap('n', 'k', "v:count == 0 ? 'gk' : 'k'", { noremap = true, expr = true, silent = true })
+set_keymap('n', 'j', "v:count == 0 ? 'gj' : 'j'", { noremap = true, expr = true, silent = true })

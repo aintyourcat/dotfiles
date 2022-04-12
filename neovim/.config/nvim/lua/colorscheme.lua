@@ -1,2 +1,2 @@
-vim.cmd('colorscheme modus-operandi')
-vim.opt.background = 'light'
+vim.opt.background = 'dark'
+vim.cmd('colorscheme nightfly')

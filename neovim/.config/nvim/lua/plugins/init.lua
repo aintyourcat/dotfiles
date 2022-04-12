@@ -1,6 +1,6 @@
 -- Install packer
 local fn = vim.fn
-local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
+local install_path = fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
 
 if fn.empty(fn.glob(install_path)) > 0 then
     local url = 'https://github.com/wbthomason/packer.nvim'
@@ -10,15 +10,25 @@ end
 local packer = require('packer')
 
 return packer.startup(function(use)
-    use 'wbthomason/packer.nvim'
-    use 'tpope/vim-commentary'
+    use 'wbthomason/packer.nvim' -- Package manager
+    use {
+        'numToStr/Comment.nvim',
+        config = function()
+            require('Comment').setup()
+        end
+    }
     use 'bluz71/vim-nightfly-guicolors'
     use 'bluz71/vim-moonfly-statusline'
     use 'rafamadriz/friendly-snippets'
     use 'flniu/er.vim'
     use 'cocopon/iceberg.vim'
     use 'jwalton512/vim-blade'
-    use 'norcalli/nvim-colorizer.lua'
+    use {
+        'norcalli/nvim-colorizer.lua',
+        config = function ()
+            require('colorizer').setup()
+        end
+    }
     use {
         'uga-rosa/cmp-dictionary',
         config = function ()
@@ -62,9 +72,7 @@ return packer.startup(function(use)
         config = function ()
             require('plugins.null-ls')
         end,
-        requires = {
-            'nvim-lua/plenary.nvim'
-        }
+        requires = { 'nvim-lua/plenary.nvim' }
     }
     use {
         'nvim-treesitter/nvim-treesitter',
@@ -73,6 +81,8 @@ return packer.startup(function(use)
             require('plugins.treesitter')
         end
     }
+    use 'nvim-treesitter/playground'
+    use 'mbbill/undotree'
     if PACKER_BOOTSTRAP then
         packer.sync()
     end

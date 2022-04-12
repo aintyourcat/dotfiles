@@ -9,29 +9,14 @@ cmp.setup {
         end
     },
     mapping = {
-        ['<Tab>'] = cmp.mapping(
-            cmp.mapping.select_next_item(), { 'i', 'c' }
-        ),
-        ['<S-Tab>'] = cmp.mapping(
-            cmp.mapping.select_prev_item(), { 'i', 'c' }
-        ),
-        ['<C-d>'] = cmp.mapping(
-            cmp.mapping.scroll_docs(4), { 'i', 'c' }
-        ),
-        ['<C-u>'] = cmp.mapping(
-            cmp.mapping.scroll_docs(-4), { 'i', 'c' }
-        ),
-        ['<C-Space>'] = cmp.mapping(
-            cmp.mapping.complete(), { 'i', 'c' }
-        ),
-        ['<C-e>'] = cmp.mapping(
-            cmp.mapping.close(), { 'i', 'c' }
-        ),
+        ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
+        ['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
+        ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+        ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+        ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+        ['<C-e>'] = cmp.mapping(cmp.mapping.abort(), { 'i', 'c' }),
         ['<CR>'] = cmp.mapping(
-            cmp.mapping.confirm {
-                select = true,
-                behavior = cmp.ConfirmBehavior.Replace
-            },
+            cmp.mapping.confirm({ select = false }),
             { 'i', 'c' }
         )
     },
@@ -54,7 +39,6 @@ cmp.setup.cmdline('/', {
 })
 
 cmp.setup.cmdline(':', {
-    completion = { autocomplete = false },
     sources = {
         { name = 'path' },
         { name = 'cmdline' }
