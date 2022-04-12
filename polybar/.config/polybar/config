@@ -1,0 +1,106 @@
+[colors]
+background = ${xrdb:background:#000}
+foreground = ${xrdb:foreground:#fff}
+blue = ${xrdb:color12:#00f}
+
+[bar/top]
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+font-0 = Iosevka Nerd Font:size=10;2
+
+height = 25
+
+; Replaced by workspace module label's margin left.
+padding-left = 0
+
+padding-right = 1
+
+modules-left = workspace title
+modules-center =
+modules-right = capslock volume wifi battery datetime
+
+module-margin = 1
+
+tray-position = right
+tray-padding = 2
+tray-maxsize = 22
+
+[module/workspace]
+type = internal/bspwm
+
+label-empty =
+
+label-focused = %index%.
+label-focused-foreground = ${colors.blue}
+label-focused-margin-left = 1
+
+label-occupied = %index%
+label-occupied-foreground = ${colors.blue}
+label-occupied-margin-left = 1
+
+label-urgent = %index%!
+label-urgent-margin-left = 1
+
+[module/title]
+type = internal/xwindow
+
+label-empty = Desktop
+label-maxlen = 100
+
+[module/capslock]
+type = internal/xkeyboard
+
+blacklist-0 = num lock
+blacklist-1 = scroll lock
+
+format = <label-indicator>
+
+label-indicator-on-capslock = CAPS LOCK
+
+[module/wifi]
+type = internal/network
+
+interface = wlp1s0
+interval = 3.0
+
+label-connected = 直  %essid%
+
+[module/volume]
+type = internal/pulseaudio
+
+format-volume = <ramp-volume> <label-volume>
+
+ramp-volume-0 = 奄
+ramp-volume-1 = 奔
+ramp-volume-2 = 墳
+ramp-volume-3 = 婢
+
+label-muted = ﱝ Muted
+
+[module/battery]
+type = internal/battery
+
+battery = BAT0
+
+format-charging = <ramp-capacity>  <label-charging>
+format-discharging = <ramp-capacity>  <label-discharging>
+format-full = <ramp-capacity>  <label-full>
+
+label-charging = %percentage%%+
+label-discharging = %percentage%%
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+[module/datetime]
+type = internal/date
+
+interval = 5
+
+date = %a, %d %b %H:%M
+
+; vim:ft=dosini
