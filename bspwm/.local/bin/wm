@@ -1,6 +1,6 @@
 #!/bin/sh
 
-kill_panel () pkill -x panel
+kill_panel () pkill -x polybar
 
 case "$1" in
     quit)

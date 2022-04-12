@@ -3,7 +3,7 @@
 . "$(command -v xresources-colors)"
 
 # Startup programs
-pgrep -x panel >/dev/null || panel 2>~/.cache/panel.errors &
+pgrep -x polybar || polybar top &
 pgrep -x sxhkd >/dev/null || sxhkd &
 read -r wall < "$HOME"/.cache/dark_theme.wallpaper && eval "$wall" &
 
