@@ -1,0 +1,5 @@
+#!/bin/sh
+
+sudo wpa_cli list_networks
+read -p "Select a network: " -r num
+sudo wpa_cli select_network "$num"
