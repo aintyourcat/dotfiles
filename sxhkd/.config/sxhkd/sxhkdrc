@@ -34,7 +34,7 @@ super + x
 super + {_,shift} + {h,j,k,l}
     {bspc node -f,move} {west,south,north,east}
 super + n
-    bspc node -f next.local.floating
+    bspc node -f next.local.floating.!hidden
 
 # Preselect
 super + ctrl + {h,j,k,l,space}
@@ -66,7 +66,7 @@ XF86ScreenSaver
 
 # Pulseaudio
 {_,shift} + XF86Audio{Lower,Raise}Volume
-    pactl {set-sink-volume @DEFAULT_SINK@, set-source-volume @DEFAULT_SOURCE@} {-5%,+5%}
+    pactl {set-sink-volume @DEFAULT_SINK@, set-source-volume @DEFAULT_SOURCE@} {-3%,+3%}
 {_,shift} + XF86AudioMute
     pactl {set-sink-mute @DEFAULT_SINK@, set-source-mute @DEFAULT_SOURCE@} toggle
 
@@ -86,3 +86,7 @@ super + {@space,Tab}
 # Dunst
 super + d; {d,a,h,c}
     dunstctl {close,close-all,history-pop,context}
+
+# mpc
+XF86Audio{Stop,Play,Next,Prev}
+    mpc {stop,toggle,next,prev}
