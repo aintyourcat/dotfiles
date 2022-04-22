@@ -19,8 +19,13 @@ super + shift + {1-5}
     bspc node -d '^{1-5}' --follow
 
 # State
-super + {t,s,f}
-    bspc node -t {tiled,floating,fullscreen}
+super + {s,f}
+    bspc node -t {floating,fullscreen}
+
+super + t
+    id="$(bspc query -N -n focused.floating)"; \
+    bspc node -t tiled; \
+    test -n "$id" && bspc node --to-node any.!automatic
 
 # Center
 super + c
