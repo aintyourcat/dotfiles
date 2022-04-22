@@ -26,6 +26,8 @@ tray-position = right
 tray-padding = 2
 tray-maxsize = 22
 
+wm-restack = bspwm
+
 [module/workspace]
 type = internal/bspwm
 
