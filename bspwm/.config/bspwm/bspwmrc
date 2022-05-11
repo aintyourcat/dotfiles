@@ -3,7 +3,7 @@
 . "$(command -v xresources-colors)"
 
 # Startup programs
-pgrep -x polybar || polybar top &
+pgrep -x polybar || polybar -c ~/.config/polybar/bspwm &
 pgrep -x sxhkd >/dev/null || sxhkd &
 read -r wall < "$HOME"/.cache/dark_theme.wallpaper && eval "$wall" &
 
