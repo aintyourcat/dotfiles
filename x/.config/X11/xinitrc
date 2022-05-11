@@ -17,5 +17,6 @@ export SESSION="${1:-bspwm}"
 
 case $SESSION in
     bspwm) exec dbus-run-session bspwm ;;
+    herbst) exec dbus-run-session herbstluftwm ;;
     *) exec $1 ;;
 esac
