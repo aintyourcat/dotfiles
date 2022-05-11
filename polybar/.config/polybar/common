@@ -52,6 +52,7 @@ format-connected = <ramp-signal> <label-connected>
 label-connected = %essid%
 
 ramp-signal-0 = 直
+ramp-signal-foreground = ${colors.cyan}
 
 [module/volume]
 type = internal/pulseaudio
@@ -62,8 +63,10 @@ ramp-volume-0 = 奄
 ramp-volume-1 = 奔
 ramp-volume-2 = 墳
 ramp-volume-3 = 婢
+ramp-volume-foreground = ${colors.cyan}
 
 label-muted = ﱝ Muted
+ramp-muted-foreground = ${colors.cyan}
 
 [module/battery]
 type = internal/battery
@@ -82,6 +85,7 @@ ramp-capacity-1 = 
 ramp-capacity-2 = 
 ramp-capacity-3 = 
 ramp-capacity-4 = 
+ramp-capacity-foreground = ${colors.cyan}
 
 [module/datetime]
 type = internal/date
