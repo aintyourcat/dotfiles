@@ -1,4 +1,4 @@
-include-file = ./config
+include-file = ./common
 
 [module/workspace]
 type = internal/bspwm
