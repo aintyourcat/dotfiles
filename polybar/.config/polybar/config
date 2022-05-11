@@ -28,22 +28,6 @@ tray-maxsize = 22
 
 wm-restack = bspwm
 
-[module/workspace]
-type = internal/bspwm
-
-label-empty =
-
-label-focused = %index%.
-label-focused-foreground = ${colors.blue}
-label-focused-margin-left = 1
-
-label-occupied = %index%
-label-occupied-foreground = ${colors.blue}
-label-occupied-margin-left = 1
-
-label-urgent = %index%!
-label-urgent-margin-left = 1
-
 [module/title]
 type = internal/xwindow
 
