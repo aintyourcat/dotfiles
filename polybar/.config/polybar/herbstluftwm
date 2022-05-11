@@ -1,0 +1,11 @@
+include-file = ./common
+
+[bar/top]
+padding-left = 1
+
+[module/workspace]
+type = custom/script
+exec = ./scripts/herbstluftwm-workspace
+tail = true
+
+; vim:ft=dosini
