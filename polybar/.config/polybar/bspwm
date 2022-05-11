@@ -1,5 +1,9 @@
 include-file = ./common
 
+[bar/top]
+; Replaced by workspace module label's margin left.
+padding-left = 0
+
 [module/workspace]
 type = internal/bspwm
 
