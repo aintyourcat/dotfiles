@@ -35,11 +35,13 @@ super + c
 super + x
     bspc node -g hidden=on
 
-# Focus, Move
+# Focus, Move, Float
 super + {_,shift} + {h,j,k,l}
     {bspc node -f,move} {west,south,north,east}
-super + n
-    bspc node -f next.local.floating.!hidden
+super + {n,p}
+    bspc node -f {next,prev}.local.floating.!hidden
+super + shift + s; {k,space,j}; {h,space,l}
+    command float {top,middle,bottom} {left,center,right}
 
 # Preselect
 super + ctrl + {h,j,k,l,space}
@@ -52,6 +54,10 @@ super + alt + {h,j,k,l}
 # Contract
 super + alt + shift + {h,j,k,l}
     bspc node -z {right -50 0,top 0 50,bottom 0 -50,left 50 0}
+
+# Flag
+super + g; {s}
+    bspc node -g {sticky}
 
 ## Misc
 
