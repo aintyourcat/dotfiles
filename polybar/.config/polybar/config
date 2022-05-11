@@ -66,7 +66,11 @@ type = internal/network
 interface = wlp1s0
 interval = 3.0
 
-label-connected = 直  %essid%
+format-connected = <ramp-signal> <label-connected>
+
+label-connected = %essid%
+
+ramp-signal-0 = 直
 
 [module/volume]
 type = internal/pulseaudio
