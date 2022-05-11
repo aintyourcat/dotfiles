@@ -10,11 +10,11 @@ type = internal/bspwm
 label-empty =
 
 label-focused = %index%.
-label-focused-foreground = ${colors.blue}
+label-focused-foreground = ${colors.cyan}
 label-focused-margin-left = 1
 
 label-occupied = %index%
-label-occupied-foreground = ${colors.blue}
+label-occupied-foreground = ${colors.cyan}
 label-occupied-margin-left = 1
 
 label-urgent = %index%!

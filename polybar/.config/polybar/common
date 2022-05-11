@@ -1,7 +1,7 @@
 [colors]
 background = ${xrdb:background:#000}
 foreground = ${xrdb:foreground:#fff}
-blue = ${xrdb:color12:#00f}
+cyan = ${xrdb:color14:#00f}
 
 [bar/top]
 background = ${colors.background}
