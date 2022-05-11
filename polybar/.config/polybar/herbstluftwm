@@ -5,7 +5,7 @@ padding-left = 1
 
 [module/workspace]
 type = custom/script
-exec = ./scripts/herbstluftwm-workspace
+exec = ~/.config/polybar/scripts/herbstluftwm-workspace
 tail = true
 
 ; vim:ft=dosini
