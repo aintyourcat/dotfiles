@@ -58,6 +58,7 @@ ramp-signal-foreground = ${colors.cyan}
 type = internal/pulseaudio
 
 format-volume = <ramp-volume> <label-volume>
+format-muted = <ramp-volume> <label-muted>
 
 ramp-volume-0 = 奄
 ramp-volume-1 = 奔
@@ -65,7 +66,7 @@ ramp-volume-2 = 墳
 ramp-volume-3 = 婢
 ramp-volume-foreground = ${colors.cyan}
 
-label-muted = ﱝ Muted
+label-muted = Muted
 ramp-muted-foreground = ${colors.cyan}
 
 [module/battery]
