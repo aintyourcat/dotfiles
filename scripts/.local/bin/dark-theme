@@ -509,6 +509,7 @@ case "$2" in
     xresources)
         set_papirus "$PAPIRUS_PANEL_ICONS_DIR"
         set_wallpaper "$PREFERED_WALLPAPER_COMMAND" "$WALLPAPER_CACHE_FILE"
-        wm restart
+        # wm restart
+        herbstclient reload
         ;;
 esac
