@@ -25,6 +25,8 @@ tray-maxsize = 22
 
 wm-restack = bspwm
 
+enable-ipc = true
+
 [module/title]
 type = internal/xwindow
 
