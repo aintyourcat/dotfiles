@@ -1,0 +1,102 @@
+herbstclient keyunbind   --all
+herbstclient mouseunbind --all
+
+mod=Mod4
+
+# WM related
+
+herbstclient keybind $mod-Shift-q quit
+herbstclient keybind $mod-Shift-r reload
+
+# Tag related
+
+herbstclient keybind $mod-s floating toggle
+
+for i in \
+$(herbstclient foreach T tags.by-name. \
+    sprintf INDEX_ATTR_STR %c.index T \
+    substitute INDEX_ATTR_VALUE INDEX_ATTR_STR \
+    echo INDEX_ATTR_VALUE); \
+do
+    if [ "$i" -gt 9 ]; then continue; fi
+    key=$((i+1))
+    if [ "$i" -eq 9 ]; then key=0; fi
+
+    herbstclient keybind $mod-$key          use_index   "$i"
+    herbstclient keybind $mod-Shift-$key    move_index  "$i"
+done
+
+# Frame related
+
+herbstclient keybind $mod-u               split   bottom
+herbstclient keybind $mod-Shift-u         split   top
+herbstclient keybind $mod-o               split   right
+herbstclient keybind $mod-Shift-o         split   left
+herbstclient keybind $mod-Control-space   split   explode
+
+herbstclient keybind $mod-Control-h resize left
+herbstclient keybind $mod-Control-j resize down
+herbstclient keybind $mod-Control-k resize up
+herbstclient keybind $mod-Control-l resize right
+
+herbstclient keybind $mod-r remove
+
+herbstclient keybind $mod-Tab         cycle_frame     1
+herbstclient keybind $mod-Shift-Tab   cycle_frame     -1
+
+herbstclient keybind $mod-space       cycle_layout    +1
+herbstclient keybind $mod-Shift-space cycle_layout    -1
+
+# Window related
+
+herbstclient keybind $mod-h \
+    or , and . \
+    compare tags.focus.tiling.focused_frame.algorithm = max \
+    . focus --level=tabs left \
+    , focus left
+herbstclient keybind $mod-j focus down
+herbstclient keybind $mod-k focus up
+herbstclient keybind $mod-l \
+    or , and . \
+    compare tags.focus.tiling.focused_frame.algorithm = max \
+    . focus --level=tabs right \
+    , focus right
+
+herbstclient keybind $mod-Shift-h \
+    or , and . \
+    compare tags.focus.tiling.focused_frame.algorithm = max \
+    . shift --level=tabs left \
+    , shift left
+herbstclient keybind $mod-Shift-j shift down
+herbstclient keybind $mod-Shift-k shift up
+herbstclient keybind $mod-Shift-l \
+    or , and . \
+    compare tags.focus.tiling.focused_frame.algorithm = max \
+    . shift --level=tabs right \
+    , shift right
+
+herbstclient keybind $mod-f           fullscreen  toggle
+herbstclient keybind $mod-Shift-f     set_attr    clients.focus.floating  toggle
+herbstclient keybind $mod-Shift-m     set_attr    clients.focus.minimized true
+herbstclient keybind $mod-Shift-p     pseudotile  toggle
+
+herbstclient keybind $mod-Control-m jumpto last-minimized
+
+herbstclient keybind $mod-Shift-c close
+
+herbstclient mousebind $mod-Button1 move
+herbstclient mousebind $mod-Button2 zoom
+herbstclient mousebind $mod-Button3 resize
+
+# Program related
+
+herbstclient keybind $mod-Return  spawn   alacritty
+herbstclient keybind $mod-p       spawn   rofi -show drun
+
+herbstclient keybind XF86MonBrightnessDown    spawn light -U 5
+herbstclient keybind XF86MonBrightnessUp      spawn light -A 5
+herbstclient keybind XF86ScreenSaver          spawn xset dpms force off
+
+herbstclient keybind XF86AudioLowerVolume     spawn pactl set-sink-volume @DEFAULT_SINK@ -3%
+herbstclient keybind XF86AudioRaiseVolume     spawn pactl set-sink-volume @DEFAULT_SINK@ +3%
+herbstclient keybind XF86AudioMute            spawn pactl set-sink-mute @DEFAULT_SINK@ toggle
