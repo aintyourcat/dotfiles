@@ -511,5 +511,6 @@ case "$2" in
         set_wallpaper "$PREFERED_WALLPAPER_COMMAND" "$WALLPAPER_CACHE_FILE"
         # wm restart
         herbstclient reload
+        polybar-msg cmd restart
         ;;
 esac
