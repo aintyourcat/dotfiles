@@ -5,7 +5,7 @@ A backup for dotfiles on my current Void Linux setup.
 1. Clone this repo:
 
     ```sh
-    git clone https://github.com/aintyourcat/dotfiles.git`
+    git clone https://github.com/aintyourcat/dotfiles.git
     ```
 2. Change the directory into the clonned repo:
 
