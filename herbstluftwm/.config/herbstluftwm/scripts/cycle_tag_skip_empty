@@ -1,0 +1,71 @@
+#!/bin/sh
+
+get_index () {
+    test -n "$*" -a "$#" -eq 2 || return
+    test -n "$1" || return
+    test -n "$2" || return
+
+    mode="$1"
+
+    test "$mode" = "-" -o "$mode" = "+" || return
+
+    current_index="$2"
+    min_index=0
+    max_index=$(( $(herbstclient attr tags.count) - 1 ))
+
+    if [ "$mode" = "-" ] && [ "$current_index" -eq "$min_index" ]; then
+        echo "$max_index"
+    elif [ "$mode" = "+" ] && [ "$current_index" -eq "$max_index" ]; then
+        echo "$min_index"
+    else
+        if [ "$mode" = "-" ]; then
+            next_index=$(( current_index - 1 ))
+        else
+            next_index=$(( current_index + 1 ))
+        fi
+
+        echo "$next_index"
+    fi
+}
+
+cycle () {
+    test -n "$*" -a "$#" -eq 2 || return
+    test -n "$1" || return
+    test -n "$2" || return
+
+    mode="$1"
+
+    test "$mode" = "-" -o "$mode" = "+" || return
+
+    next_index="$2"
+    client_count=$(herbstclient attr tags."$next_index".client_count)
+
+    if [ "$client_count" -gt 0 ]; then
+        herbstclient use_index "$next_index"
+    else
+        next_index=$(get_index "$mode" "$next_index")
+
+        cycle "$mode" "$next_index"
+    fi
+}
+
+test -n "$*" -a "$#" -eq 1 || return
+test -n "$1" || return
+
+mode=$1
+
+test "$mode" = "-" -o "$mode" = "+" || return
+
+output=$(herbstclient foreach TAG tags.by-name. \
+    sprintf ATTR_INDEX %c.client_count TAG \
+    substitute VALUE_INDEX ATTR_INDEX \
+    and . \
+    compare ATTR_INDEX gt 0 . echo VALUE_INDEX)
+
+# Empty output means no clients, quit to avoid infinity loop
+test -n "$output" || { notify-send "Nowhere to go"; return 1; }
+
+current_index=$(herbstclient attr tags.focus.index)
+next_index=$(get_index "$mode" "$current_index")
+
+cycle "$mode" "$next_index"

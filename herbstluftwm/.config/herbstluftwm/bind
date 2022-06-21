@@ -26,6 +26,9 @@ do
     herbstclient keybind $mod-Shift-$key    move_index  "$i"
 done
 
+herbstclient keybind $mod-period spawn ~/.config/herbstluftwm/scripts/cycle_tag_skip_empty +
+herbstclient keybind $mod-comma spawn ~/.config/herbstluftwm/scripts/cycle_tag_skip_empty -
+
 # Frame related
 
 herbstclient keybind $mod-u               split   bottom
