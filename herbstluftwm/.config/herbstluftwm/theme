@@ -21,3 +21,4 @@ herbstclient attr theme.title_color "$BACKGROUND"
 herbstclient attr theme.border_width 8
 herbstclient attr theme.normal.color "$DARK_GREY"
 herbstclient attr theme.active.color "$CYAN"
+herbstclient attr theme.urgent.color "$RED"
