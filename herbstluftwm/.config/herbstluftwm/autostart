@@ -34,6 +34,8 @@ done
 . "${0%/*}/theme"
 . "${0%/*}/rule"
 
+herbstclient set focus_follows_mouse on
+
 read -r wall < "$HOME"/.cache/dark_theme.wallpaper && eval "$wall" &
 pgrep -x polybar >/dev/null 2>&1 || polybar -c ~/.config/polybar/herbstluftwm &
 
