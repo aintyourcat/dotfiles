@@ -13,7 +13,7 @@
 
             case $tag in
                 "."*) shift && continue ;;
-                ":"*) styled_tag="%{F$DARK_GREY}${tag#?}${F-}" ;;
+                ":"*) styled_tag="%{F$DARK_GREY}${tag#?}%{F-}" ;;
                 "#"*) styled_tag="%{F$CYAN}${tag#?}%{F-}" ;;
                 "!"*) styled_tag="%{F$RED}${tag#?}%{F-}" ;;
                 *) shift && continue ;;
