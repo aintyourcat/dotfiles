@@ -24,3 +24,4 @@ opt.undofile = true
 opt.list = true
 opt.listchars:append('space:⋅')
 opt.listchars:append('eol:↴')
+opt.laststatus = 3
