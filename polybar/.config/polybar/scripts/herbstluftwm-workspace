@@ -19,6 +19,8 @@
                 *) shift && continue ;;
             esac
 
+            styled_tag="%{A:herbstclient use ${tag#?}:}${styled_tag}%{A}"
+
             separator=' '
             test -z "$output" && separator=''
             output="$output$separator$styled_tag"
