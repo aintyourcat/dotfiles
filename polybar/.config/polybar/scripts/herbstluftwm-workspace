@@ -2,7 +2,7 @@
 
 . "$(command -v xresources-colors)"
 
-{ printf '\n'; herbstclient --idle tag_changed; } | 
+{ printf '\n'; herbstclient --idle tag; } | 
     while read -r _; do
         tags=$(herbstclient tag_status | tr '\t' '_')
         IFS='_'; set -- ${tags#_}
