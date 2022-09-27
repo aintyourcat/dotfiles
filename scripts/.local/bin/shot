@@ -2,7 +2,7 @@
 
 . "$XDG_CONFIG_HOME/user-dirs.dirs"
 
-readonly DEST_FOLDER="$XDG_PICTURES_DIR/shots"
+readonly DEST_FOLDER="$XDG_PICTURES_DIR/shots/scrot"
 readonly FILE_NAME="scrot-%Y-%m-%d_%H-%M-%S.png"
 readonly FILE_PATH="$DEST_FOLDER/$FILE_NAME"
 readonly QUALITY=100
