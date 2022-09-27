@@ -9,7 +9,7 @@ readonly GTK_2_CONFIG="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
 readonly GTK_3_CONFIG="$XDG_CONFIG_HOME/gtk-3.0/settings.ini"
 readonly XSETTINGSD_CONFIG="$XDG_CONFIG_HOME/X11/xsettingsd"
 # Alacritty
-readonly DARK_ALACRITTY_COLORSCHEME_NAME="nightfly"
+readonly DARK_ALACRITTY_COLORSCHEME_NAME="iceberg-dark"
 readonly LIGHT_ALACRITTY_COLORSCHEME_NAME="iceberg-light"
 readonly ALACRITTY_CONFIG="$XDG_CONFIG_HOME/alacritty/alacritty.yml"
 # Xresources
