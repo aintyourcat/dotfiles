@@ -13,7 +13,7 @@ readonly DARK_ALACRITTY_COLORSCHEME_NAME="nightfly"
 readonly LIGHT_ALACRITTY_COLORSCHEME_NAME="iceberg-light"
 readonly ALACRITTY_CONFIG="$XDG_CONFIG_HOME/alacritty/alacritty.yml"
 # Xresources
-readonly DARK_XRESOURCES_COLORSCHEME_NAME="nightfly"
+readonly DARK_XRESOURCES_COLORSCHEME_NAME="iceberg-dark"
 readonly LIGHT_XRESOURCES_COLORSCHEME_NAME="iceberg-light"
 readonly XRESOURCES_CONFIG="$XDG_CONFIG_HOME/X11/xresources.Xresources"
 # Rofi
