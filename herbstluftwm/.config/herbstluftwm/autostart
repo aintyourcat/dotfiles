@@ -30,9 +30,9 @@ while [ $# -gt 0 ]; do
 done
 
 . "$(command -v xresources-colors)"
-. "${0%/*}/bind"
-. "${0%/*}/theme"
-. "${0%/*}/rule"
+. "${0%/*}/bind.sh"
+. "${0%/*}/theme.sh"
+. "${0%/*}/rule.sh"
 
 herbstclient set focus_follows_mouse on
 
