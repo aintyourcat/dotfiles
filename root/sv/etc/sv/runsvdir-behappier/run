@@ -2,8 +2,9 @@
 
 export USER="behappier"
 export HOME="/home/behappier"
+export XDG_RUNTIME_DIR="/run/user/1000"
 
 groups="$(id -Gn "$USER" | tr ' ' ':')"
-svdir="$HOME/.local/var/service"
+export SVDIR="$HOME/.local/var/service" # Control user service by name instead of path
 
-exec chpst -u "$USER:$groups" runsvdir "$svdir"
+exec chpst -u "$USER:$groups" runsvdir "$SVDIR"

@@ -7,8 +7,6 @@
 light -S 20 &
 xsetroot -cursor_name left_ptr &
 xss-lock -- xsecurelock &
-pipewire > /tmp/pipewire.log 2>&1 &
-pipewire-pulse > /tmp/pipewire-pulse.log 2>&1 &
 pkill ssh-agent; eval "$(ssh-agent)"
 
 # Sessions
