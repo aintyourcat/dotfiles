@@ -67,6 +67,7 @@ return packer.startup(function(use)
         end
     }
     use 'nvim-treesitter/playground'
+    use 'tpope/vim-fugitive'
     if PACKER_BOOTSTRAP then
         packer.sync()
     end
