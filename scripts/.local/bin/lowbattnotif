@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# Get battery's status and capacity
 read status < /sys/class/power_supply/BAT0/status
 read capacity < /sys/class/power_supply/BAT0/capacity
 low_capacity_threshold=50
