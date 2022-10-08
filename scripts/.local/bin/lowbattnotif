@@ -6,5 +6,5 @@ read capacity < /sys/class/power_supply/BAT0/capacity
 
 if [ "$status" != "Charging" -a $capacity -le 50 ]; then
     xset dpms force off
-    sudo zzz
+    loginctl suspend
 fi
