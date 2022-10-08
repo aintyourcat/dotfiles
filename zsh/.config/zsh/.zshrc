@@ -46,7 +46,7 @@ alias ls='ls --color=auto'
 alias bc='bc -lq'
 alias q='exit'
 alias makebatchfile="cat $NNN_SEL | xargs -0 -I fname printf 'put -R %s\n' fname > batchfile"
-alias n='n -xHG'
+alias n='n -xHG -Tt -o'
 alias startx="startx $XINITRC"
 alias g='git'
 
