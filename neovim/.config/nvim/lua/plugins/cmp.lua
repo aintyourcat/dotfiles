@@ -25,10 +25,6 @@ cmp.setup {
         { name = 'vsnip' },
         { name = 'buffer' },
         { name = 'path' },
-        {
-            name = "dictionary",
-            keyword_length = 2
-        }
     }
 }
 

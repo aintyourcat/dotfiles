@@ -17,24 +17,9 @@ return packer.startup(function(use)
             require('Comment').setup()
         end
     }
-    use 'bluz71/vim-nightfly-guicolors'
-    use 'bluz71/vim-moonfly-statusline'
     use 'rafamadriz/friendly-snippets'
-    use 'flniu/er.vim'
     use 'cocopon/iceberg.vim'
     use 'jwalton512/vim-blade'
-    use {
-        'norcalli/nvim-colorizer.lua',
-        config = function ()
-            require('colorizer').setup()
-        end
-    }
-    use {
-        'uga-rosa/cmp-dictionary',
-        config = function ()
-            require('plugins.others').cmp_dictionary()
-        end
-    }
     use {
         'hrsh7th/nvim-cmp',
         config = function()
@@ -82,7 +67,6 @@ return packer.startup(function(use)
         end
     }
     use 'nvim-treesitter/playground'
-    use 'mbbill/undotree'
     if PACKER_BOOTSTRAP then
         packer.sync()
     end
