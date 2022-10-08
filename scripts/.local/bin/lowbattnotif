@@ -3,8 +3,9 @@
 # Get battery's status and capacity
 read status < /sys/class/power_supply/BAT0/status
 read capacity < /sys/class/power_supply/BAT0/capacity
+low_capacity_threshold=50
 
-if [ "$status" != "Charging" -a $capacity -le 50 ]; then
+if [ "$status" != "Charging" -a $capacity -le $low_capacity_threshold ]; then
     xset dpms force off
     loginctl suspend
 fi
