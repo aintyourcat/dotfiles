@@ -1,2 +1,2 @@
 vim.opt.background = 'dark'
-vim.cmd('colorscheme nightfly')
+vim.cmd('colorscheme iceberg')

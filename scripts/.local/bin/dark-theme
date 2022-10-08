@@ -27,7 +27,7 @@ readonly DARK_DUNSTRC_TEMPLATE="$XDG_CONFIG_HOME/template/dark.dunstrc"
 readonly LIGHT_DUNSTRC_TEMPLATE="$XDG_CONFIG_HOME/template/light.dunstrc"
 readonly DUNSTRC_CONFIG="$XDG_CONFIG_HOME/dunst/dunstrc"
 # Neovim
-readonly DARK_NEOVIM_COLORSCHEME_NAME='nightfly'
+readonly DARK_NEOVIM_COLORSCHEME_NAME='iceberg'
 readonly LIGHT_NEOVIM_COLORSCHEME_NAME='iceberg'
 readonly DARK_NEOVIM_BACKGROUND_TYPE='dark'
 readonly LIGHT_NEOVIM_BACKGROUND_TYPE='light'
