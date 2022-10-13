@@ -1,0 +1,20 @@
+def_key "h"
+    previous_column
+
+def_key "j"
+    scroll_down
+
+def_key "k"
+    scroll_up
+
+def_key "l"
+    next_column
+
+def_key "/"
+    apply_filter
+
+def_key "space"
+    pause
+
+def_key "a"
+    add_item_to_playlist
