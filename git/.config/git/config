@@ -1,26 +1,7 @@
 [user]
 	name = aintyourcat
 	email = sqrt49is7@protonmail.com
-
 [init]
 	defaultBranch = main
-
 [color]
 	ui = auto
-
-[core]
-    pager = delta --dark
-
-[interactive]
-    diffFilter = delta --color-only
-
-[delta]
-    navigate = true  # use n and N to move between diff sections
-    line-numbers = true
-    side-by-side = true
-
-[merge]
-    conflictstyle = diff3
-
-[diff]
-    colorMoved = default
