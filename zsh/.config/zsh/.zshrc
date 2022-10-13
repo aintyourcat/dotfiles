@@ -16,7 +16,7 @@ bindkey '^[[B' down-line-or-beginning-search
 bindkey '^?' backward-delete-char
 
 # The following lines were added by compinstall
-zstyle :compinstall filename '/home/behappier/.zshrc'
+zstyle :compinstall filename '/home/behappier/.config/zsh/.zshrc'
 
 autoload -Uz compinit
 compinit
