@@ -4,6 +4,7 @@
 [ -f "$XRESOURCES" ] && xrdb -merge "$XRESOURCES"
 
 # Autostart programs
+eval "$(dbus-launch --sh-syntax --exit-with-x11)"
 light -S 20 &
 xsetroot -cursor_name left_ptr &
 xss-lock -- xsecurelock &
@@ -13,7 +14,7 @@ pkill ssh-agent; eval "$(ssh-agent)"
 export SESSION="${1:-bspwm}"
 
 case $SESSION in
-    bspwm) exec dbus-run-session bspwm ;;
-    hlwm) exec dbus-run-session herbstluftwm ;;
+    bspwm) exec bspwm ;;
+    hlwm) exec herbstluftwm ;;
     *) exec $1 ;;
 esac
