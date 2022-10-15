@@ -9,6 +9,7 @@ light -S 20 &
 xsetroot -cursor_name left_ptr &
 xss-lock -- xsecurelock &
 pkill ssh-agent; eval "$(ssh-agent)"
+[ -n "$SVDIR" ] && runsvdir "$SVDIR" &
 
 # Sessions
 export SESSION="${1:-bspwm}"

@@ -26,3 +26,4 @@ A backup for dotfiles on my current Void Linux setup.
 
 ## Credits
 1. [turquoise-hexagon's dots](https://github.com/turquoise-hexagon/dots)
+2. [madand's runit-services](https://github.com/madand/runit-services)
