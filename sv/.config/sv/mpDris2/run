@@ -1,0 +1,5 @@
+#!/bin/sh
+
+sv check mopidy >/dev/null || exit 1
+
+exec mpDris2 --debug 2>&1
