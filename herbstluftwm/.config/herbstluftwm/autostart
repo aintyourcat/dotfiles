@@ -2,7 +2,7 @@
 
 herbstclient emit_hook reload
 
-set -- 1st 2nd 3rd 4th 5th # Define the tags names.
+set -- 1 2 3 4 5 # Define the tags names.
 total=$# # Total of the tags.
 
 if [ "$total" -gt 0 ]; then
