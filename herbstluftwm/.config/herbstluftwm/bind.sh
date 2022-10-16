@@ -40,10 +40,10 @@ herbstclient keybind $mod-o               split   right
 herbstclient keybind $mod-Shift-o         split   left
 herbstclient keybind $mod-Control-space   split   explode
 
-herbstclient keybind $mod-Control-h resize left
-herbstclient keybind $mod-Control-j resize down
-herbstclient keybind $mod-Control-k resize up
-herbstclient keybind $mod-Control-l resize right
+herbstclient keybind $mod-Alt-h resize left
+herbstclient keybind $mod-Alt-j resize down
+herbstclient keybind $mod-Alt-k resize up
+herbstclient keybind $mod-Alt-l resize right
 
 herbstclient keybind $mod-r remove
 
