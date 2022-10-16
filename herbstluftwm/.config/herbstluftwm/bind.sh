@@ -12,15 +12,18 @@ herbstclient keybind $mod-Shift-r reload
 
 herbstclient keybind $mod-s floating toggle
 
-for tag_index in \
-$(herbstclient foreach TAG tags.by-name. \
+for tag_index in $(herbstclient foreach TAG tags.by-name. \
     sprintf TAG_INDEX_ATTR %c.index TAG \
     substitute TAG_INDEX_VALUE TAG_INDEX_ATTR \
     echo TAG_INDEX_VALUE); \
 do
     [ "$tag_index" -gt 9 ] && continue
-    key=$((tag_index+1))
-    [ "$tag_index" -eq 9 ] && key=0
+
+    if [ "$tag_index" -eq 9 ]; then
+        key=0
+    else
+        key=$((tag_index+1))
+    fi
 
     herbstclient keybind $mod-$key          use_index   "$tag_index"
     herbstclient keybind $mod-Shift-$key    move_index  "$tag_index"
