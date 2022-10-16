@@ -12,18 +12,18 @@ herbstclient keybind $mod-Shift-r reload
 
 herbstclient keybind $mod-s floating toggle
 
-for i in \
-$(herbstclient foreach T tags.by-name. \
-    sprintf INDEX_ATTR_STR %c.index T \
-    substitute INDEX_ATTR_VALUE INDEX_ATTR_STR \
-    echo INDEX_ATTR_VALUE); \
+for tag_index in \
+$(herbstclient foreach TAG tags.by-name. \
+    sprintf TAG_INDEX_ATTR %c.index TAG \
+    substitute TAG_INDEX_VALUE TAG_INDEX_ATTR \
+    echo TAG_INDEX_VALUE); \
 do
-    if [ "$i" -gt 9 ]; then continue; fi
-    key=$((i+1))
-    if [ "$i" -eq 9 ]; then key=0; fi
+    [ "$tag_index" -gt 9 ] && continue
+    key=$((tag_index+1))
+    [ "$tag_index" -eq 9 ] && key=0
 
-    herbstclient keybind $mod-$key          use_index   "$i"
-    herbstclient keybind $mod-Shift-$key    move_index  "$i"
+    herbstclient keybind $mod-$key          use_index   "$tag_index"
+    herbstclient keybind $mod-Shift-$key    move_index  "$tag_index"
 done
 
 herbstclient keybind $mod-period spawn ~/.config/herbstluftwm/scripts/cycle_tag_skip_empty +
