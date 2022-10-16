@@ -34,11 +34,11 @@ herbstclient keybind $mod-comma spawn ~/.config/herbstluftwm/scripts/cycle_tag_s
 
 # Frame related
 
-herbstclient keybind $mod-u               split   bottom
-herbstclient keybind $mod-Shift-u         split   top
-herbstclient keybind $mod-o               split   right
-herbstclient keybind $mod-Shift-o         split   left
-herbstclient keybind $mod-Control-space   split   explode
+herbstclient keybind $mod-Control-h     split left
+herbstclient keybind $mod-Control-j     split bottom
+herbstclient keybind $mod-Control-k     split top
+herbstclient keybind $mod-Control-l     split right
+herbstclient keybind $mod-Control-space split explode
 
 herbstclient keybind $mod-Alt-h resize left
 herbstclient keybind $mod-Alt-j resize down
