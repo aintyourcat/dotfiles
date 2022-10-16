@@ -17,7 +17,7 @@ for tag_index in $(herbstclient foreach TAG tags.by-name. \
     substitute TAG_INDEX_VALUE TAG_INDEX_ATTR \
     echo TAG_INDEX_VALUE); \
 do
-    [ "$tag_index" -gt 9 ] && continue
+    [ "$tag_index" -gt 9 ] && break
 
     if [ "$tag_index" -eq 9 ]; then
         key=0
