@@ -84,7 +84,6 @@ herbstclient keybind $mod-Shift-l \
 herbstclient keybind $mod-f           fullscreen  toggle
 herbstclient keybind $mod-Shift-f     set_attr    clients.focus.floating  toggle
 herbstclient keybind $mod-Shift-m     set_attr    clients.focus.minimized true
-herbstclient keybind $mod-Shift-p     pseudotile  toggle
 
 herbstclient keybind $mod-Control-m jumpto last-minimized
 
@@ -115,4 +114,3 @@ herbstclient keybind XF86AudioPrev spawn mpc prev
 herbstclient keybind Print          spawn shot
 herbstclient keybind Shift-Print    spawn shot -s
 herbstclient keybind Control-Print  spawn shot -d
-herbstclient keybind Alt-Print      spawn flameshot launcher
