@@ -1,5 +1,5 @@
 typeset -U PATH path
-path=("$HOME/.local/bin" "$HOME/.cabal/bin" '/opt/bin' $path)
+path=("$HOME/.local/bin" "$HOME/.local/opt/bin" $path)
 export PATH
 
 # Prevent messy $HOME
