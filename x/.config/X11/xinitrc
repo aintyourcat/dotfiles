@@ -13,10 +13,9 @@ dunst &
 [ -n "$SVDIR" ] && runsvdir "$SVDIR" &
 
 # Sessions
-export SESSION="${1:-bspwm}"
+export SESSION="${1:-hlwm}"
 
 case $SESSION in
-    bspwm) exec bspwm ;;
     hlwm) exec herbstluftwm ;;
     *) exec $1 ;;
 esac
