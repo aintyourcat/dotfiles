@@ -1,5 +1,5 @@
 #!/bin/sh
 
-sudo wpa_cli list_networks
+sudo wpa_cli list_networks | grep -E '^[[:digit:]]' | sed -e 's/any.*//' | tr '\t' ' '
 read -p "Select a network: " -r num
 sudo wpa_cli select_network "$num"
