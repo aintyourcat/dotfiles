@@ -8,4 +8,4 @@ rofi -show windowcd \
     -theme-str 'window {width: 50%;}' \
     -theme-str 'listview {lines: 7;}' \
     -theme-str 'entry {placeholder: "Focus a window...";}' \
-    -modi windowcd
+    -modi windowcd,window
