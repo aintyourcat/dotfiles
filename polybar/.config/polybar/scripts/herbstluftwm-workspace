@@ -4,25 +4,29 @@
 
 { printf '\n'; herbstclient --idle tag; } | 
     while read -r _; do
-        tags=$(herbstclient tag_status | tr '\t' '_')
-        IFS='_'; set -- ${tags#_}
+        set -- $(herbstclient tag_status)
 
         output=''
+
         while [ $# -gt 0 ]; do
             tag=$1
 
             case $tag in
-                "."*) shift && continue ;;
-                ":"*) styled_tag="%{F$DARK_GREY}${tag#?}%{F-}" ;;
-                "#"*) styled_tag="%{F$CYAN}${tag#?}%{F-}" ;;
-                "!"*) styled_tag="%{F$RED}${tag#?}%{F-}" ;;
+                .*) shift && continue ;;
+                :*) styled_tag="%{F$DARK_GREY}${tag#?}%{F-}" ;;
+                \#*) styled_tag="%{F$CYAN}${tag#?}%{F-}" ;;
+                !*) styled_tag="%{F$RED}${tag#?}%{F-}" ;;
                 *) shift && continue ;;
             esac
 
-            styled_tag="%{A:herbstclient use ${tag#?}:}${styled_tag}%{A}"
+            styled_tag="%{A:herbstclient use ${tag#?}:}$styled_tag%{A}"
 
-            separator=' '
-            test -z "$output" && separator=''
+            if [ -z "$output" ]; then
+                separator=''
+            else
+                separator=' '
+            fi
+
             output="$output$separator$styled_tag"
 
             shift
