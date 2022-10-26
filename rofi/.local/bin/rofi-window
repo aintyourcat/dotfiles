@@ -3,7 +3,7 @@
 rofi -show windowcd \
     -kb-accept-entry '' \
     -kb-accept-alt 'Return,Super_L' \
-    -window-command 'bspc node {window} --flag hidden=off --focus' \
+    -window-command 'herbstclient jumpto {window}' \
     -window-format '{t}' \
     -theme-str 'window {width: 50%;}' \
     -theme-str 'listview {lines: 7;}' \
