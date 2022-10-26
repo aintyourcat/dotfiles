@@ -1,6 +1,0 @@
-#!/bin/sh
-
-{ printf '\n'; xtitle -s -t 100; } |
-    while read -r title; do
-        printf 'ttl %s\n' "${title:-Desktop}"
-    done
