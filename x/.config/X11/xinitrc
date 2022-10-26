@@ -12,10 +12,5 @@ pkill ssh-agent; eval "$(ssh-agent)"
 dunst &
 [ -n "$SVDIR" ] && runsvdir "$SVDIR" &
 
-# Sessions
-export SESSION="${1:-hlwm}"
-
-case $SESSION in
-    hlwm) exec herbstluftwm ;;
-    *) exec $1 ;;
-esac
+# Session
+exec herbstluftwm
