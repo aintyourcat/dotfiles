@@ -11,3 +11,5 @@ header_visibility = "no"
 statusbar_visibility = "no"
 
 progressbar_look = "---"
+
+cyclic_scrolling = "yes"
