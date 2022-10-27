@@ -19,6 +19,7 @@
 
     # Icon 
     max_icon_size = 70
+    enable_recursive_icon_lookup = true
 
     # History
     sticky_history = false
