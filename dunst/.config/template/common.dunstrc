@@ -18,7 +18,7 @@
     ellipsize = end
 
     # Icon 
-    max_icon_size = 70
+    max_icon_size = 64
     enable_recursive_icon_lookup = true
 
     # History
