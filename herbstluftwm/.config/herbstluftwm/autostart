@@ -22,7 +22,7 @@ if [ "$total" -gt 0 ]; then
         substitute TAG_NAME_VALUE TAG_NAME_ATTR \
         and . compare TAG_INDEX_ATTR gt $((total-1)) . merge_tag TAG_NAME_VALUE
 
-    # Rename the remaining tags,
+    # Rename the remaining tags (if needed),
     # or add a new one.
     while [ $# -gt 0 ]; do
         index=$((total-$#))
@@ -30,7 +30,9 @@ if [ "$total" -gt 0 ]; then
         old_name=$(herbstclient attr tags."$index".name)
 
         if [ -n "$old_name" ]; then
-            herbstclient rename "$old_name" "$new_name"
+            if [ "$old_name" != "$new_name" ]; then
+                herbstclient rename "$old_name" "$new_name"
+            fi
         else
             herbstclient add "$new_name"
         fi
