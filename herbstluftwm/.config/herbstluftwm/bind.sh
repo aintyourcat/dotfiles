@@ -106,10 +106,10 @@ herbstclient keybind XF86AudioLowerVolume     spawn pactl set-sink-volume @DEFAU
 herbstclient keybind XF86AudioRaiseVolume     spawn pactl set-sink-volume @DEFAULT_SINK@ +3%
 herbstclient keybind XF86AudioMute            spawn pactl set-sink-mute @DEFAULT_SINK@ toggle
 
-herbstclient keybind XF86AudioStop spawn mpc stop
-herbstclient keybind XF86AudioPlay spawn mpc toggle
-herbstclient keybind XF86AudioNext spawn mpc next
-herbstclient keybind XF86AudioPrev spawn mpc prev
+herbstclient keybind XF86AudioStop spawn playerctl stop
+herbstclient keybind XF86AudioPlay spawn playerctl play-pause
+herbstclient keybind XF86AudioNext spawn playerctl next
+herbstclient keybind XF86AudioPrev spawn playerctl previous
 
 herbstclient keybind Print          spawn shot
 herbstclient keybind Shift-Print    spawn shot -s
