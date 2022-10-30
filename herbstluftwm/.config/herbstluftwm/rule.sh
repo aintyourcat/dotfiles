@@ -9,3 +9,4 @@ herbstclient rule fixedsize floating=on
 herbstclient rule title='Picture in picture' floating=on
 herbstclient rule class~'[Vv]irt-manager' tag=$(herbstclient attr tags.4.name)
 herbstclient rule title~'DevTools.*' floating=on
+herbstclient rule class~'[Jj]oplin' tag=$(herbstclient attr tags.3.name)
