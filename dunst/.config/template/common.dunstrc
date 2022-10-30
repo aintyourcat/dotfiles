@@ -49,5 +49,5 @@
 
 [play_sound]
     summary = "*"
-    script = /home/behappier/bin/alert.sh
+    script = ~/.config/dunst/scripts/alert.sh
 
