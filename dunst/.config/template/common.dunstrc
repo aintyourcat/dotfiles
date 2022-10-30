@@ -3,13 +3,11 @@
     follow = mouse
 
     # Geometry
-    width = 200
-    height = 100
+    width = (0, 250)
+    height = 250
     origin = bottom-right
-    offset = 10x10
-    padding = 15
-    horizontal_padding = 15
-    frame_width = 1
+    offset = 5x5
+    frame_width = 3
     
     # Text
     font = Iosevka 8
@@ -18,7 +16,7 @@
     ellipsize = end
 
     # Icon 
-    max_icon_size = 64
+    max_icon_size = 96
     enable_recursive_icon_lookup = true
 
     # History
