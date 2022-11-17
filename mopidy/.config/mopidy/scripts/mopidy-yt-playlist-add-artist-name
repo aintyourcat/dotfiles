@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+
+test -n "$1" || { printf "%s\n" "Playlist file is required!"; exit 1; }
+
+playlist_file_path="$1"
+playlist_file_extension="${playlist_file_path##*.}"
+
+test -f "$playlist_file_path" -a "$playlist_file_extension" = "m3u8" || {
+    printf "%s\n" "Not a valid playlist file!"
+    exit 1
+}
+
+playlist_file_name="${playlist_file_path%."${playlist_file_extension}"}"
+playlist_file_name="${playlist_file_name##*/}"
+
+printf "%s\n" "Determining default artist name from playlist file name..."
+
+default_artist_name="$(cut -d '-' -f 1 <<< "$playlist_file_name")"
+default_artist_name="${default_artist_name% *}"
+
+test -n "$default_artist_name" && {
+    default_artist_name_is_correct=""
+
+    while [ "$default_artist_name_is_correct" != "y" ] && [ "$default_artist_name_is_correct" != "n" ]; do
+        read -r -p "Use \"${default_artist_name}\" as default artist name? (y/n) " default_artist_name_is_correct
+    done
+}
+
+test -z "$default_artist_name" -o "$default_artist_name_is_correct" = "n" && {
+    if [ -z "$default_artist_name" ]; then
+        printf "%s\n" "Couldn't determine default artist name from playlist file name."
+        prompt="Input default artist name: "
+    else
+        prompt="Default artist name then: "
+    fi
+
+    default_artist_name=""
+
+    while [ -z "$default_artist_name" ]; do
+        read -r -p "$prompt" default_artist_name
+    done
+}
+
+use_default_artist_name=""
+while [ "$use_default_artist_name" != "y" ] && [ "$use_default_artist_name" != "n" ]; do
+    read -r -p "Use \"${default_artist_name}\" as artist name for all tracks? (y/n) " use_default_artist_name
+done
+
+backup_folder_name="$playlist_file_name - $(date +'%Y-%m-%d_%H-%M-%s')"
+backup_folder_path=~/.cache/mopidy/youtube/"$backup_folder_name"
+
+mkdir "$backup_folder_path" && {
+    declare -a tracks_file_names
+    order=0
+
+    while read -r track_file_name; do
+        order=$(( order + 1 ))
+        tracks_file_names+=("${track_file_name}")
+    done <<< "$(grep -E '^[^#]' "$playlist_file_path" | cut -d ':' -f 3)"
+
+    for track_file_name in "${tracks_file_names[@]}"; do
+        original_track_json_file_path=~/.cache/mopidy/youtube/"$track_file_name".json
+        tmp_track_json_file_path=/tmp/"$track_file_name".json
+
+        test -f "$original_track_json_file_path" || {
+            printf "%s\n" "JSON file doesn't exist for track \"$track_file_name\""
+            continue
+        }
+
+        cp "$original_track_json_file_path" "$backup_folder_path" && {
+            if [ "$use_default_artist_name" = "y" ]; then
+                track_artist_name="$default_artist_name"
+            else
+                track_title="$(jq '.name' "$original_track_json_file_path" --raw-output)"
+
+                test -z "$track_title" && track_title="$track_file_name"
+
+                read -r -p "Input artist name for track \"$track_title\" (Empty to use \"${default_artist_name}\"): " track_artist_name
+
+                test -z "$track_artist_name" && track_artist_name="$default_artist_name"
+            fi
+
+            jq ".artists[0].name = \"$track_artist_name\"" "$original_track_json_file_path" > "$tmp_track_json_file_path" &&
+            mv -f "$tmp_track_json_file_path" "$original_track_json_file_path"
+        }
+    done
+}

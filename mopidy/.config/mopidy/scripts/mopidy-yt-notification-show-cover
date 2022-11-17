@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+_ () { jq ."$1" --raw-output <<<"$2"; }
+
+read -r notification_id < <(dunstctl history | jq '.data[] | map(select(.appname.data="Music Player Daemon")) | map(.id.data) | sort | .[-1]?')
+
+playerctl metadata \
+        -f '{"title": "{{default(title,"Unknown")}}", "artist": "{{default(artist,"Unknown artist")}}", "url": "{{xesam:url}}"}' \
+        -F \
+| while read -r line; do
+        artist="$(_ artist "$line")"
+        title="$(_ title "$line")"
+        cover="$HOME/.cache/mopidy/youtube/$(_ url "$line" | cut -d ':' -f 3).jpg"
+
+        cmd="notify-send -a 'Music Player Daemon' -p -i '$cover' \"$title\" \"by $artist\""
+        test "$notification_id" != "null" && cmd="$cmd -r '$notification_id'"
+
+        read -r notification_id < <(eval "$cmd" || printf "%s" "$notification_id")
+done
