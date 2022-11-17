@@ -11,7 +11,7 @@ foreground = ${colors.foreground}
 font-0 = JuliaMono:size=9;2
 font-1 = Material Design Icons:size=12;3
 
-height = 25
+height = 30
 
 padding-right = 1
 
