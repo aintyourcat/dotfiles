@@ -12,7 +12,7 @@ herbstclient set window_gap 3
 
 herbstclient attr theme.title_height 20
 herbstclient attr theme.title_when multiple_tabs
-herbstclient attr theme.title_font 'Iosevka:size=10'
+herbstclient attr theme.title_font 'JuliaMono:size=9'
 herbstclient attr theme.title_depth 8
 herbstclient attr theme.title_align center
 herbstclient attr theme.title_color "$BACKGROUND"

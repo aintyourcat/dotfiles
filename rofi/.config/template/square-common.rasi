@@ -1,5 +1,5 @@
 * { 
-    font: "Iosevka 9"; 
+    font: "JuliaMono 9"; 
     background-color: BACKGROUND;
     text-color: FOREGROUND;
     border-color: FOREGROUND;
