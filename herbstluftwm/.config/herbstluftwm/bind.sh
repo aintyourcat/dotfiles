@@ -81,6 +81,9 @@ herbstclient keybind $mod-Shift-l \
     . shift --level=tabs right \
     , shift right
 
+herbstclient keybind $mod-Shift-Control-h shift left
+herbstclient keybind $mod-Shift-Control-l shift right
+
 herbstclient keybind $mod-f           fullscreen  toggle
 herbstclient keybind $mod-Shift-f     set_attr    clients.focus.floating  toggle
 herbstclient keybind $mod-Shift-m     set_attr    clients.focus.minimized true
