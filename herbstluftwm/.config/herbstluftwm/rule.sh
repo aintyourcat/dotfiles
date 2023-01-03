@@ -10,3 +10,4 @@ herbstclient rule title='Picture in picture' floating=on
 herbstclient rule class~'[Vv]irt-manager' tag=$(herbstclient attr tags.4.name)
 herbstclient rule title~'DevTools.*' floating=on
 herbstclient rule class~'[Jj]oplin' tag=$(herbstclient attr tags.3.name)
+herbstclient rule class~'[Kk]ee[Pp]ass[Xx][Cc]' tag=$(herbstclient attr tags.3.name)
