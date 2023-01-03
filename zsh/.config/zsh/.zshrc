@@ -48,6 +48,8 @@ alias q='exit'
 alias n='n -xHG -Tt -o'
 alias startx="startx $XINITRC"
 alias g='git'
+alias d='docker'
+alias doco='docker compose'
 
 # Load nvm
 nvm() {
