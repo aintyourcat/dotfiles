@@ -19,7 +19,6 @@ return packer.startup(function(use)
     }
     use 'rafamadriz/friendly-snippets'
     use 'cocopon/iceberg.vim'
-    use 'jwalton512/vim-blade'
     use {
         'hrsh7th/nvim-cmp',
         config = function()
