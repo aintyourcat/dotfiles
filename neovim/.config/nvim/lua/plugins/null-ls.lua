@@ -22,7 +22,6 @@ local sources = {
             'html',
             'css',
             'php',
-            'blade'
         }
     },
     builtins.diagnostics.php,
