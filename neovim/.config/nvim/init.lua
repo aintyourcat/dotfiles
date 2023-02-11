@@ -1,5 +1,0 @@
-require('options')
-require('plugins')
-require('mappings')
-vim.cmd('runtime autocmds.vim')
-require('colorscheme')
