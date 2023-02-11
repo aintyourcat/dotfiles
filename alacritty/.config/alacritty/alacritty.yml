@@ -10,19 +10,19 @@ window:
 
 font:
   normal:
-    family: JuliaMono
+    family: Iosevka
     style: Regular
       
   bold:
-    family: JuliaMono
+    family: Iosevka
     style: Bold
 
   italic:
-    family: JuliaMono
+    family: Iosevka
     style: Italic
 
   bold_italic:
-    family: JuliaMono
+    family: Iosevka
     style: Bold Italic
 
   size: 9.0

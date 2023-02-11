@@ -12,7 +12,7 @@ herbstclient set frame_gap 4
 
 herbstclient attr theme.title_height 15
 herbstclient attr theme.title_when always
-herbstclient attr theme.title_font 'Dejavu Sans:pixelsize=12'  # example using Xft
+herbstclient attr theme.title_font 'Iosevka:size=10'  # example using Xft
 # herbstclient attr theme.title_font '-*-fixed-medium-r-*-*-13-*-*-*-*-*-*-*'
 herbstclient attr theme.title_depth 3  # space below the title's baseline
 herbstclient attr theme.active.color '#345F0Cef'

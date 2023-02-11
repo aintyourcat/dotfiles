@@ -26,7 +26,7 @@ export NNN_TRASH=2
 export NNN_FCOLORS='020b044c00600ef7c6d6ab01'
 
 # xsecurelock configs
-export XSECURELOCK_FONT='JuliaMono:size=10'
+export XSECURELOCK_FONT='Iosevka'
 export XSECURELOCK_PASSWORD_PROMPT=asterisks
 export XSECURELOCK_SHOW_DATETIME=1
 

@@ -10,7 +10,7 @@
     frame_width = 3
     
     # Text
-    font = JuliaMono 8
+    font = Iosevka 8
     line_height = 2
     show_age_threshold = 30
     ellipsize = end
