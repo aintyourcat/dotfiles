@@ -2,6 +2,10 @@ typeset -U PATH path
 path=("$HOME/.local/bin" "$HOME/.local/opt/bin" $path)
 export PATH
 
+if which ruby >/dev/null && which gem >/dev/null; then
+    PATH="$(ruby -r rubygems -e 'puts Gem.user_dir')/bin:$PATH"
+fi
+
 # Prevent messy $HOME
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
