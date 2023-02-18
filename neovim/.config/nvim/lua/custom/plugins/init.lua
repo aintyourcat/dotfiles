@@ -34,4 +34,21 @@ return {
   },
 
   "mattn/emmet-vim",
+
+  { -- Bluish color scheme for Vim and Neovim
+    "cocopon/iceberg.vim",
+    priority = 1000,
+    config = function()
+      vim.cmd.colorscheme 'iceberg'
+    end,
+  },
+
+  {
+    'nvim-lualine/lualine.nvim',
+    opts = {
+      options = {
+        theme = 'iceberg',
+      },
+    },
+  }
 }
