@@ -7,3 +7,4 @@ vim.o.cursorline = true
 vim.o.cursorcolumn = true
 vim.o.scrolloff = 5
 vim.o.laststatus = 3
+vim.o.undofile = true
