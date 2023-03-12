@@ -262,7 +262,20 @@ return {
     version = '*',
     dependencies = { 'nvim-lua/plenary.nvim' },
     config = function ()
-      require('telescope').setup({})
+      local action_layout = require("telescope.actions.layout")
+
+      require('telescope').setup({
+        defaults = {
+          mappings = {
+            n = {
+              ['<M-p>'] = action_layout.toggle_preview
+            },
+            i = {
+              ['<M-p>'] = action_layout.toggle_preview
+            },
+          }
+        }
+      })
 
       -- Enable telescope fzf native, if installed
       pcall(require('telescope').load_extension, 'fzf')
