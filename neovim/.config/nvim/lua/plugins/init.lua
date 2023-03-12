@@ -579,5 +579,10 @@ return {
 		'Wansmer/treesj',
 		dependencies = { 'nvim-treesitter' },
 		opts = {}
-	}
+	},
+
+  {
+    'kdheepak/tabline.nvim',
+    opts = {}
+  },
 }
