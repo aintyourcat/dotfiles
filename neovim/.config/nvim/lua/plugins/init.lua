@@ -94,6 +94,7 @@ return {
 						telemetry = { enable = false },
 					},
 				},
+        emmet_ls = {},
 			}
 
 			-- Setup neovim lua configuration
@@ -476,8 +477,6 @@ return {
 		end,
 		dependencies = { "nvim-lua/plenary.nvim" },
 	},
-
-	"mattn/emmet-vim",
 
 	{
 		"savq/melange-nvim",
