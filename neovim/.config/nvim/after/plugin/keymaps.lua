@@ -17,3 +17,12 @@ vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist)
 
+vim.keymap.set('n', '[b', '<cmd>bprevious<cr>')
+vim.keymap.set('n', ']b', '<cmd>bnext<cr>')
+vim.keymap.set('n', '[B', '<cmd>bfirst<cr>')
+vim.keymap.set('n', ']B', '<cmd>blast<cr>')
+
+vim.keymap.set('n', '[t', '<cmd>tabprevious<cr>')
+vim.keymap.set('n', ']t', '<cmd>tabnext<cr>')
+vim.keymap.set('n', '[T', '<cmd>tabfirst<cr>')
+vim.keymap.set('n', ']T', '<cmd>tablast<cr>')
