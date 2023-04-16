@@ -530,11 +530,20 @@ return {
   },
 
   {
-    'savq/melange-nvim',
+    'EdenEast/nightfox.nvim',
     priority = 1000,
     config = function()
       vim.opt.termguicolors = true
-      vim.cmd.colorscheme 'melange'
+
+      local hour = tonumber(os.date('%H'))
+
+      if hour <= 6 or hour >= 18 then
+        vim.opt.background = 'dark'
+        vim.cmd.colorscheme 'duskfox'
+      else
+        vim.opt.background = 'light'
+        vim.cmd.colorscheme 'dayfox'
+      end
     end,
   },
 
@@ -621,8 +630,12 @@ return {
   },
 
   {
-    'kdheepak/tabline.nvim',
-    opts = {}
+    'nanozuki/tabby.nvim',
+    config = function ()
+      require('tabby.tabline').use_preset('active_wins_at_end', {
+        nerdfont = false, -- whether use nerdfont
+      })
+    end,
   },
 
   {
@@ -644,5 +657,28 @@ return {
         end
       })
     end
-  }
+  },
+
+  {
+    'TimUntersberger/neogit',
+    opts = {
+      integrations = {
+        diffview = true,
+      },
+    },
+    dependencies ={
+      'nvim-lua/plenary.nvim',
+      'sindrets/diffview.nvim',
+    },
+  },
+
+  'rbong/vim-flog',
+
+  {
+    "folke/todo-comments.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    opts = {}
+  },
 }
