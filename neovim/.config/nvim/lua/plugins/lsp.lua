@@ -131,8 +131,13 @@ return {
           null_ls.builtins.diagnostics.php,
           null_ls.builtins.formatting.shfmt,
           null_ls.builtins.diagnostics.shellcheck,
-          null_ls.builtins.diagnostics.erb_lint,
-          null_ls.builtins.formatting.erb_format,
+          null_ls.builtins.formatting.htmlbeautifier.with({
+            generator_opts = {
+              command = "htmlbeautifier",
+              args = { "--keep-blank-lines", "1" },
+              to_stdin = true,
+            },
+          }),
         },
       }
     end,
