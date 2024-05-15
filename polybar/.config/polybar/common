@@ -46,14 +46,14 @@ ramp-capacity-1 = 󱊡
 ramp-capacity-2 = 󱊢
 ramp-capacity-3 = 󱊣
 ramp-capacity-foreground = ${colors.cyan}
-ramp-capacity-font = 1
+ramp-capacity-font = 2
 
 animation-charging-0 = 󰢟
 animation-charging-1 = 󱊤
 animation-charging-2 = 󱊥
 animation-charging-3 = 󱊦
 animation-charging-foreground = ${colors.cyan}
-animation-charging-font = 1
+animation-charging-font = 2
 
 [module/capslock]
 type = internal/xkeyboard
@@ -91,7 +91,7 @@ ramp-volume-0 = 󰕿
 ramp-volume-1 = 󰖀
 ramp-volume-2 = 󰕾
 ramp-volume-foreground = ${colors.cyan}
-ramp-volume-font = 1
+ramp-volume-font = 2
 
 label-muted = 󰝟
 label-muted-foreground = ${colors.cyan}
@@ -112,6 +112,6 @@ ramp-signal-2 = 󰤢
 ramp-signal-3 = 󰤥
 ramp-signal-4 = 󰤨
 ramp-signal-foreground = ${colors.cyan}
-ramp-signal-font = 1
+ramp-signal-font = 2
 
 ; vim:ft=dosini
