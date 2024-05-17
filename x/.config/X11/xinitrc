@@ -13,6 +13,7 @@ dunst &
 [ -n "$SVDIR" ] && runsvdir "$SVDIR" &
 aw-qt &
 batsignal -d 70 -c 75 -w 80 -D "loginctl suspend" -m 5 &
+setxkbmap -option ctrl:swapcaps &
 
 # Session
 exec herbstluftwm
