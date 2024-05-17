@@ -5,19 +5,19 @@ live_config_reload = true
 size = 9.0
 
 [font.bold]
-family = "Iosevka"
+family = "IosevkaTerm Nerd Font"
 style = "Bold"
 
 [font.bold_italic]
-family = "Iosevka"
+family = "IosevkaTerm Nerd Font"
 style = "Bold Italic"
 
 [font.italic]
-family = "Iosevka"
+family = "IosevkaTerm Nerd Font"
 style = "Italic"
 
 [font.normal]
-family = "Iosevka"
+family = "IosevkaTerm Nerd Font"
 style = "Regular"
 
 [window.padding]
