@@ -1,7 +1,0 @@
-#!/bin/sh
-
-test -r ../conf && . ../conf
-
-test -d "$LOG_DIR" || mkdir -p "$LOG_DIR"
-
-exec svlogd -tt "$LOG_DIR"
