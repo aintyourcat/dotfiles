@@ -1,8 +1,8 @@
 #!/bin/sh
 
 # GTK
-readonly DARK_GTK_THEME_NAME='Adwaita-dark'
-readonly LIGHT_GTK_THEME_NAME='Adwaita'
+readonly DARK_GTK_THEME_NAME='Breeze-Dark'
+readonly LIGHT_GTK_THEME_NAME='Breeze'
 readonly DARK_GTK_ICON_THEME_NAME='Papirus-Dark'
 readonly LIGHT_GTK_ICON_THEME_NAME='Papirus'
 readonly GTK_2_CONFIG="$XDG_CONFIG_HOME/gtk-2.0/gtkrc"
