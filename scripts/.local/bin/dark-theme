@@ -11,7 +11,7 @@ readonly XSETTINGSD_CONFIG="$XDG_CONFIG_HOME/X11/xsettingsd"
 # Alacritty
 readonly DARK_ALACRITTY_COLORSCHEME_NAME="iceberg-dark"
 readonly LIGHT_ALACRITTY_COLORSCHEME_NAME="iceberg-light"
-readonly ALACRITTY_CONFIG="$XDG_CONFIG_HOME/alacritty/alacritty.yml"
+readonly ALACRITTY_CONFIG="$XDG_CONFIG_HOME/alacritty/alacritty.toml"
 # Xresources
 readonly DARK_XRESOURCES_COLORSCHEME_NAME="iceberg-dark"
 readonly LIGHT_XRESOURCES_COLORSCHEME_NAME="iceberg-light"
@@ -51,6 +51,15 @@ create_file_if_not_exist () {
     if [ ! -f "$file" ]; then
         { mkdir -p "${file%/*}" && touch "$file"; } || return
     fi
+}
+
+replace_home_dir_with_tilde () {
+    test -n "$1" || return
+    test -n "$HOME" || return
+
+    local path="$1"
+
+    printf '%s' "~${path#${HOME}}"
 }
 
 # $1: key, $2: value, $3: config file path
@@ -147,8 +156,9 @@ reload_gtk () {
 
 # $1: colorsheme name, $2: config file path
 # Insert the following lines in the config file:
-# import:
-#  - config-file-dir/colors/colorscheme-name.yml
+# import = [
+#  "config-file-dir/colors/colorscheme-name.toml",
+# ]
 # Or replace 'colorscheme-name', if it already exists
 set_alacritty () {
     test -n "$*" -a "$#" -eq 2 || return
@@ -156,23 +166,33 @@ set_alacritty () {
     local colorscheme_name="$1"
     local config_file="$2"
     local colors_dir="${config_file%/*}/colors"
-    local colorscheme_file="$colors_dir/$colorscheme_name.yml"
+    local colorscheme_file="$colors_dir/$colorscheme_name.toml"
 
     test -f "$config_file" || return
     test -f "$colorscheme_file" || return
 
-    local import_line_number="$(grep -m 1 -n '^import:$' "$config_file" | cut -d ':' -f 1)"
-    local search_pattern="^ - $colors_dir/.*yml\$"
-    local replacement=" - $colorscheme_file"
+    local import_line_number="$(grep -m 1 -n '^import = \[$' "$config_file" | cut -d ':' -f 1)"
+    local search_pattern="^\s*\"$(replace_home_dir_with_tilde $colors_dir)/.*toml\",?\$"
+    local replacement="\t\"$(replace_home_dir_with_tilde $colorscheme_file)\","
 
     if test -n "$import_line_number"; then
-        if sed --silent -e "$import_line_number,\$ p" "$config_file" | grep --quiet "$search_pattern"; then
-            sed --in-place=.bak -e "$import_line_number,\$ s#$search_pattern#$replacement#" "$config_file"
+        if sed --silent -E -e "$import_line_number,/^\]/ p" "$config_file" | grep -E --quiet "$search_pattern"; then
+            sed --in-place=.bak -E -e "$import_line_number,/^\]/ s#$search_pattern#$replacement#" "$config_file"
         else
             sed --in-place=.bak -e "$import_line_number a\\$replacement" "$config_file"
         fi
     else
-        printf '%s\n' 'import:' "$replacement" >> "$config_file"
+        temp_sed_script="$(mktemp)"
+
+        printf '%s\\\n%s\\\n%s\\\n%s' \
+            '1i' \
+            'import = [' \
+            "$replacement" \
+            ']' > "$temp_sed_script"
+
+        sed --in-place=.bak -f "$temp_sed_script" "$config_file"
+
+        rm "$temp_sed_script"
     fi
 }
 
