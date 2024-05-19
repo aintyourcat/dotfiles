@@ -1,6 +1,6 @@
 zsh/.config/zsh/.zcompdump
 zsh/.config/zsh/.zcompcache/
-rofi/.config/rofi/themes/square-*.rasi
+rofi/.config/rofi/themes/square-light.rasi
 *.bak
 root/sv/etc/sv/runsvdir-behappier/supervise/
 sv/.config/sv/*/supervise/

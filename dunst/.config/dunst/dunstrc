@@ -1,0 +1,53 @@
+[global]
+    # Display
+    follow = mouse
+
+    # Geometry
+    width = (0, 250)
+    height = 250
+    origin = bottom-right
+    offset = 5x5
+    frame_width = 3
+    
+    # Text
+    font = IosevkaTerm Nerd Font 8
+    line_height = 2
+    show_age_threshold = 30
+    ellipsize = end
+
+    # Icon 
+    max_icon_size = 96
+    enable_recursive_icon_lookup = true
+
+    # History
+    sticky_history = false
+    history_length = 10
+
+    # Misc/Advanced
+    browser = /opt/bin/chrome-wrapper --incognito
+    
+    # Mouse
+    mouse_left_click = do_action, open_url, close_current
+
+[urgency_low]
+    frame_color = "#c6c8d1"
+    background = "#161821"
+    foreground = "#c6c8d1"
+
+[urgency_normal]
+    frame_color = "#c6c8d1"
+    background = "#161821"
+    foreground = "#c6c8d1"
+    timeout = 15
+
+[urgency_critical]
+    frame_color = "#c6c8d1"
+    background = "#161821"
+    foreground = "#c6c8d1"
+
+[play_sound]
+    summary = "*"
+    script = ~/.config/dunst/scripts/alert.sh
+
+[global]
+    icon_theme = Papirus-Dark

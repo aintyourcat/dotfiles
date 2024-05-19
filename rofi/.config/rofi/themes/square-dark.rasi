@@ -1,0 +1,69 @@
+* { 
+    font: "IosevkaTerm Nerd Font 9";
+    background-color: #161821;
+    text-color: #c6c8d1;
+    border-color: #c6c8d1;
+}
+
+window {
+    border: 1px;
+    width: 25%;
+}
+
+mainbox { 
+    children: [inputbar, listview];
+    spacing: 0;
+}
+
+inputbar {
+    children: [icon-inputbar, entry];
+    padding: 10px 14px;
+    spacing: 14px;
+}
+
+icon-inputbar {
+    filename: "edit-find-symbolic";
+    expand: false;
+}
+
+entry {
+    placeholder: "Run a program...";
+}
+
+listview {
+    lines: 5;
+}
+
+element { 
+    padding: 10px 14px;
+    spacing: 14px;
+}
+
+element-icon {
+    background-color: inherit;
+    size: 16px;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+    vertical-align: 0.5;
+}
+
+element selected {
+    background-color: #1e2132;
+    text-color: #c6c8d1;
+}
+
+element active,
+element selected.active {
+    text-color: #e9b189;
+}
+
+element urgent {
+    text-color: #e98989;
+}
+
+configuration {
+    icon-theme: "Papirus-Dark";
+}
