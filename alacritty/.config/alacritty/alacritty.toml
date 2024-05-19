@@ -1,4 +1,6 @@
-import = ["~/.config/alacritty/colors/iceberg-dark.toml"]
+import = [
+	"~/.config/alacritty/colors/iceberg-dark.toml",
+]
 live_config_reload = true
 
 [font]
