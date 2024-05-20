@@ -9,34 +9,20 @@ fi
 # Prevent messy $HOME
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
-export GTK2_RC_FILES=$XDG_CONFIG_HOME/gtk-2.0/gtkrc # ~/.themes must be present
-export LESSHISTFILE=$XDG_DATA_HOME/less/history
-export XAUTHORITY=$XDG_RUNTIME_DIR/Xauthority
-export XINITRC=$XDG_CONFIG_HOME/X11/xinitrc
-export XRESOURCES=$XDG_CONFIG_HOME/X11/xresources.Xresources
-export MYSQL_HISTFILE=$XDG_DATA_HOME/mysql_history
-export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
-export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+
+test -f "$ZDOTDIR/env/home-dir" && . "$ZDOTDIR/env/home-dir"
 
 # nnn configs
-export NNN_ARCHIVE="\\.(7z|a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|rar|rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)$"
-export NNN_BMS="b:$XDG_CONFIG_HOME/nnn/bookmarks/;c:$XDG_CONFIG_HOME;d:$XDG_DATA_HOME;t:$XDG_DATA_HOME/Trash/files/;m:/media/"
-export NNN_FIFO=/tmp/nnn.fifo
-export NNN_OPENER=$XDG_CONFIG_HOME/nnn/plugins/nuke
-export NNN_PLUG='l:-!&libreoffice $nnn;k:-!&kdeconnect-handler $nnn'
-export NNN_SEL=$XDG_CONFIG_HOME/nnn/.selection
-export NNN_TMPFILE=$XDG_CONFIG_HOME/nnn/.lastd
-export NNN_TRASH=2
-export NNN_FCOLORS='020b044c00600ef7c6d6ab01'
+test -f "$ZDOTDIR/env/nnn" && . "$ZDOTDIR/env/nnn"
 
 # xsecurelock configs
-export XSECURELOCK_FONT='IosevkaTerm Nerd Font'
-export XSECURELOCK_PASSWORD_PROMPT=asterisks
-export XSECURELOCK_SHOW_DATETIME=1
+test -f "$ZDOTDIR/env/xsecurelock" && . "$ZDOTDIR/env/xsecurelock"
 
 export EDITOR=nvim
 export VISUAL=$EDITOR
 export NVM_DIR=$XDG_CONFIG_HOME/nvm
 export QT_QPA_PLATFORMTHEME=qt5ct # Use GTK2 theme in QT apps
 export _JAVA_AWT_WM_NONREPARENTING=1 # Fix bspwm not showing Android Studio properly
-export SVDIR=$HOME/.local/var/service/
+
+# Void Linux user services dir
+test -f "$ZDOTDIR/env/void-linux" && . "$ZDOTDIR/env/void-linux"
