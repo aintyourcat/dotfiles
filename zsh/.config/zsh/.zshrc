@@ -52,6 +52,8 @@ alias d='docker'
 alias doco='docker compose'
 
 # Load nvm
+export NVM_DIR="${NVM_DIR:-${HOME}/.nvm}"
+
 nvm() {
     unset -f nvm
     [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh" --no-use

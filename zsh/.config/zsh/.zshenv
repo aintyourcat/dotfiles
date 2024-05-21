@@ -20,7 +20,6 @@ test -f "$ZDOTDIR/env/xsecurelock" && . "$ZDOTDIR/env/xsecurelock"
 
 export EDITOR=nvim
 export VISUAL=$EDITOR
-export NVM_DIR=$XDG_CONFIG_HOME/nvm
 export QT_QPA_PLATFORMTHEME=qt5ct # Use GTK2 theme in QT apps
 export _JAVA_AWT_WM_NONREPARENTING=1 # Fix bspwm not showing Android Studio properly
 
