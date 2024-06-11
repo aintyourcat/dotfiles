@@ -1,6 +1,35 @@
 # dotfiles
 A backup for dotfiles on my current Void Linux setup.
 
+## Dependencies
+```sh
+alacritty
+batsignal
+breeze-gtk
+dunst
+git
+herbstluftwm
+light
+neovim
+papirus-icon-theme
+polybar
+qt5-styleplugins
+qt5ct
+rofi
+setxkbmap
+stow
+tmux
+xclip
+xclip
+xrdb
+xsecurelock
+xsetroot
+xsettingsd
+xss-lock
+xwallpaper
+zsh
+```
+
 ## Installation
 1. Clone this repo:
 
