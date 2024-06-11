@@ -99,7 +99,7 @@ herbstclient mousebind $mod-Button3 resize
 # Program related
 
 herbstclient keybind $mod-Return  spawn   alacritty
-herbstclient keybind $mod-p       spawn   rofi -show drun
+herbstclient keybind $mod-p       spawn   rofi -modes 'drun,run' -show drun
 herbstclient keybind $mod-Shift-p   spawn   rofi-window
 
 herbstclient keybind XF86MonBrightnessDown    spawn light -U 5
