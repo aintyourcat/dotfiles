@@ -1,0 +1,5 @@
+-b
+-w 15 
+-c 10
+-d 5
+-D 'loginctl suspend'
