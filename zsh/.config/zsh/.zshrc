@@ -7,12 +7,9 @@ setopt HIST_IGNORE_ALL_DUPS
 #PROMPT='%F{blue}%B%~%b%f %F{green}%#%f '
 
 # Keybind
-autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
-zle -N up-line-or-beginning-search
-zle -N down-line-or-beginning-search
 bindkey -v
-bindkey '^[[A' up-line-or-beginning-search
-bindkey '^[[B' down-line-or-beginning-search
+bindkey '^p' history-beginning-search-backward
+bindkey '^n' history-beginning-search-forward
 bindkey '^?' backward-delete-char
 
 # The following lines were added by compinstall
