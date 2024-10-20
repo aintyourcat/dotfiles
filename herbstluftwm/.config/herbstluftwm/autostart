@@ -47,6 +47,7 @@ fi
 . "${0%/*}/rule.sh"
 
 herbstclient set focus_follows_mouse on
+herbstclient set_layout max
 
 read -r wall < "$HOME"/.cache/dark_theme.wallpaper && eval "$wall" &
 pgrep -x polybar >/dev/null 2>&1 || polybar -c ~/.config/polybar/herbstluftwm &
