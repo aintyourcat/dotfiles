@@ -42,7 +42,7 @@ alias ip='ip -color=auto'
 alias ls='ls --color=auto'
 alias bc='bc -lq'
 alias q='exit'
-n='n -x -H -Tt -o'; nnn -h | grep --quiet -- -G && n="$n -G"; alias n=$n; unset -v n
+n='GUI=1 n -x -H -Tt -o'; nnn -h | grep --quiet -- -G && n="$n -G"; alias n=$n; unset -v n
 alias startx="startx $XINITRC"
 alias g='git'
 alias d='docker'
