@@ -82,4 +82,9 @@ if [[ "$TERM" == (Eterm*|alacritty*|aterm*|gnome*|konsole*|kterm*|putty*|rxvt*|s
 	add-zsh-hook -Uz preexec xterm_title_preexec
 fi
 
-eval "$(starship init zsh)"
+# https://github.com/sindresorhus/pure?tab=readme-ov-file#manually
+if [ -d $HOME/.zsh/pure ]; then
+	fpath+=($HOME/.zsh/pure)
+	autoload -U promptinit; promptinit
+	prompt pure
+fi
