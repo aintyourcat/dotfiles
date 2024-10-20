@@ -50,8 +50,8 @@ herbstclient keybind $mod-r remove
 herbstclient keybind $mod-Tab         cycle_frame     1
 herbstclient keybind $mod-Shift-Tab   cycle_frame     -1
 
-herbstclient keybind $mod-space       cycle_layout    +1
-herbstclient keybind $mod-Shift-space cycle_layout    -1
+herbstclient keybind $mod-c       cycle_layout    +1
+herbstclient keybind $mod-Shift-c cycle_layout    -1
 
 # Window related
 
@@ -90,7 +90,7 @@ herbstclient keybind $mod-Shift-m     set_attr    clients.focus.minimized true
 
 herbstclient keybind $mod-Control-m jumpto last-minimized
 
-herbstclient keybind $mod-Shift-c close
+herbstclient keybind $mod-w close
 
 herbstclient mousebind $mod-Button1 move
 herbstclient mousebind $mod-Button2 zoom
@@ -100,7 +100,7 @@ herbstclient mousebind $mod-Button3 resize
 
 herbstclient keybind $mod-Return  spawn   alacritty
 herbstclient keybind $mod-p       spawn   rofi -modes 'drun,run' -show drun
-herbstclient keybind $mod-Shift-p   spawn   rofi-window
+herbstclient keybind $mod-space   spawn   rofi-window
 
 herbstclient keybind XF86MonBrightnessDown    spawn light -U 5
 herbstclient keybind XF86MonBrightnessUp      spawn light -A 5
