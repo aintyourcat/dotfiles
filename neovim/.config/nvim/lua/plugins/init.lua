@@ -5,12 +5,6 @@
 return {
   -- NOTE: First, some plugins that don't require any configuration
 
-  -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',
-
-  -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',  opts = {} },
-
   { -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
@@ -104,76 +98,5 @@ return {
     config = function()
       require('mini.surround').setup()
     end,
-  },
-
-  {
-    'NvChad/nvim-colorizer.lua',
-    opts = {},
-  },
-
-
-  {
-    'cshuaimin/ssr.nvim',
-    keys = {
-      {
-        '<leader>sr',
-        function()
-          require('ssr').open()
-        end,
-        mode = { 'n', 'x' },
-        desc = '[S]tructural Search and [R]eplace',
-      }
-    }
-  },
-
-  'RRethy/vim-illuminate',
-
-  {
-    'simrat39/symbols-outline.nvim',
-    opts = {},
-  },
-
-  {
-    'Wansmer/treesj',
-    dependencies = { 'nvim-treesitter' },
-    opts = {}
-  },
-
-  {
-    'nanozuki/tabby.nvim',
-    config = function ()
-      require('tabby.tabline').use_preset('active_wins_at_end', {
-        nerdfont = false, -- whether use nerdfont
-      })
-    end,
-  },
-
-  {
-    'kevinhwang91/nvim-ufo',
-    dependencies = 'kevinhwang91/promise-async',
-    config = function ()
-      vim.o.foldcolumn = '1' -- '0' is not bad
-      vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-      vim.o.foldlevelstart = 99
-      vim.o.foldenable = true
-
-      -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
-      vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
-      vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)
-
-      require('ufo').setup({
-        provider_selector = function(bufnr, filetype, buftype)
-          return {'treesitter', 'indent'}
-        end
-      })
-    end
-  },
-
-  {
-    "folke/todo-comments.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    opts = {}
   },
 }

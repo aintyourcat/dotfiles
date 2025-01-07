@@ -7,9 +7,6 @@ return {
       -- Automatically install LSPs to stdpath for neovim
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
-
-      -- Additional lua configuration, makes nvim stuff amazing!
-      'folke/neodev.nvim',
     },
     config = function()
       -- LSP settings.
@@ -80,9 +77,6 @@ return {
         emmet_ls = {},
       }
 
-      -- Setup neovim lua configuration
-      require('neodev').setup()
-
       -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
@@ -107,40 +101,5 @@ return {
         end,
       }
     end
-  },
-
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    opts = function()
-      local null_ls = require("null-ls")
-
-      return {
-        debug = true,
-        default_timeout = 10000,
-        sources = {
-          null_ls.builtins.formatting.blade_formatter,
-          null_ls.builtins.formatting.prettier.with({
-            filetypes = {
-              'javascript',
-              'json',
-              'html',
-              'css',
-              'php',
-            }
-          }),
-          null_ls.builtins.diagnostics.php,
-          null_ls.builtins.formatting.shfmt,
-          null_ls.builtins.diagnostics.shellcheck,
-          null_ls.builtins.formatting.htmlbeautifier.with({
-            generator_opts = {
-              command = "htmlbeautifier",
-              args = { "--keep-blank-lines", "1" },
-              to_stdin = true,
-            },
-          }),
-        },
-      }
-    end,
-    dependencies = { "nvim-lua/plenary.nvim" },
   },
 }
