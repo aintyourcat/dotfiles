@@ -5,52 +5,6 @@
 return {
   -- NOTE: First, some plugins that don't require any configuration
 
-  { -- Set lualine as statusline
-    'nvim-lualine/lualine.nvim',
-    -- See `:help lualine.txt`
-    opts = {
-      options = {
-        icons_enabled = false,
-        theme = 'auto',
-        component_separators = '|',
-        section_separators = '',
-      },
-    },
-  },
-
-  { -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
-    opts = {
-      char = '┊',
-      show_trailing_blankline_indent = false,
-      show_current_context = true,
-      show_current_context_start = true,
-    },
-  },
-
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
-
-  {
-    'EdenEast/nightfox.nvim',
-    priority = 1000,
-    config = function()
-      vim.opt.termguicolors = true
-
-      local hour = tonumber(os.date('%H'))
-
-      if hour <= 6 or hour >= 18 then
-        vim.opt.background = 'dark'
-        vim.cmd.colorscheme 'duskfox'
-      else
-        vim.opt.background = 'light'
-        vim.cmd.colorscheme 'dayfox'
-      end
-    end,
-  },
-
   {
     'mbbill/undotree',
     keys = {
