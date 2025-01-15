@@ -29,6 +29,7 @@ xss-lock
 xwallpaper
 zsh
 ```
+TODO: list each config dependencies. eg: alacritty depends on alacritty (obviously), x depends on batsignal
 
 ## Installation
 1. Clone this repo:
