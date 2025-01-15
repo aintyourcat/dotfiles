@@ -7,7 +7,7 @@
 eval "$(dbus-launch --sh-syntax --exit-with-x11)"
 light -S 20 &
 xsetroot -cursor_name left_ptr &
-xss-lock -- xsecurelock &
+xss-lock -l -- xsecurelock &
 pkill ssh-agent; eval "$(ssh-agent)"
 dunst &
 [ -n "$SVDIR" ] && runsvdir "$SVDIR" &
