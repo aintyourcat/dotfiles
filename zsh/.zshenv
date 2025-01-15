@@ -9,15 +9,14 @@ fi
 # Prevent messy $HOME
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
-export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 
-test -f "$ZDOTDIR/env/home-dir" && . "$ZDOTDIR/env/home-dir"
+test -f "$XDG_CONFIG_HOME/zsh/env/home-dir" && . "$XDG_CONFIG_HOME/zsh/env/home-dir"
 
 # nnn configs
-test -f "$ZDOTDIR/env/nnn" && . "$ZDOTDIR/env/nnn"
+test -f "$XDG_CONFIG_HOME/zsh/env/nnn" && . "$XDG_CONFIG_HOME/zsh/env/nnn"
 
 # xsecurelock configs
-test -f "$ZDOTDIR/env/xsecurelock" && . "$ZDOTDIR/env/xsecurelock"
+test -f "$XDG_CONFIG_HOME/zsh/env/xsecurelock" && . "$XDG_CONFIG_HOME/zsh/env/xsecurelock"
 
 export EDITOR=nvim
 export VISUAL=$EDITOR
@@ -25,4 +24,4 @@ export QT_QPA_PLATFORMTHEME=qt5ct # Use GTK2 theme in QT apps
 export _JAVA_AWT_WM_NONREPARENTING=1 # Fix bspwm not showing Android Studio properly
 
 # Void Linux user services dir
-test -f "$ZDOTDIR/env/void-linux" && . "$ZDOTDIR/env/void-linux"
+test -f "$XDG_CONFIG_HOME/zsh/env/void-linux" && . "$XDG_CONFIG_HOME/zsh/env/void-linux"
