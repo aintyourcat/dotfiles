@@ -4,7 +4,7 @@ import = [
 live_config_reload = true
 
 [font]
-size = 9.0
+size = 8.0
 
 [font.bold]
 family = "IosevkaTerm Nerd Font"
