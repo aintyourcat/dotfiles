@@ -4,6 +4,7 @@ configuration {
     modi: "drun";
     show-icons: true;
     terminal: "alacritty";
+    kb-mode-next: "Super+Tab";
 }
 
 @theme "square-dark"
