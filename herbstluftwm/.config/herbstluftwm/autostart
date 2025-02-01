@@ -2,6 +2,13 @@
 
 herbstclient emit_hook reload
 
+# Set layout for the 1st tag.
+herbstclient set_layout max
+
+# Set the default layout for the tag to be created.
+# Must be set before the tag is created: https://herbstluftwm.org/faq.html#_q_i_set_default_frame_layout_to_my_favorite_layout_but_it_doesn_8217_t_work_with_the_root_frame_existing_frames
+herbstclient set default_frame_layout max
+
 set -- 1 2 3 4 5 # Define the tags names.
 total=$# # Total of the tags.
 
@@ -47,7 +54,6 @@ fi
 . "${0%/*}/rule.sh"
 
 herbstclient set focus_follows_mouse on
-herbstclient set_layout max
 
 read -r wall < "$HOME"/.cache/dark_theme.wallpaper && eval "$wall" &
 pgrep -x polybar >/dev/null 2>&1 || polybar -c ~/.config/polybar/herbstluftwm &
