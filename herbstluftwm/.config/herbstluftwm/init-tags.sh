@@ -1,0 +1,38 @@
+set -- 1 2 3 4 5 # Define the tags names.
+total=$# # Total of the tags.
+
+if [ "$total" -gt 0 ]; then
+    # Max tags count is 10. Since i map each tag to one number key,
+    # and there are only 10 keys (0 to 9).
+    if [ "$total" -gt 10 ]; then
+        shift $(( total - 10 )) && total=$#
+    fi
+
+    # Example:
+    # If there are currently 7 tags, but only 5 tags defined above
+    # Remove the 6th and 7th tags, then move all windows from those tags
+    # to the currently focused tag.
+    herbstclient foreach T tags.by-name. \
+        sprintf TAG_INDEX_ATTR %c.index T \
+        sprintf TAG_NAME_ATTR %c.name T \
+        substitute TAG_NAME_VALUE TAG_NAME_ATTR \
+        and . compare TAG_INDEX_ATTR gt $((total-1)) . merge_tag TAG_NAME_VALUE
+
+    # Rename the remaining tags (if needed),
+    # or add a new one.
+    while [ $# -gt 0 ]; do
+        index=$((total-$#))
+        new_name=$1
+        old_name=$(herbstclient attr tags."$index".name)
+
+        if [ -n "$old_name" ]; then
+            if [ "$old_name" != "$new_name" ]; then
+                herbstclient rename "$old_name" "$new_name"
+            fi
+        else
+            herbstclient add "$new_name"
+        fi
+
+        shift
+    done
+fi
