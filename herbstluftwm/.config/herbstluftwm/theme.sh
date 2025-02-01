@@ -10,11 +10,11 @@ herbstclient set frame_bg_transparent on
 herbstclient set frame_transparent_width 5
 herbstclient set frame_gap 4
 
-herbstclient attr theme.title_height 15
+herbstclient attr theme.title_height 25
 herbstclient attr theme.title_when always
-herbstclient attr theme.title_font 'IosevkaTerm Nerd Font:size=9'  # example using Xft
+herbstclient attr theme.title_font 'IosevkaTerm Nerd Font:size=11'  # example using Xft
 # herbstclient attr theme.title_font '-*-fixed-medium-r-*-*-13-*-*-*-*-*-*-*'
-herbstclient attr theme.title_depth 3  # space below the title's baseline
+herbstclient attr theme.title_depth 10  # space below the title's baseline
 herbstclient attr theme.active.color '#345F0Cef'
 herbstclient attr theme.title_color '#ffffff'
 herbstclient attr theme.normal.color '#323232dd'
